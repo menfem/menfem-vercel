@@ -9,8 +9,8 @@ import { homePath } from '@/paths';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'ForPL App',
-  description: 'Welcome to the ForPL App',
+  title: 'Menfem App',
+  description: 'Welcome to the Menfem App',
 };
 
 export default function RootLayout({
