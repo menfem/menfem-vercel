@@ -9,6 +9,9 @@ const config: Config = {
   darkMode: "class",
   theme: {
     extend: {
+      fontFamily: {
+        mono: ["Source Code Pro", "monospace"],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
@@ -39,6 +42,14 @@ const config: Config = {
         destructive: {
           DEFAULT: "var(--destructive)",
           foreground: "var(--destructive-foreground)",
+        },
+        brand: {
+          brown: "#71513C",
+          terracotta: "#D4927D",
+          sand: "#ECD5B3",
+          cream: "#EBE5D0",
+          sage: "#B5C8C6",
+          rust: "#8C5945",
         },
       },
       borderRadius: {
