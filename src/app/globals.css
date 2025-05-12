@@ -25,65 +25,7 @@
   --radius: 0.5rem;
 }
 
-.dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --card: #171717;
-  --card-foreground: #ededed;
-  --popover: #171717;
-  --popover-foreground: #ededed;
-  --primary: #ededed;
-  --primary-foreground: #0a0a0a;
-  --secondary: #262626;
-  --secondary-foreground: #ededed;
-  --muted: #262626;
-  --muted-foreground: #a3a3a3;
-  --accent: #262626;
-  --accent-foreground: #ededed;
-  --destructive: #7f1d1d;
-  --destructive-foreground: #ededed;
-  --border: #262626;
-  --input: #262626;
-  --ring: #a3a3a3;
-}
-
-/* Basic styles */
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-}
-
-* {
-  border-color: #e5e5e5;
-}
-
-/* Animation utilities */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slide-in {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out forwards;
-}
-
-.animate-slide-in {
-  animation: slide-in 0.5s ease-out forwards;
+  color: rgb(var(--foreground-rgb));
+  background: white;
 }
