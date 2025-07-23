@@ -72,11 +72,11 @@ export function Navigation() {
   const [searchOpen, setSearchOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
+    <header className="sticky top-0 z-50 bg-brand-sage border-b border-brand-sand">
       <nav className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="font-bold text-2xl tracking-tight">
+          <Link href="/" className="font-bold text-2xl tracking-tight text-brand-brown">
             MENFEM
           </Link>
 
@@ -92,24 +92,24 @@ export function Navigation() {
                 {category.href ? (
                   <Link
                     href={category.href}
-                    className="text-sm font-medium tracking-wide hover:text-brand-terracotta transition-colors"
+                    className="text-sm font-medium tracking-wide text-brand-brown hover:text-brand-terracotta transition-colors"
                   >
                     {category.name}
                   </Link>
                 ) : (
-                  <button className="text-sm font-medium tracking-wide hover:text-brand-terracotta transition-colors">
+                  <button className="text-sm font-medium tracking-wide text-brand-brown hover:text-brand-terracotta transition-colors">
                     {category.name}
                   </button>
                 )}
                 
                 {category.subcategories && activeDropdown === index && (
-                  <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg">
+                  <div className="absolute top-full left-0 mt-2 w-48 bg-brand-cream border border-brand-sand shadow-lg">
                     <div className="py-2">
                       {category.subcategories.map((sub) => (
                         <Link
                           key={sub.name}
                           href={sub.href}
-                          className="block px-4 py-2 text-sm hover:bg-brand-cream hover:text-brand-terracotta transition-colors"
+                          className="block px-4 py-2 text-sm text-brand-brown hover:bg-brand-sand hover:text-brand-terracotta transition-colors"
                         >
                           {sub.name}
                         </Link>
@@ -126,7 +126,7 @@ export function Navigation() {
             <Button 
               variant="ghost" 
               size="icon" 
-              className="hidden lg:flex"
+              className="hidden lg:flex text-brand-brown hover:text-brand-terracotta"
               onClick={() => setSearchOpen(true)}
             >
               <Search className="h-4 w-4" />
@@ -143,7 +143,7 @@ export function Navigation() {
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden"
+              className="lg:hidden text-brand-brown"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <div className="space-y-1">
@@ -157,27 +157,27 @@ export function Navigation() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-gray-200 py-4">
+          <div className="lg:hidden border-t border-brand-sand py-4">
             {CATEGORIES.map((category) => (
               <div key={category.name} className="py-2">
                 {category.href ? (
                   <Link
                     href={category.href}
-                    className="block text-sm font-medium py-2"
+                    className="block text-sm font-medium py-2 text-brand-brown"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {category.name}
                   </Link>
                 ) : (
                   <>
-                    <div className="text-sm font-medium py-2">{category.name}</div>
+                    <div className="text-sm font-medium py-2 text-brand-brown">{category.name}</div>
                     {category.subcategories && (
                       <div className="pl-4 space-y-1">
                         {category.subcategories.map((sub) => (
                           <Link
                             key={sub.name}
                             href={sub.href}
-                            className="block text-sm py-1 text-gray-600"
+                            className="block text-sm py-1 text-brand-rust"
                             onClick={() => setMobileMenuOpen(false)}
                           >
                             {sub.name}

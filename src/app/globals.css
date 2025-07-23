@@ -30,7 +30,7 @@
 /* Base styles */
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: #B5C8C6; /* sage brand color */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -86,7 +86,7 @@ const LATEST_ARTICLES = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-brand-sage">
       <Navigation />
       
       {/* Featured Article */}

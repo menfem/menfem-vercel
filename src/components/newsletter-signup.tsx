@@ -41,7 +41,7 @@ export function NewsletterSignup() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-terracotta focus:border-transparent"
+              className="flex-1 px-4 py-3 border border-brand-sand rounded-md focus:outline-none focus:ring-2 focus:ring-brand-terracotta focus:border-transparent bg-white"
               disabled={status === "loading"}
             />
             <Button 
