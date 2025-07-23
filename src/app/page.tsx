@@ -1,243 +1,180 @@
-"use client"
+// ABOUTME: Homepage component with Service95-inspired design featuring articles and content grid
+// ABOUTME: Includes featured article hero, editor's picks, latest articles, and newsletter signup
 
-import { useState } from "react"
+import { Navigation } from "@/components/navigation"
+import { FeaturedArticle } from "@/components/featured-article"
+import { ArticleCard } from "@/components/article-card"
+import { NewsletterSignup } from "@/components/newsletter-signup"
 import Link from "next/link"
 
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+// Mock data - replace with actual data fetching
+const FEATURED_ARTICLE = {
+  title: "The Rise of AI-Powered Personal Style: How Technology is Reshaping Men's Fashion",
+  category: "Tech & Style",
+  excerpt: "From virtual try-ons to AI stylists, discover how cutting-edge technology is revolutionizing the way men approach fashion and personal style.",
+  imageUrl: "https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=1600&h=900&fit=crop",
+  href: "/articles/ai-powered-personal-style",
+  author: "Connor Royes",
+  readTime: "8 min"
+}
 
-// Disciplines data
-const DISCIPLINES = [
+const EDITORS_FAVOURITES = [
   {
-    title: "Strategy",
-    description: "Good design starts with clarity of purpose. We find the why and put it at the center of our work, to build brands that know what they stand for.",
-    services: [
-      "Workshops",
-      "Research",
-      "Brand Purpose",
-      "Frameworks",
-      "Narratives",
-      "Positioning"
-    ]
+    title: "Inside London's Underground Supper Club Scene",
+    category: "Culture",
+    imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=450&fit=crop",
+    href: "/articles/london-supper-clubs",
+    author: "James Chen",
+    date: "July 20, 2025"
   },
   {
-    title: "Identity",
-    description: "Distinctive visual systems that express your brand's personality across all touchpoints, creating a cohesive and memorable experience.",
-    services: [
-      "Logo Design",
-      "Visual Systems",
-      "Typography",
-      "Art Direction",
-      "Brand Guidelines",
-      "Custom Icons"
-    ]
+    title: "The New Wave of Men's Wellness Retreats",
+    category: "Fitness",
+    imageUrl: "https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&h=450&fit=crop",
+    href: "/articles/mens-wellness-retreats",
+    author: "Michael Torres",
+    date: "July 18, 2025"
   },
   {
-    title: "Digital",
-    description: "Thoughtful digital experiences that engage users and communicate your brand values through intuitive, purposeful interfaces.",
-    services: [
-      "Web Design",
-      "UX Strategy",
-      "Mobile Applications",
-      "Interaction Design",
-      "Digital Products",
-      "Prototyping"
-    ]
+    title: "Crypto Art Collecting: A Beginner's Guide",
+    category: "Finance",
+    imageUrl: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=450&fit=crop",
+    href: "/articles/crypto-art-guide",
+    author: "Alex Kim",
+    date: "July 15, 2025"
+  }
+]
+
+const LATEST_ARTICLES = [
+  {
+    title: "The Best Coffee Shops for Remote Work in Major Cities",
+    category: "Lifestyle",
+    imageUrl: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&h=450&fit=crop",
+    href: "/articles/remote-work-coffee-shops"
+  },
+  {
+    title: "Essential Gadgets for the Modern Professional",
+    category: "Tech",
+    imageUrl: "https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=800&h=450&fit=crop",
+    href: "/articles/essential-gadgets-2025"
+  },
+  {
+    title: "Mastering the Art of the Power Nap",
+    category: "Health",
+    imageUrl: "https://images.unsplash.com/photo-1531353826977-0941b4779a1c?w=800&h=450&fit=crop",
+    href: "/articles/power-nap-guide"
+  },
+  {
+    title: "Sustainable Fashion Brands Every Man Should Know",
+    category: "Style",
+    imageUrl: "https://images.unsplash.com/photo-1467043237213-65f2da53396f?w=800&h=450&fit=crop",
+    href: "/articles/sustainable-fashion-brands"
+  },
+  {
+    title: "The Psychology of High Performance",
+    category: "Personal Development",
+    imageUrl: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=800&h=450&fit=crop",
+    href: "/articles/high-performance-psychology"
+  },
+  {
+    title: "Investment Strategies for Your 30s",
+    category: "Finance",
+    imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=450&fit=crop",
+    href: "/articles/investment-strategies-30s"
   }
 ]
 
 export default function Home() {
-  const [activeDiscipline, setActiveDiscipline] = useState(0)
-  
   return (
-    <div className="flex min-h-screen flex-col">
-      {/* Header - Minimalist Navigation */}
-      <header className="py-6 border-b border-brand-sand bg-brand-cream">
-        <div className="container flex items-center justify-between">
-          <div className="font-semibold tracking-tight text-xl text-brand-brown">MENFEM</div>
-
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="#" className="text-sm text-brand-brown hover:text-brand-rust transition-colors">Agents</Link>
-            <Link href="#" className="text-sm text-brand-brown hover:text-brand-rust transition-colors">Business Models</Link>
-            <Link href="#" className="text-sm text-brand-brown hover:text-brand-rust transition-colors">Standards & Protocols</Link>
-            <Link href="#" className="text-sm text-brand-brown hover:text-brand-rust transition-colors">Products</Link>
-            <Link href="#" className="text-sm text-brand-brown hover:text-brand-rust transition-colors">Infrastructure</Link>
-            <Link href="#" className="text-sm text-brand-brown hover:text-brand-rust transition-colors">About</Link>
-          </div>
-
-          <Button variant="ghost" size="sm" className="rounded-full p-2 h-8 w-8">
-            <span className="sr-only">Menu</span>
-            <div className="h-1 w-5 bg-brand-brown mb-1"></div>
-            <div className="h-1 w-5 bg-brand-brown"></div>
-          </Button>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white">
+      <Navigation />
       
-      {/* Hero Section */}
-      <section className="container py-24 md:py-32">
-        <div className="max-w-[800px]">
-          <h1 className="text-5xl md:text-7xl font-normal tracking-tight leading-[1.1] text-brand-brown">
-            Brand.
-            <br />
-            Digital.
-            <br />
-            <span className="italic text-brand-terracotta">Aligned.</span>
-          </h1>
-          <p className="mt-8 text-xl text-brand-rust max-w-[600px]">
-            Crafting memorable brand experiences with thoughtful design and strategic storytelling.
-          </p>
+      {/* Featured Article */}
+      <section className="container mx-auto px-4 py-8">
+        <FeaturedArticle {...FEATURED_ARTICLE} />
+      </section>
+
+      {/* Editor's Favourites */}
+      <section className="container mx-auto px-4 py-12 md:py-16">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold">Editor's Favourites</h2>
+          <Link 
+            href="/editors-favourites" 
+            className="text-brand-terracotta hover:text-brand-rust transition-colors text-sm font-medium uppercase tracking-wide"
+          >
+            See All Stories
+          </Link>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {EDITORS_FAVOURITES.map((article) => (
+            <ArticleCard key={article.href} {...article} />
+          ))}
         </div>
       </section>
 
-      {/* Divider Line */}
-      <div className="border-t border-brand-sand w-full"></div>
+      {/* Newsletter Signup */}
+      <NewsletterSignup />
 
-      {/* Brand Colors Showcase */}
-      <section className="py-16">
-        <div className="container">
-          <h2 className="text-xl font-normal mb-12">Our Brand Colors</h2>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            <div className="flex flex-col gap-3">
-              <div className="h-32 bg-brand-brown rounded-md flex items-end p-3">
-                <span className="text-white text-xs font-mono">#71513C</span>
-              </div>
-              <div className="text-sm">Brown</div>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <div className="h-32 bg-brand-terracotta rounded-md flex items-end p-3">
-                <span className="text-white text-xs font-mono">#D4927D</span>
-              </div>
-              <div className="text-sm">Terracotta</div>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <div className="h-32 bg-brand-sand rounded-md flex items-end p-3">
-                <span className="text-brand-brown text-xs font-mono">#ECD5B3</span>
-              </div>
-              <div className="text-sm">Sand</div>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <div className="h-32 bg-brand-cream rounded-md flex items-end p-3">
-                <span className="text-brand-brown text-xs font-mono">#EBE5D0</span>
-              </div>
-              <div className="text-sm">Cream</div>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <div className="h-32 bg-brand-sage rounded-md flex items-end p-3">
-                <span className="text-brand-brown text-xs font-mono">#B5C8C6</span>
-              </div>
-              <div className="text-sm">Sage</div>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <div className="h-32 bg-brand-rust rounded-md flex items-end p-3">
-                <span className="text-white text-xs font-mono">#8C5945</span>
-              </div>
-              <div className="text-sm">Rust</div>
-            </div>
-          </div>
+      {/* The Latest */}
+      <section className="container mx-auto px-4 py-12 md:py-16">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold">The Latest</h2>
+          <Link 
+            href="/latest" 
+            className="text-brand-terracotta hover:text-brand-rust transition-colors text-sm font-medium uppercase tracking-wide"
+          >
+            View All
+          </Link>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {LATEST_ARTICLES.map((article) => (
+            <ArticleCard key={article.href} {...article} size="small" />
+          ))}
         </div>
       </section>
 
-      {/* Our Disciplines Section */}
-      <section className="py-16 md:py-24 bg-brand-cream">
-        <div className="container">
-          <h2 className="text-xl font-normal mb-16 text-brand-brown">Our Disciplines</h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 relative">
-            {/* Concentric Circles - Visual Element */}
-            <div className="absolute hidden md:block left-16 top-1/2 -translate-y-1/2">
-              <div className="relative">
-                <div className="h-[400px] w-[400px] border border-brand-sand rounded-full"></div>
-                <div className="h-[280px] w-[280px] border border-brand-sand rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-                <div className="h-[160px] w-[160px] border border-brand-sand rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-              </div>
-
-              <div className="absolute left-0 top-0 h-full">
-                <div className="h-full w-[2px] bg-brand-terracotta"></div>
-                <div className="flex flex-col items-center gap-1 absolute top-1/3 -left-1">
-                  <div className="w-[2px] h-[2px] rounded-full bg-brand-rust"></div>
-                  <div className="w-[2px] h-[2px] rounded-full bg-brand-rust mt-1"></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Disciplines Content */}
-            <div className="col-span-1 md:col-span-2 md:col-start-2">
-              <div className="space-y-16">
-                {DISCIPLINES.map((discipline, index) => (
-                  <div key={index} className={cn(
-                    "pb-16 border-b border-brand-sand last:border-0 last:pb-0",
-                    index === activeDiscipline ? "opacity-100" : "opacity-70 hover:opacity-100 transition-opacity"
-                  )}
-                  onMouseEnter={() => setActiveDiscipline(index)}
-                  >
-                    <h3 className="text-3xl font-normal mb-6 text-brand-rust">{discipline.title}</h3>
-                    <p className="text-lg mb-8 max-w-[600px] text-brand-brown">{discipline.description}</p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {discipline.services.map((service, i) => (
-                        <div key={i} className="text-sm text-brand-brown">{service}</div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
       {/* Footer */}
-      <footer className="py-8 border-t border-brand-sand mt-auto bg-brand-sage">
-        <div className="container">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-8">
-            <div className="space-y-1">
-              <p className="text-sm text-brand-brown font-medium">MENFEM</p>
-              <p className="text-sm text-brand-brown">© {new Date().getFullYear()} All rights reserved.</p>
-            </div>
-
-            <div className="flex gap-10">
-              <div className="space-y-4">
-                <p className="text-sm font-medium text-brand-brown">Contact</p>
-                <div className="space-y-2">
-                  <p className="text-sm text-brand-brown hover:text-brand-rust transition-colors">
-                    <a href="mailto:hello@menfem.com">hello@menfem.com</a>
-                  </p>
-                  <p className="text-sm text-brand-brown hover:text-brand-rust transition-colors">
-                    <a href="tel:+44000000000">+44 000 000 000</a>
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <p className="text-sm font-medium text-brand-brown">Social</p>
-                <div className="space-y-2">
-                  <p className="text-sm text-brand-brown hover:text-brand-rust transition-colors">
-                    <a href="#">Instagram</a>
-                  </p>
-                  <p className="text-sm text-brand-brown hover:text-brand-rust transition-colors">
-                    <a href="#">LinkedIn</a>
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <p className="text-sm font-medium text-brand-brown">Legal</p>
-                <div className="space-y-2">
-                  <p className="text-sm text-brand-brown hover:text-brand-rust transition-colors">
-                    <a href="#">Privacy</a>
-                  </p>
-                  <p className="text-sm text-brand-brown hover:text-brand-rust transition-colors">
-                    <a href="#">Terms</a>
-                  </p>
-                </div>
+      <footer className="bg-brand-brown text-white py-12 mt-16">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="col-span-1 md:col-span-2">
+              <h3 className="text-2xl font-bold mb-4">MENFEM</h3>
+              <p className="text-gray-300 mb-4 max-w-md">
+                Your cultural concierge for modern men's lifestyle. Curated content on culture, 
+                style, tech, fitness, and finance.
+              </p>
+              <div className="flex space-x-4">
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">Instagram</a>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">Twitter</a>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">LinkedIn</a>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">YouTube</a>
               </div>
             </div>
+            
+            <div>
+              <h4 className="font-medium mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-gray-300">
+                <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
+                <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+                <li><Link href="/advertise" className="hover:text-white transition-colors">Advertise</Link></li>
+                <li><Link href="/careers" className="hover:text-white transition-colors">Careers</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-medium mb-4">Legal</h4>
+              <ul className="space-y-2 text-gray-300">
+                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Use</Link></li>
+                <li><Link href="/cookies" className="hover:text-white transition-colors">Cookie Policy</Link></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; {new Date().getFullYear()} Menfem. All rights reserved.</p>
           </div>
         </div>
       </footer>
