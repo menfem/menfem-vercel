@@ -350,7 +350,7 @@ export const updateEntity = async (id: string, data: UpdateData) => {
 
   // Set feedback cookie before redirect
   await setCookieByKey('toast', 'Entity updated successfully');
-  
+
   redirect(`/entities/${id}`);
 };
 ```
@@ -441,7 +441,7 @@ export default async function AuthenticatedLayout({
   children: React.ReactNode;
 }) {
   const { user } = await getAuthOrRedirect();
-  
+
   return <>{children}</>;
 }
 ```
@@ -478,7 +478,7 @@ export const getEntityWithRelations = async (id: string) => {
     where: { id },
     include: {
       user: {
-        select: { username: true } // Exclude sensitive fields
+        select: { username: true }, // Exclude sensitive fields
       },
       organization: true,
       comments: {
@@ -517,7 +517,7 @@ export const getEntities = async ({
     metadata: {
       count: totalCount,
       totalPages: Math.ceil(totalCount / limit),
-      hasNextPage: totalCount > (page * limit),
+      hasNextPage: totalCount > page * limit,
     },
   };
 };
@@ -537,7 +537,7 @@ export const getEntities = async ({
 async function main() {
   // Clean existing data
   await prisma.entity.deleteMany();
-  
+
   // Create seed data
   await prisma.entity.createMany({
     data: seedData,
@@ -551,7 +551,7 @@ async function main() {
 model Ticket {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   @@index([userId]) // For query performance
 }
 ```
@@ -593,17 +593,17 @@ export const SubmitButton = ({ children }: { children: React.ReactNode }) => {
 };
 
 // Field error display
-export const FieldError = ({ 
-  actionState, 
-  name 
-}: { 
-  actionState: ActionState; 
+export const FieldError = ({
+  actionState,
+  name,
+}: {
+  actionState: ActionState;
   name: string;
 }) => {
   const error = actionState.fieldErrors?.[name]?.[0];
-  
+
   if (!error) return null;
-  
+
   return <span className="text-sm text-red-500">{error}</span>;
 };
 ```
@@ -635,13 +635,13 @@ export const EntityList = async ({
         <EntitySearchInput />
         <EntitySortSelect />
       </div>
-      
+
       <div className="grid gap-4">
         {entities.map((entity) => (
           <EntityItem key={entity.id} entity={entity} />
         ))}
       </div>
-      
+
       <EntityPagination metadata={metadata} />
     </>
   );
@@ -672,19 +672,15 @@ export const EntityForm = ({ entity }: { entity?: Entity }) => {
 };
 
 // Confirmation dialog with useConfirmDialog hook
-export const useConfirmDialog = ({ 
-  title, 
+export const useConfirmDialog = ({
+  title,
   description,
-  action 
+  action,
 }: ConfirmDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  
-  const trigger = (
-    <Button onClick={() => setIsOpen(true)}>
-      Delete
-    </Button>
-  );
-  
+
+  const trigger = <Button onClick={() => setIsOpen(true)}>Delete</Button>;
+
   const dialog = (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogContent>
@@ -701,7 +697,7 @@ export const useConfirmDialog = ({
       </AlertDialogContent>
     </AlertDialog>
   );
-  
+
   return { trigger, dialog };
 };
 ```
@@ -710,15 +706,15 @@ export const useConfirmDialog = ({
 
 ### Decision Matrix
 
-| Feature | Server Component | Client Component |
-|---------|-----------------|------------------|
-| Database queries | ✅ Direct access | ❌ Requires API/Server Action |
-| Async/await in component | ✅ Supported | ⚠️ Limited support |
-| React hooks | ❌ Not supported | ✅ Full support |
-| Event handlers | ❌ Not supported | ✅ Full support |
-| Browser APIs | ❌ Not available | ✅ Available |
-| Bundle size impact | ✅ No JS sent | ❌ JS included |
-| SEO | ✅ Excellent | ⚠️ Requires SSR |
+| Feature                  | Server Component | Client Component              |
+| ------------------------ | ---------------- | ----------------------------- |
+| Database queries         | ✅ Direct access | ❌ Requires API/Server Action |
+| Async/await in component | ✅ Supported     | ⚠️ Limited support            |
+| React hooks              | ❌ Not supported | ✅ Full support               |
+| Event handlers           | ❌ Not supported | ✅ Full support               |
+| Browser APIs             | ❌ Not available | ✅ Available                  |
+| Bundle size impact       | ✅ No JS sent    | ❌ JS included                |
+| SEO                      | ✅ Excellent     | ⚠️ Requires SSR               |
 
 ### Client-Server Boundary
 
@@ -726,7 +722,7 @@ export const useConfirmDialog = ({
 // Parent Server Component
 export default async function Page() {
   const data = await fetchData();
-  
+
   return (
     <ClientWrapper>
       {/* These remain server components despite parent being client */}
@@ -737,15 +733,11 @@ export default async function Page() {
 }
 
 // Client wrapper using composition
-'use client';
+('use client');
 export function ClientWrapper({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState();
-  
-  return (
-    <div onClick={() => setState('new')}>
-      {children}
-    </div>
-  );
+
+  return <div onClick={() => setState('new')}>{children}</div>;
 }
 ```
 
@@ -773,7 +765,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 // ✅ Streaming with Suspense - best UX
 export default async function Page({ params }: { params: { id: string } }) {
   const ticket = await getTicket(params.id);
-  
+
   return (
     <>
       <TicketDetails ticket={ticket} />
@@ -791,37 +783,31 @@ export default async function Page({ params }: { params: { id: string } }) {
 'use client';
 
 // Infinite scroll with React Query
-export function CommentsList({ 
+export function CommentsList({
   ticketId,
-  initialData 
-}: { 
+  initialData,
+}: {
   ticketId: string;
   initialData: PaginatedData<Comment>;
 }) {
   const queryClient = useQueryClient();
-  
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ['comments', ticketId],
-    queryFn: ({ pageParam = 0 }) => 
-      getComments({ ticketId, offset: pageParam }),
-    initialData: {
-      pages: [initialData],
-      pageParams: [0],
-    },
-    getNextPageParam: (lastPage) => 
-      lastPage.metadata.hasNextPage 
-        ? lastPage.list.length 
-        : undefined,
-  });
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['comments', ticketId],
+      queryFn: ({ pageParam = 0 }) =>
+        getComments({ ticketId, offset: pageParam }),
+      initialData: {
+        pages: [initialData],
+        pageParams: [0],
+      },
+      getNextPageParam: (lastPage) =>
+        lastPage.metadata.hasNextPage ? lastPage.list.length : undefined,
+    });
 
   // Infinite scroll trigger
   const { ref, inView } = useInView();
-  
+
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
@@ -850,7 +836,11 @@ export function CommentsList({
 
 ```typescript
 // Define search params schema
-import { createSearchParamsCache, parseAsString, parseAsInteger } from 'nuqs/server';
+import {
+  createSearchParamsCache,
+  parseAsString,
+  parseAsInteger,
+} from 'nuqs/server';
 
 export const searchParamsCache = createSearchParamsCache({
   search: parseAsString.withDefault(''),
@@ -861,9 +851,9 @@ export const searchParamsCache = createSearchParamsCache({
 });
 
 // Use in server components
-export default async function Page({ 
-  searchParams 
-}: { 
+export default async function Page({
+  searchParams,
+}: {
   searchParams: Record<string, string | string[] | undefined>;
 }) {
   const parsedParams = searchParamsCache.parse(searchParams);
@@ -871,7 +861,7 @@ export default async function Page({
 }
 
 // Use in client components
-'use client';
+('use client');
 import { useQueryState, useQueryStates } from 'nuqs';
 
 export function SearchInput() {
@@ -908,21 +898,21 @@ export function SortSelect() {
 
 ```typescript
 // Generic UI component
-export function SearchInput({ 
-  value, 
-  onChange 
-}: { 
-  value: string; 
+export function SearchInput({
+  value,
+  onChange,
+}: {
+  value: string;
   onChange: (value: string) => void;
 }) {
   return <Input value={value} onChange={(e) => onChange(e.target.value)} />;
 }
 
 // Feature-specific mediator
-'use client';
+('use client');
 export function TicketSearchInput() {
   const [search, setSearch] = useQueryState('search', searchParser);
-  
+
   return <SearchInput value={search} onChange={setSearch} />;
 }
 ```
@@ -942,6 +932,7 @@ npm run build && npm run start
 ### Caching Layers
 
 1. **Router Cache (Client-Side)**
+
    ```tsx
    // Fine-grained prefetch control
    <Link href="/tickets" prefetch>
@@ -950,34 +941,37 @@ npm run build && npm run start
    ```
 
 2. **Full Route Cache (Server-Side)**
+
    - Static rendering (O symbol in build output)
    - Dynamic rendering (F symbol in build output)
    - Controlled via dynamic functions or segments
 
 3. **Request Memoization**
+
    ```typescript
    import { cache } from 'react';
-   
+
    export const getTicket = cache(async (id: string) => {
      return prisma.ticket.findUnique({ where: { id } });
    });
    ```
 
 4. **On-Demand Revalidation**
+
    ```typescript
    // In server actions
    import { revalidatePath } from 'next/cache';
-   
+
    export async function updateTicket(id: string, data: UpdateData) {
      const ticket = await prisma.ticket.update({
        where: { id },
        data,
      });
-     
+
      // Revalidate specific paths
      revalidatePath('/tickets');
      revalidatePath(`/tickets/${id}`);
-     
+
      return ticket;
    }
    ```
@@ -1033,11 +1027,11 @@ import { notFound } from 'next/navigation';
 
 export async function TicketPage({ params }: { params: { id: string } }) {
   const ticket = await getTicket(params.id);
-  
+
   if (!ticket) {
     notFound(); // Triggers nearest not-found.tsx
   }
-  
+
   return <TicketDetails ticket={ticket} />;
 }
 ```
@@ -1073,18 +1067,18 @@ export function getActivePath(
 ): number {
   const allPaths = [...availablePaths, ...ignorePaths];
   const closestPath = closest(currentPath, allPaths);
-  
+
   if (ignorePaths.includes(closestPath)) {
     return -1; // No active path
   }
-  
+
   return availablePaths.indexOf(closestPath);
 }
 
 // In Sidebar component
 const activeIndex = getActivePath(
   pathname,
-  navItems.map(item => item.href),
+  navItems.map((item) => item.href),
   ['/sign-in', '/sign-up']
 );
 ```
@@ -1092,9 +1086,9 @@ const activeIndex = getActivePath(
 ### Breadcrumbs
 
 ```typescript
-export function Breadcrumbs({ 
-  items 
-}: { 
+export function Breadcrumbs({
+  items,
+}: {
   items: Array<{ title: string; href?: string }>;
 }) {
   return (
@@ -1103,9 +1097,7 @@ export function Breadcrumbs({
         {items.map((item, index) => (
           <BreadcrumbItem key={index}>
             {item.href ? (
-              <BreadcrumbLink href={item.href}>
-                {item.title}
-              </BreadcrumbLink>
+              <BreadcrumbLink href={item.href}>{item.title}</BreadcrumbLink>
             ) : (
               <BreadcrumbPage>{item.title}</BreadcrumbPage>
             )}
@@ -1131,9 +1123,9 @@ export async function GET(request: Request) {
   const parsedParams = searchParamsCache.parse(
     Object.fromEntries(searchParams)
   );
-  
+
   const tickets = await getTickets(parsedParams);
-  
+
   return NextResponse.json(tickets);
 }
 
@@ -1144,14 +1136,11 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const ticket = await getTicket(params.id);
-  
+
   if (!ticket) {
-    return NextResponse.json(
-      { error: 'Ticket not found' },
-      { status: 404 }
-    );
+    return NextResponse.json({ error: 'Ticket not found' }, { status: 404 });
   }
-  
+
   return NextResponse.json(ticket);
 }
 ```
@@ -1387,7 +1376,7 @@ import { useDebouncedCallback } from 'use-debounce';
 
 export function SearchInput() {
   const [search, setSearch] = useQueryState('search', searchParser);
-  
+
   const debouncedSetSearch = useDebouncedCallback(
     (value: string) => setSearch(value),
     250 // 250ms delay
@@ -1487,7 +1476,7 @@ async function main() {
 
   // Create related data
   await prisma.ticket.createMany({
-    data: seedTickets.map(ticket => ({
+    data: seedTickets.map((ticket) => ({
       ...ticket,
       userId: user.id,
     })),
@@ -1505,15 +1494,12 @@ main()
 
 1. **TypeScript Server Not Updating**
    - Solution: Restart TypeScript server via VS Code command palette
-   
 2. **Wrong Auto-Imports**
    - Common: Link from lucide-react instead of next/link
    - Solution: Always check import sources
-   
 3. **Dependency Conflicts**
    - When using React RC with packages expecting stable React
    - Solution: npm install --force
-   
 4. **Hydration Mismatches**
    - Often from date formatting differences
    - Solution: Use consistent formatting libraries like date-fns
@@ -1624,6 +1610,7 @@ export function DeleteForm({ ticketId }: { ticketId: string }) {
 ```
 
 To test progressive enhancement:
+
 1. Disable JavaScript in browser DevTools
 2. Run production build: `npm run build && npm run start`
 3. Verify forms still submit and actions execute
@@ -1675,7 +1662,7 @@ export function useAuth() {
       setUser(auth.user);
       setIsFetched(true);
     }
-    
+
     fetchUser();
   }, [pathname]);
 
@@ -1748,12 +1735,14 @@ This architecture scales from simple CRUD applications to complex SaaS platforms
 ## Core Architecture Principles
 
 ### Server-First Approach
+
 - **Prioritize server components** for data fetching and initial rendering
 - **Use client components** only when interactivity is required (hooks, event handlers, state management)
 - **Server actions** handle all form submissions and data mutations
 - **Protected routes** use server-side authentication checks with redirect logic
 
 ### Database Design Philosophy
+
 - **Explicit many-to-many relationships** using junction tables for metadata storage
 - **Compound keys** for junction tables instead of synthetic IDs
 - **Database transactions** for multi-step operations to prevent inconsistent states
@@ -1762,6 +1751,7 @@ This architecture scales from simple CRUD applications to complex SaaS platforms
 ## Advanced Authentication & Authorization Patterns
 
 ### Core Auth Function Structure
+
 ```typescript
 // Central auth function with optional checks
 export async function getAuthOrRedirect(options?: {
@@ -1770,41 +1760,44 @@ export async function getAuthOrRedirect(options?: {
   checkSpecificCondition?: boolean;
 }) {
   const session = await getSession();
-  
+
   if (!session) {
     redirect('/sign-in');
   }
-  
+
   // Optional verification checks
   if (options?.checkEmailVerified !== false && !user.emailVerified) {
     redirect('/email-verification');
   }
-  
+
   if (options?.checkActiveWorkspace !== false && !hasActiveWorkspace) {
     redirect('/onboarding');
   }
-  
+
   return { user, session };
 }
 ```
 
 ### Progressive Onboarding Flow
+
 1. **Email Verification** → User must verify email before proceeding
 2. **Workspace/Organization Setup** → User must create or join a workspace
 3. **Active Context Selection** → User must have an active workspace/context
 4. **Feature-Specific Setup** → Additional setup as needed
 
 ### Escape Patches for Auth Checks
+
 Use options objects to selectively bypass checks when the check itself would create circular redirects:
+
 ```typescript
 // In email verification action
-const { user } = await getAuthOrRedirect({ 
-  checkEmailVerified: false 
+const { user } = await getAuthOrRedirect({
+  checkEmailVerified: false,
 });
 
-// In workspace creation action  
-const { user } = await getAuthOrRedirect({ 
-  checkActiveWorkspace: false 
+// In workspace creation action
+const { user } = await getAuthOrRedirect({
+  checkActiveWorkspace: false,
 });
 ```
 
@@ -1813,6 +1806,7 @@ const { user } = await getAuthOrRedirect({
 **Core Principle**: Use a membership pattern to connect users to contexts (organizations, teams, projects, etc.) with specific roles.
 
 **Database Schema Foundation:**
+
 ```prisma
 model User {
   id          String @id @default(cuid())
@@ -1832,10 +1826,10 @@ model Membership {
   contextId String
   role      Role   @default(MEMBER)
   isActive  Boolean @default(false)
-  
+
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   context Context @relation(fields: [contextId], references: [id], onDelete: Cascade)
-  
+
   @@unique([userId, contextId])
 }
 
@@ -1846,6 +1840,7 @@ enum Role {
 ```
 
 **Helper Functions Pattern:**
+
 ```typescript
 // Base authentication
 async function getAuthOrRedirect() {
@@ -1857,16 +1852,17 @@ async function getAuthOrRedirect() {
 async function getAdminOrRedirect(contextId: string) {
   const { user } = await getAuthOrRedirect();
   const membership = await getMembership(contextId, user.id);
-  
-  if (membership?.role !== "admin") {
-    redirect("/sign-in");
+
+  if (membership?.role !== 'admin') {
+    redirect('/sign-in');
   }
-  
+
   return { user, membership };
 }
 ```
 
 **Multi-Layer Protection Strategy:**
+
 1. **Layout Level**: Protected routes in admin folders with auth checks in layout.tsx
 2. **UI Level**: Conditional rendering based on user roles
 3. **Server Action Level**: Authorization checks at data source (most critical)
@@ -1881,6 +1877,7 @@ async function getAdminOrRedirect(contextId: string) {
 ## Advanced Database Schema Patterns
 
 ### Junction Table Design
+
 ```prisma
 model UserWorkspace {
   userId      String
@@ -1888,16 +1885,17 @@ model UserWorkspace {
   role        Role      @default(MEMBER)
   isActive    Boolean   @default(false)
   joinedAt    DateTime  @default(now())
-  
+
   user        User      @relation(fields: [userId], references: [id])
   workspace   Workspace @relation(fields: [workspaceId], references: [id])
-  
+
   @@id([userId, workspaceId])
   @@map("user_workspaces")
 }
 ```
 
 ### Security Token Pattern
+
 ```prisma
 model SecurityToken {
   id        String   @id @default(cuid())
@@ -1906,9 +1904,9 @@ model SecurityToken {
   email     String   // Extra security layer
   type      TokenType
   expiresAt DateTime
-  
+
   user      User     @relation(fields: [userId], references: [id])
-  
+
   @@map("security_tokens")
 }
 ```
@@ -1916,17 +1914,19 @@ model SecurityToken {
 ### Context Scoping Pattern
 
 **Multi-tenant Architecture:**
+
 ```prisma
 model Entity {
   id        String @id @default(cuid())
   contextId String
   name      String
-  
+
   context Context @relation(fields: [contextId], references: [id], onDelete: Cascade)
 }
 ```
 
 **Key Principles:**
+
 - Add `contextId` to scope entities to specific contexts
 - Use `onDelete: Cascade` for proper cleanup
 - Always filter queries by active context
@@ -1935,6 +1935,7 @@ model Entity {
 ### Migration Strategy
 
 **Safe Schema Changes:**
+
 1. Add new fields with default values
 2. Migrate existing data if needed
 3. Remove defaults for future records
@@ -1952,6 +1953,7 @@ contextId String
 ## Enhanced Server Actions Architecture
 
 ### Standard Server Action Structure
+
 ```typescript
 export async function resourceAction(
   prevState: ActionState,
@@ -1960,43 +1962,48 @@ export async function resourceAction(
   try {
     // 1. Authentication & Authorization
     const { user } = await getAuthOrRedirect();
-    
+
     // 2. Input validation
     const validatedData = schema.parse({
       field: formData.get('field'),
     });
-    
+
     // 3. Business logic validation
     const existingResource = await db.resource.findFirst({
-      where: { /* conditions */ }
+      where: {
+        /* conditions */
+      },
     });
-    
+
     if (existingResource) {
-      return { 
-        status: 'error', 
-        message: 'Resource already exists' 
+      return {
+        status: 'error',
+        message: 'Resource already exists',
       };
     }
-    
+
     // 4. Database operations (use transactions for multi-step)
     await db.$transaction(async (tx) => {
-      await tx.resource.create({ /* data */ });
-      await tx.relatedResource.update({ /* data */ });
+      await tx.resource.create({
+        /* data */
+      });
+      await tx.relatedResource.update({
+        /* data */
+      });
     });
-    
+
     // 5. Cache invalidation
     revalidatePath('/path');
-    
+
     // 6. Success response
-    return { 
-      status: 'success', 
-      message: 'Resource created successfully' 
+    return {
+      status: 'success',
+      message: 'Resource created successfully',
     };
-    
   } catch (error) {
-    return { 
-      status: 'error', 
-      message: 'Failed to create resource' 
+    return {
+      status: 'error',
+      message: 'Failed to create resource',
     };
   }
 }
@@ -2008,28 +2015,28 @@ export async function resourceAction(
 export async function performAction(input: ActionInput) {
   // 1. Authentication
   const { user, activeContext } = await getAuthOrRedirect();
-  
+
   // 2. Authorization (if required)
   if (requiresAdmin) {
     await getAdminOrRedirect(contextId);
   }
-  
+
   // 3. Input validation
   const validatedInput = inputSchema.parse(input);
-  
+
   // 4. Business logic validation
   // - Entity existence checks
   // - Business rule enforcement
   // - Constraint validation
-  
+
   // 5. Database operations
   const result = await db.entity.operation(validatedInput);
-  
+
   // 6. Side effects (prefer async)
   // - File operations via queue
   // - Email notifications
   // - Cache invalidation
-  
+
   // 7. Response
   return { success: true, data: result };
 }
@@ -2038,32 +2045,34 @@ export async function performAction(input: ActionInput) {
 ### Complex Authorization Patterns
 
 **Multi-path Authorization:**
+
 ```typescript
 export async function deleteEntity(entityId: string) {
   const { user } = await getAuthOrRedirect();
   const entity = await getEntity(entityId);
   const membership = await getMembership(entity.contextId, user.id);
-  
+
   // Multiple authorization paths
-  const canDelete = 
-    membership?.role === "admin" ||           // Admin can delete anything
-    entity.createdById === user.id ||         // Owner can delete own
-    membership?.permissions.canDelete;        // Explicit permission
-  
+  const canDelete =
+    membership?.role === 'admin' || // Admin can delete anything
+    entity.createdById === user.id || // Owner can delete own
+    membership?.permissions.canDelete; // Explicit permission
+
   if (!canDelete) {
-    throw new Error("Unauthorized");
+    throw new Error('Unauthorized');
   }
-  
+
   // Business rule validation
   if (await isLastRequired(entity)) {
-    throw new Error("Cannot delete last required entity");
+    throw new Error('Cannot delete last required entity');
   }
-  
+
   await db.entity.delete({ where: { id: entityId } });
 }
 ```
 
 ### One-Time Use Token Pattern
+
 ```typescript
 // Generate and store hashed token
 const tokenId = generateRandomString(32);
@@ -2075,55 +2084,51 @@ await db.securityToken.create({
     userId: user.id,
     email: user.email,
     type: 'PASSWORD_RESET',
-    expiresAt: new Date(Date.now() + 15 * 60 * 1000) // 15 minutes
-  }
+    expiresAt: new Date(Date.now() + 15 * 60 * 1000), // 15 minutes
+  },
 });
 
 // Validation and one-time use
 const tokenHash = await hash(receivedTokenId);
 const token = await db.securityToken.findUnique({
-  where: { tokenHash }
+  where: { tokenHash },
 });
 
 // Always delete after use (regardless of success/failure)
 await db.securityToken.delete({
-  where: { tokenHash }
+  where: { tokenHash },
 });
 ```
 
 ## Advanced Form Handling Patterns
 
 ### Reusable Form Components
+
 ```typescript
 // Base form structure
-export function ResourceForm({ 
-  action, 
-  initialData, 
-  submitLabel = "Submit" 
+export function ResourceForm({
+  action,
+  initialData,
+  submitLabel = 'Submit',
 }: {
   action: (prevState: ActionState, formData: FormData) => Promise<ActionState>;
   initialData?: Partial<ResourceData>;
   submitLabel?: string;
 }) {
   const [state, formAction] = useActionState(action, initialActionState);
-  
+
   return (
     <form action={formAction} className="space-y-4">
-      <Input 
-        name="field"
-        defaultValue={initialData?.field}
-        required
-      />
+      <Input name="field" defaultValue={initialData?.field} required />
       <SubmitButton>{submitLabel}</SubmitButton>
-      {state.status === 'error' && (
-        <ErrorMessage message={state.message} />
-      )}
+      {state.status === 'error' && <ErrorMessage message={state.message} />}
     </form>
   );
 }
 ```
 
 ### Consistent UI Patterns
+
 - **Icons on the left** of button labels for consistency
 - **Reuse existing form implementations** as blueprints for new forms
 - **Toast notifications** for user feedback on actions
@@ -2134,6 +2139,7 @@ export function ResourceForm({
 ### Hierarchical Organization
 
 **Entity/List/Item Pattern:**
+
 ```
 FeatureComponent/
 ├── index.tsx              # Main container (forms, data fetching, business logic)
@@ -2146,11 +2152,13 @@ FeatureComponent/
 ```
 
 **Component Responsibilities:**
+
 - **Container**: State management, data fetching, business logic
 - **List**: Layout, iteration, list-level interactions
 - **Item**: Individual item display, item-specific actions
 
 ### Isomorphic Components
+
 Create components that work in both server-side and client-side environments:
 
 ```typescript
@@ -2162,11 +2170,11 @@ interface AttachmentProps {
   onDeleteAttachment?: (id: string) => void; // Optional for client-side
 }
 
-export function AttachmentList({ 
-  entityId, 
-  entityType, 
-  onCreateAttachment, 
-  onDeleteAttachment 
+export function AttachmentList({
+  entityId,
+  entityType,
+  onCreateAttachment,
+  onDeleteAttachment,
 }: AttachmentProps) {
   // Server-side: callbacks not needed (server actions handle updates)
   // Client-side: callbacks invalidate cache and update UI
@@ -2174,6 +2182,7 @@ export function AttachmentList({
 ```
 
 ### Client-Server Boundary Management
+
 When mixing client and server components:
 
 ```typescript
@@ -2181,15 +2190,16 @@ When mixing client and server components:
 <ClientComponent renderFunction={serverFunction} />
 
 // ✅ Preferred: Use callback handlers for client-side cache invalidation
-<ClientComponent 
-  onUpdate={() => invalidateCache('entity-list')} 
-  onDelete={(id) => invalidateCache(`entity-${id}`)} 
+<ClientComponent
+  onUpdate={() => invalidateCache('entity-list')}
+  onDelete={(id) => invalidateCache(`entity-${id}`)}
 />
 ```
 
 ### Custom Hook Extraction
 
 **When to Extract:**
+
 - Significant component-specific logic
 - State management patterns
 - Reusable functionality
@@ -2200,13 +2210,13 @@ function useFeaturePagination<T>(initialData: T[]) {
   const [items, setItems] = useState(initialData);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  
+
   const loadMore = useCallback(async () => {
     setLoading(true);
     // Pagination logic
     setLoading(false);
   }, []);
-  
+
   return { items, hasMore, loading, loadMore };
 }
 ```
@@ -2214,6 +2224,7 @@ function useFeaturePagination<T>(initialData: T[]) {
 ### Render Props for Flexibility
 
 **Avoiding Prop Drilling:**
+
 ```typescript
 interface FlexibleItemProps<T> {
   item: T;
@@ -2224,42 +2235,37 @@ function FlexibleItem<T>({ item, actions }: FlexibleItemProps<T>) {
   return (
     <div className="item-container">
       <ItemContent item={item} />
-      <div className="item-actions">
-        {actions?.(item)}
-      </div>
+      <div className="item-actions">{actions?.(item)}</div>
     </div>
   );
 }
 
 // Usage
-<FlexibleItem 
-  item={data} 
+<FlexibleItem
+  item={data}
   actions={(item) => (
     <>
       <EditButton itemId={item.id} />
       <DeleteButton itemId={item.id} />
     </>
   )}
-/>
+/>;
 ```
 
 ### Handling N+1 Problems
+
 Use nested fetching strategies instead of individual client-side requests:
 
 ```typescript
 // ❌ Avoid: Each item triggers its own fetch
 function ItemList({ items }) {
-  return items.map(item => <ItemWithData key={item.id} itemId={item.id} />);
+  return items.map((item) => <ItemWithData key={item.id} itemId={item.id} />);
 }
 
 // ✅ Preferred: Fetch all related data in one query
 function ItemList({ items, relatedData }) {
-  return items.map(item => (
-    <Item 
-      key={item.id} 
-      item={item} 
-      relatedData={relatedData[item.id]} 
-    />
+  return items.map((item) => (
+    <Item key={item.id} item={item} relatedData={relatedData[item.id]} />
   ));
 }
 ```
@@ -2267,6 +2273,7 @@ function ItemList({ items, relatedData }) {
 ## Polymorphic Components & Design Patterns
 
 ### Entity-Agnostic Design
+
 Design components to work with multiple entity types:
 
 ```typescript
@@ -2283,6 +2290,7 @@ interface PolymorphicComponentProps {
 ```
 
 ### Database Schema Pattern
+
 Use polymorphic relationships in your database schema:
 
 ```prisma
@@ -2290,22 +2298,22 @@ model Attachment {
   id         String @id @default(cuid())
   filename   String
   url        String
-  
+
   // Polymorphic relationship
   entityId   String
   entityType String
-  
+
   @@map("attachments")
 }
 
 model Comment {
   id         String @id @default(cuid())
   content    String
-  
-  // Polymorphic relationship  
+
+  // Polymorphic relationship
   entityId   String
   entityType String
-  
+
   @@map("comments")
 }
 ```
@@ -2313,17 +2321,18 @@ model Comment {
 ### Flexible Entity Associations
 
 **Database Schema Pattern:**
+
 ```prisma
 model Attachment {
   id          String @id @default(cuid())
   filename    String
   entityType  EntityType
-  
+
   // Polymorphic foreign keys (only one populated)
   entityAId   String?
   entityBId   String?
   entityCId   String?
-  
+
   entityA EntityA? @relation(fields: [entityAId], references: [id], onDelete: Cascade)
   entityB EntityB? @relation(fields: [entityBId], references: [id], onDelete: Cascade)
   entityC EntityC? @relation(fields: [entityCId], references: [id], onDelete: Cascade)
@@ -2339,13 +2348,11 @@ enum EntityType {
 ### Generic Polymorphic Queries
 
 **Abstract Query Function:**
+
 ```typescript
-async function getRelatedItems(
-  entityType: EntityType, 
-  entityId: string
-) {
+async function getRelatedItems(entityType: EntityType, entityId: string) {
   const whereClause = buildWhereClause(entityType, entityId);
-  
+
   return db.relatedItem.findMany({
     where: {
       entityType,
@@ -2356,11 +2363,11 @@ async function getRelatedItems(
 
 function buildWhereClause(entityType: EntityType, entityId: string) {
   switch (entityType) {
-    case "ENTITY_A":
+    case 'ENTITY_A':
       return { entityAId: entityId };
-    case "ENTITY_B":
+    case 'ENTITY_B':
       return { entityBId: entityId };
-    case "ENTITY_C":
+    case 'ENTITY_C':
       return { entityCId: entityId };
     default:
       throw new Error(`Unsupported entity type: ${entityType}`);
@@ -2371,17 +2378,22 @@ function buildWhereClause(entityType: EntityType, entityId: string) {
 ### TypeScript Type Safety
 
 **Runtime Type Guards:**
+
 ```typescript
-type PolymorphicSubject = 
+type PolymorphicSubject =
   | { entityA: EntityA; entityB?: never; entityC?: never }
   | { entityB: EntityB; entityA?: never; entityC?: never }
   | { entityC: EntityC; entityA?: never; entityB?: never };
 
-function isEntityA(subject: PolymorphicSubject): subject is { entityA: EntityA } {
+function isEntityA(
+  subject: PolymorphicSubject
+): subject is { entityA: EntityA } {
   return 'entityA' in subject && subject.entityA !== undefined;
 }
 
-function isEntityB(subject: PolymorphicSubject): subject is { entityB: EntityB } {
+function isEntityB(
+  subject: PolymorphicSubject
+): subject is { entityB: EntityB } {
   return 'entityB' in subject && subject.entityB !== undefined;
 }
 
@@ -2400,13 +2412,10 @@ function getContextId(subject: PolymorphicSubject): string {
 ## Email & Communication Patterns
 
 ### Email Template Structure
+
 ```typescript
 // React Email components
-export function NotificationEmail({ 
-  userName, 
-  actionUrl, 
-  code 
-}: EmailProps) {
+export function NotificationEmail({ userName, actionUrl, code }: EmailProps) {
   return (
     <Html>
       <Head />
@@ -2416,16 +2425,8 @@ export function NotificationEmail({
             <Section>
               <Text>Hello {userName},</Text>
               <Text>{/* Email content */}</Text>
-              {actionUrl && (
-                <Button href={actionUrl}>
-                  Take Action
-                </Button>
-              )}
-              {code && (
-                <Text className="font-mono text-lg">
-                  {code}
-                </Text>
-              )}
+              {actionUrl && <Button href={actionUrl}>Take Action</Button>}
+              {code && <Text className="font-mono text-lg">{code}</Text>}
             </Section>
           </Container>
         </Body>
@@ -2436,6 +2437,7 @@ export function NotificationEmail({
 ```
 
 ### Asynchronous Processing with Message Queues
+
 ```typescript
 // Event-driven email sending
 export const emailEvent = inngest.createFunction(
@@ -2443,17 +2445,17 @@ export const emailEvent = inngest.createFunction(
   { event: 'app/email.send' },
   async ({ event }) => {
     const { userId, type, data } = event.data;
-    
+
     const user = await db.user.findUniqueOrThrow({
-      where: { id: userId }
+      where: { id: userId },
     });
-    
+
     const result = await sendEmail(user, type, data);
-    
+
     if (result.error) {
       throw new Error(result.error.message);
     }
-    
+
     return { event, body: result.data };
   }
 );
@@ -2461,30 +2463,31 @@ export const emailEvent = inngest.createFunction(
 // Trigger from server action
 await inngest.send({
   name: 'app/email.send',
-  data: { userId: user.id, type: 'VERIFICATION', data: { code } }
+  data: { userId: user.id, type: 'VERIFICATION', data: { code } },
 });
 ```
 
 ## Multi-Tenancy & Context Management
 
 ### Active Context Pattern
+
 ```typescript
 // Single active workspace per user
 model UserWorkspace {
   isActive Boolean @default(false)
   // ... other fields
-  
+
   @@id([userId, workspaceId])
 }
 
 // Switching active context (idempotent operation)
 export async function switchActiveContext(contextId: string) {
   const { user } = await getAuthOrRedirect();
-  
+
   await db.$transaction([
     // Deactivate all other contexts
     db.userWorkspace.updateMany({
-      where: { 
+      where: {
         userId: user.id,
         workspaceId: { not: contextId }
       },
@@ -2492,10 +2495,10 @@ export async function switchActiveContext(contextId: string) {
     }),
     // Activate target context
     db.userWorkspace.update({
-      where: { 
-        userId_workspaceId: { 
-          userId: user.id, 
-          workspaceId: contextId 
+      where: {
+        userId_workspaceId: {
+          userId: user.id,
+          workspaceId: contextId
         }
       },
       data: { isActive: true }
@@ -2505,19 +2508,20 @@ export async function switchActiveContext(contextId: string) {
 ```
 
 ### Context-Aware Data Fetching
+
 ```typescript
 export async function getResourcesByContext() {
   const { user } = await getAuthOrRedirect();
-  
+
   // Get user's active context
   const activeContext = await db.userWorkspace.findFirst({
     where: { userId: user.id, isActive: true },
-    include: { workspace: true }
+    include: { workspace: true },
   });
-  
+
   // Fetch resources scoped to active context
   return db.resource.findMany({
-    where: { workspaceId: activeContext.workspaceId }
+    where: { workspaceId: activeContext.workspaceId },
   });
 }
 ```
@@ -2525,6 +2529,7 @@ export async function getResourcesByContext() {
 ## Layered Architecture
 
 ### API Layer (Server Actions)
+
 Keep server actions lightweight - handle validation, authorization, then delegate:
 
 ```typescript
@@ -2532,23 +2537,23 @@ export async function createEntity(formData: FormData) {
   // 1. Authentication & Authorization
   const user = await getCurrentUser();
   if (!user) redirect('/sign-in');
-  
+
   // 2. Input validation
   const validatedData = entitySchema.parse({
     name: formData.get('name'),
-    description: formData.get('description')
+    description: formData.get('description'),
   });
-  
+
   // 3. Delegate to service layer
   try {
     const entity = await entityService.createEntity({
       ...validatedData,
-      userId: user.id
+      userId: user.id,
     });
-    
+
     // 4. Cache invalidation
     revalidatePath('/entities');
-    
+
     return { success: true, entity };
   } catch (error) {
     return { error: 'Failed to create entity' };
@@ -2557,6 +2562,7 @@ export async function createEntity(formData: FormData) {
 ```
 
 ### Service Layer
+
 Extract domain logic and business rules:
 
 ```typescript
@@ -2565,22 +2571,23 @@ export const entityService = {
   async createEntity(data: CreateEntityData) {
     // Business logic here
     const subject = await this.getEntitySubject(data);
-    
+
     // Delegate to data layer
     return await entityData.create({
       ...data,
-      subject
+      subject,
     });
   },
-  
+
   async getEntitySubject(data: CreateEntityData) {
     // Domain-specific logic
     return `${data.type}-${data.name}`.toLowerCase();
-  }
+  },
 };
 ```
 
 ### Data Access Layer
+
 Pure database operations, abstracted from ORM details:
 
 ```typescript
@@ -2591,25 +2598,26 @@ export const entityData = {
       data,
       include: {
         user: true,
-        attachments: true
-      }
+        attachments: true,
+      },
     });
   },
-  
+
   async findMany(options: FindManyOptions = {}) {
     const { includeUser, includeAttachments } = options;
-    
+
     return await prisma.entity.findMany({
       include: {
         user: includeUser,
-        attachments: includeAttachments
-      }
+        attachments: includeAttachments,
+      },
     });
-  }
+  },
 };
 ```
 
 ### Import Conventions
+
 Use descriptive wildcard imports for service layers:
 
 ```typescript
@@ -2623,6 +2631,7 @@ const user = await userService.findById(userId);
 ```
 
 ### Barrel Files
+
 Use barrel files for backend modules only:
 
 ```typescript
@@ -2639,6 +2648,7 @@ const entity = await services.entityService.createEntity(data);
 ## Advanced Data Management
 
 ### Dynamic Include Patterns
+
 Handle optional data loading efficiently:
 
 ```typescript
@@ -2650,16 +2660,17 @@ interface FindOptions {
 
 async function findEntities(options: FindOptions = {}) {
   const include: any = {};
-  
+
   if (options.includeUser) include.user = true;
   if (options.includeAttachments) include.attachments = true;
   if (options.includeComments) include.comments = true;
-  
+
   return await prisma.entity.findMany({ include });
 }
 ```
 
 ### Data Transfer Objects (DTOs)
+
 Create consistent data structures for polymorphic relationships:
 
 ```typescript
@@ -2677,40 +2688,41 @@ export const entitySubjectDTO = {
       id: user.id,
       name: user.name,
       type: 'user',
-      organizationId: user.organizationId
+      organizationId: user.organizationId,
     };
   },
-  
+
   fromPost(post: Post): EntitySubjectDTO {
     return {
       id: post.id,
       name: post.title,
-      type: 'post', 
-      organizationId: post.organizationId
+      type: 'post',
+      organizationId: post.organizationId,
     };
-  }
+  },
 };
 ```
 
 ### Self-Referencing Relationships
+
 Handle entity relationships elegantly:
 
 ```typescript
 model Entity {
   id               String   @id @default(cuid())
   name             String
-  
+
   // Self-referencing many-to-many
   referencedEntities   Entity[] @relation("EntityReferences")
   referencingEntities  Entity[] @relation("EntityReferences")
-  
+
   @@map("entities")
 }
 
 // Service layer logic for connecting references
 export async function connectEntityReferences(entityId: string, content: string) {
   const referencedIds = extractIdsFromText(content);
-  
+
   await prisma.entity.update({
     where: { id: entityId },
     data: {
@@ -2727,8 +2739,9 @@ export async function connectEntityReferences(entityId: string, content: string)
 ### Cloud Storage Integration
 
 **Generic S3 Setup:**
+
 ```typescript
-import { S3Client } from "@aws-sdk/client-s3";
+import { S3Client } from '@aws-sdk/client-s3';
 
 export const storageClient = new S3Client({
   region: process.env.STORAGE_REGION,
@@ -2742,23 +2755,25 @@ export const storageClient = new S3Client({
 ### File Upload Patterns
 
 **Validation Schema:**
+
 ```typescript
 const fileUploadSchema = z.object({
   files: z
     .array(z.instanceof(File))
-    .min(1, "At least one file required")
+    .min(1, 'At least one file required')
     .refine(
-      (files) => files.every(file => file.size <= MAX_FILE_SIZE),
+      (files) => files.every((file) => file.size <= MAX_FILE_SIZE),
       `File size must be less than ${MAX_FILE_SIZE_MB}MB`
     )
     .refine(
-      (files) => files.every(file => ACCEPTED_TYPES.includes(file.type)),
-      "Unsupported file type"
-    )
+      (files) => files.every((file) => ACCEPTED_TYPES.includes(file.type)),
+      'Unsupported file type'
+    ),
 });
 ```
 
 **Hierarchical Storage Key Generation:**
+
 ```typescript
 function generateStorageKey(
   contextId: string,
@@ -2774,40 +2789,41 @@ function generateStorageKey(
 ### Async File Operations
 
 **Upload with Database Coordination:**
+
 ```typescript
 export async function uploadFiles(entityId: string, formData: FormData) {
   const { user, activeContext } = await getAuthOrRedirect();
-  
+
   // Validate files
-  const { files } = fileUploadSchema.parse({ 
-    files: formData.getAll("files") 
+  const { files } = fileUploadSchema.parse({
+    files: formData.getAll('files'),
   });
-  
+
   // Create database records first
   const attachments = await Promise.all(
-    files.map(file => 
+    files.map((file) =>
       db.attachment.create({
-        data: { 
-          filename: file.name, 
+        data: {
+          filename: file.name,
           entityId,
-          contextId: activeContext.id
-        }
+          contextId: activeContext.id,
+        },
       })
     )
   );
-  
+
   // Upload to storage
   await Promise.all(
     files.map(async (file, index) => {
       const buffer = Buffer.from(await file.arrayBuffer());
       const key = generateStorageKey(
-        activeContext.id, 
-        "entity", 
-        entityId, 
-        file.name, 
+        activeContext.id,
+        'entity',
+        entityId,
+        file.name,
         attachments[index].id
       );
-      
+
       await uploadToStorage(key, buffer, file.type);
     })
   );
@@ -2815,19 +2831,20 @@ export async function uploadFiles(entityId: string, formData: FormData) {
 ```
 
 **Async Deletion with Message Queue:**
+
 ```typescript
 // Fast response - queue heavy operations
 export async function deleteAttachment(attachmentId: string) {
-  const attachment = await db.attachment.delete({ 
-    where: { id: attachmentId } 
+  const attachment = await db.attachment.delete({
+    where: { id: attachmentId },
   });
-  
+
   // Queue async storage cleanup
-  await messageQueue.send("attachment.deleted", {
+  await messageQueue.send('attachment.deleted', {
     attachmentId,
     contextId: attachment.contextId,
     entityId: attachment.entityId,
-    filename: attachment.filename
+    filename: attachment.filename,
   });
 }
 ```
@@ -2837,12 +2854,14 @@ export async function deleteAttachment(attachmentId: string) {
 ### File-to-Folder Migration
 
 **When to Convert:**
+
 - Component exceeds ~200 lines
 - Multiple related utility functions
 - Complex state management
 - Reusable sub-components emerge
 
 **Migration Strategy:**
+
 ```
 // Before: SingleComponent.tsx
 // After:
@@ -2858,17 +2877,18 @@ ComponentName/
 ### Variable Extraction for Clarity
 
 **Complex JSX Management:**
+
 ```typescript
 function ComplexComponent({ data, permissions }: Props) {
   // Extract complex conditional rendering
   const navigationSection = (
     <nav className="navigation">
-      {navItems.map(item => (
+      {navItems.map((item) => (
         <NavItem key={item.id} {...item} />
       ))}
     </nav>
   );
-  
+
   const actionButtons = permissions.canEdit ? (
     <div className="actions">
       <EditButton />
@@ -2876,13 +2896,13 @@ function ComplexComponent({ data, permissions }: Props) {
       <ShareButton />
     </div>
   ) : null;
-  
+
   const contentArea = data.isEmpty ? (
     <EmptyState />
   ) : (
     <ContentRenderer data={data} />
   );
-  
+
   return (
     <div className="layout">
       {navigationSection}
@@ -2901,6 +2921,7 @@ function ComplexComponent({ data, permissions }: Props) {
 - **Single Responsibility**: Each function/component should have one clear purpose
 
 ### Feature-Based Structure
+
 Organize code by features, not technical layers:
 
 ```
@@ -2932,6 +2953,7 @@ src/
 ```
 
 ### Barrel File Usage
+
 Use barrel files strategically:
 
 ```typescript
@@ -2950,16 +2972,17 @@ import { EntityCard } from '@/features/entities/components/entity-card';
 ### Granular Permission Design
 
 **Flexible Permission Schema:**
+
 ```prisma
 model Membership {
   // ... base fields
-  
+
   // Action-based permissions
   canCreate Boolean @default(true)
-  canRead   Boolean @default(true) 
+  canRead   Boolean @default(true)
   canUpdate Boolean @default(false)
   canDelete Boolean @default(false)
-  
+
   // Feature-specific permissions
   canInvite   Boolean @default(false)
   canManage   Boolean @default(false)
@@ -2968,6 +2991,7 @@ model Membership {
 ```
 
 **Abstract Permission Component:**
+
 ```typescript
 interface PermissionToggleProps {
   userId: string;
@@ -2976,18 +3000,18 @@ interface PermissionToggleProps {
   currentValue: boolean;
 }
 
-function PermissionToggle({ 
-  userId, 
-  contextId, 
-  permissionKey, 
-  currentValue 
+function PermissionToggle({
+  userId,
+  contextId,
+  permissionKey,
+  currentValue,
 }: PermissionToggleProps) {
   return (
     <form action={togglePermission}>
       <input type="hidden" name="userId" value={userId} />
       <input type="hidden" name="contextId" value={contextId} />
       <input type="hidden" name="permissionKey" value={permissionKey} />
-      
+
       <button type="submit" className="permission-toggle">
         {currentValue ? <EnabledIcon /> : <DisabledIcon />}
       </button>
@@ -2997,29 +3021,30 @@ function PermissionToggle({
 ```
 
 **Permission Enforcement Helper:**
+
 ```typescript
 async function getEntityWithPermissions(entityId: string, userId: string) {
   const entity = await db.entity.findUnique({
     where: { id: entityId },
-    include: { 
-      context: { 
-        include: { memberships: true } 
-      } 
-    }
+    include: {
+      context: {
+        include: { memberships: true },
+      },
+    },
   });
-  
+
   const userMembership = entity.context.memberships.find(
-    m => m.userId === userId
+    (m) => m.userId === userId
   );
-  
+
   return {
     ...entity,
     permissions: {
       canRead: userMembership?.canRead ?? false,
       canUpdate: userMembership?.canUpdate ?? false,
       canDelete: userMembership?.canDelete ?? false,
-      isAdmin: userMembership?.role === "admin",
-    }
+      isAdmin: userMembership?.role === 'admin',
+    },
   };
 }
 ```
@@ -3027,6 +3052,7 @@ async function getEntityWithPermissions(entityId: string, userId: string) {
 ## Enhanced Security Patterns
 
 ### Organization-Level Credentials
+
 Implement secure API access patterns:
 
 ```typescript
@@ -3036,10 +3062,10 @@ model Credential {
   secretHash   String       @unique
   lastUsed     DateTime?
   createdAt    DateTime     @default(now())
-  
+
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String
-  
+
   @@map("credentials")
 }
 
@@ -3047,7 +3073,7 @@ model Credential {
 export async function createCredential(organizationId: string, name: string) {
   const secret = generateRandomToken();
   const secretHash = await hashSecret(secret);
-  
+
   const credential = await prisma.credential.create({
     data: {
       name,
@@ -3055,10 +3081,10 @@ export async function createCredential(organizationId: string, name: string) {
       organizationId
     }
   });
-  
+
   // Return unhashed secret only once
-  return { 
-    success: true, 
+  return {
+    success: true,
     secret, // Save this immediately!
     credential: { id: credential.id, name: credential.name }
   };
@@ -3066,6 +3092,7 @@ export async function createCredential(organizationId: string, name: string) {
 ```
 
 ### Protected API Routes
+
 Implement robust authorization for API endpoints:
 
 ```typescript
@@ -3075,85 +3102,89 @@ export async function DELETE(request: Request) {
   if (!authHeader?.startsWith('Bearer ')) {
     return new Response('Unauthorized', { status: 401 });
   }
-  
+
   const token = authHeader.substring(7);
   const hashedToken = await hashSecret(token);
-  
+
   const credential = await prisma.credential.findUnique({
     where: { secretHash: hashedToken },
-    include: { organization: true }
+    include: { organization: true },
   });
-  
+
   if (!credential) {
     return new Response('Invalid credentials', { status: 401 });
   }
-  
+
   // Update last used timestamp
   await prisma.credential.update({
     where: { id: credential.id },
-    data: { lastUsed: new Date() }
+    data: { lastUsed: new Date() },
   });
-  
+
   // Proceed with authorized operation
   // ...
 }
 ```
 
 ### Preventing Timing Attacks
+
 Ensure consistent response times:
 
 ```typescript
 export async function signIn(email: string, password: string) {
   const user = await prisma.user.findUnique({
-    where: { email }
+    where: { email },
   });
-  
+
   // Always perform password verification, even if user doesn't exist
-  const passwordToVerify = user?.passwordHash ?? 'dummy-hash-for-consistent-timing';
+  const passwordToVerify =
+    user?.passwordHash ?? 'dummy-hash-for-consistent-timing';
   const isValidPassword = await verifyPassword(password, passwordToVerify);
-  
+
   if (!user || !isValidPassword) {
     return { error: 'Invalid credentials' };
   }
-  
+
   return { success: true, user };
 }
 ```
 
 ### Preventing Enumeration Attacks
+
 Use generic responses to avoid information leakage:
 
 ```typescript
 export async function resetPassword(email: string) {
   const user = await prisma.user.findUnique({
-    where: { email }
+    where: { email },
   });
-  
+
   // Always return success message, regardless of user existence
   if (user) {
     await sendPasswordResetEmail(user);
   }
-  
-  return { 
-    success: true, 
-    message: 'If an account exists, you will receive a reset link' 
+
+  return {
+    success: true,
+    message: 'If an account exists, you will receive a reset link',
   };
 }
 ```
 
 ### Throttling Mechanisms
+
 Implement rate limiting for sensitive operations:
 
 ```typescript
 export async function resendVerificationCode(userId: string) {
   const canResend = await canResendVerificationEmail(userId);
-  
+
   if (!canResend) {
-    return { 
-      error: 'Please wait 60 seconds before requesting another code' 
+    return {
+      error: 'Please wait 60 seconds before requesting another code',
     };
   }
-  
+
   // Proceed with sending code
   await sendVerificationCode(userId);
   return { success: true };
@@ -3162,17 +3193,18 @@ export async function resendVerificationCode(userId: string) {
 async function canResendVerificationEmail(userId: string) {
   const lastToken = await prisma.emailVerificationToken.findFirst({
     where: { userId },
-    orderBy: { createdAt: 'desc' }
+    orderBy: { createdAt: 'desc' },
   });
-  
+
   if (!lastToken) return true;
-  
+
   const timeSinceLastSend = Date.now() - lastToken.createdAt.getTime();
   return timeSinceLastSend > 60000; // 60 seconds
 }
 ```
 
 ### Input Sanitization
+
 Protect against injection attacks:
 
 ```typescript
@@ -3185,22 +3217,21 @@ function UnsafeContent({ content }: { content: string }) {
 function SafeContent({ content }: { content: string }) {
   return (
     <div>
-      <Linkify options={{ target: '_blank' }}>
-        {content}
-      </Linkify>
+      <Linkify options={{ target: '_blank' }}>{content}</Linkify>
     </div>
   );
 }
 ```
 
 ### Client & Server-Side Guardrails
+
 Implement validation at multiple layers:
 
 ```typescript
 // Client-side: UI protection
 function PaginationButton({ onClick, isPending }: PaginationButtonProps) {
   return (
-    <button 
+    <button
       onClick={onClick}
       disabled={isPending}
       className={isPending ? 'opacity-50' : ''}
@@ -3217,9 +3248,9 @@ export async function getEntities(pageSize: number) {
   if (!ALLOWED_PAGE_SIZES.includes(pageSize)) {
     throw new Error('Invalid page size');
   }
-  
+
   return await prisma.entity.findMany({
-    take: pageSize
+    take: pageSize,
   });
 }
 ```
@@ -3227,6 +3258,7 @@ export async function getEntities(pageSize: number) {
 ## Third-Party Integration Patterns
 
 ### Environment Configuration
+
 Manage external service credentials securely:
 
 ```typescript
@@ -3238,11 +3270,12 @@ if (!process.env.STRIPE_SECRET_KEY) {
 }
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2023-10-16'
+  apiVersion: '2023-10-16',
 });
 ```
 
 ### Webhook Handling
+
 Implement secure webhook endpoints:
 
 ```typescript
@@ -3250,18 +3283,18 @@ Implement secure webhook endpoints:
 export async function POST(request: Request) {
   const body = await request.text();
   const signature = request.headers.get('stripe-signature');
-  
+
   if (!signature) {
     return new Response('Missing signature', { status: 400 });
   }
-  
+
   try {
     const event = stripe.webhooks.constructEvent(
       body,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!
     );
-    
+
     switch (event.type) {
       case 'customer.subscription.created':
         await handleSubscriptionCreated(event.data.object);
@@ -3272,7 +3305,7 @@ export async function POST(request: Request) {
       default:
         console.log(`Unhandled event type: ${event.type}`);
     }
-    
+
     return new Response('OK');
   } catch (error) {
     console.error('Webhook error:', error);
@@ -3282,6 +3315,7 @@ export async function POST(request: Request) {
 ```
 
 ### Background Job Processing
+
 Use message queues for async operations:
 
 ```typescript
@@ -3291,7 +3325,7 @@ export const processEntityCreated = inngest.createFunction(
   { event: 'entity.created' },
   async ({ event }) => {
     const { entityId, userId } = event.data;
-    
+
     // Perform time-consuming operations
     await sendNotificationEmail(userId, entityId);
     await updateSearchIndex(entityId);
@@ -3302,16 +3336,16 @@ export const processEntityCreated = inngest.createFunction(
 // Trigger from server action
 export async function createEntity(data: CreateEntityData) {
   const entity = await entityService.createEntity(data);
-  
+
   // Trigger background processing
   await inngest.send({
     name: 'entity.created',
     data: {
       entityId: entity.id,
-      userId: data.userId
-    }
+      userId: data.userId,
+    },
   });
-  
+
   return entity;
 }
 ```
@@ -3321,6 +3355,7 @@ export async function createEntity(data: CreateEntityData) {
 ### Navigation Components
 
 **Flexible Breadcrumb Pattern:**
+
 ```typescript
 interface BreadcrumbItem {
   label: string;
@@ -3338,7 +3373,7 @@ function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
             <DropdownMenu>
               <DropdownMenuTrigger>{item.label}</DropdownMenuTrigger>
               <DropdownMenuContent>
-                {item.dropdown.map(dropdownItem => (
+                {item.dropdown.map((dropdownItem) => (
                   <DropdownMenuItem key={dropdownItem.href}>
                     <Link href={dropdownItem.href}>{dropdownItem.label}</Link>
                   </DropdownMenuItem>
@@ -3361,40 +3396,42 @@ function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
 ### Form Patterns
 
 **Generic Confirmation Hook:**
+
 ```typescript
 function useConfirmation() {
   const [isOpen, setIsOpen] = useState(false);
   const [pendingAction, setPendingAction] = useState<() => void>(() => {});
-  
+
   const confirm = useCallback((action: () => void) => {
     setPendingAction(() => action);
     setIsOpen(true);
   }, []);
-  
+
   const handleConfirm = useCallback(() => {
     pendingAction();
     setIsOpen(false);
   }, [pendingAction]);
-  
-  return { 
-    isOpen, 
-    setIsOpen, 
-    confirm, 
-    handleConfirm 
+
+  return {
+    isOpen,
+    setIsOpen,
+    confirm,
+    handleConfirm,
   };
 }
 ```
 
 **Optimistic UI Updates:**
+
 ```typescript
 function EntityItem({ entity }: { entity: Entity }) {
   const [isPending, startTransition] = useTransition();
   const [optimisticState, setOptimisticState] = useState(entity);
-  
+
   const handleUpdate = (newData: Partial<Entity>) => {
     // Optimistic update
-    setOptimisticState(prev => ({ ...prev, ...newData }));
-    
+    setOptimisticState((prev) => ({ ...prev, ...newData }));
+
     startTransition(async () => {
       try {
         await updateEntity(entity.id, newData);
@@ -3404,9 +3441,9 @@ function EntityItem({ entity }: { entity: Entity }) {
       }
     });
   };
-  
+
   return (
-    <div className={isPending ? "opacity-50" : ""}>
+    <div className={isPending ? 'opacity-50' : ''}>
       <EntityDisplay entity={optimisticState} />
       <ActionButtons onUpdate={handleUpdate} />
     </div>
@@ -3417,6 +3454,7 @@ function EntityItem({ entity }: { entity: Entity }) {
 ## Performance & UX Patterns
 
 ### Optimistic Updates
+
 Implement optimistic UI patterns:
 
 ```typescript
@@ -3425,36 +3463,37 @@ function useOptimisticEntity() {
     entities,
     (state, newEntity) => [...state, newEntity]
   );
-  
+
   async function createEntity(data: CreateEntityData) {
     // Optimistically add to UI
     addOptimisticEntity({
       id: 'temp-' + Date.now(),
       ...data,
-      createdAt: new Date()
+      createdAt: new Date(),
     });
-    
+
     // Perform actual creation
     await createEntityAction(data);
   }
-  
+
   return { optimisticEntities, createEntity };
 }
 ```
 
 ### Loading States
+
 Provide clear feedback during async operations:
 
 ```typescript
 function EntityForm() {
   const [isPending, startTransition] = useTransition();
-  
+
   function handleSubmit(formData: FormData) {
     startTransition(async () => {
       await createEntityAction(formData);
     });
   }
-  
+
   return (
     <form action={handleSubmit}>
       <input name="name" disabled={isPending} />
@@ -3467,6 +3506,7 @@ function EntityForm() {
 ```
 
 ### Cache Invalidation Strategies
+
 Implement granular cache control:
 
 ```typescript
@@ -3481,14 +3521,14 @@ revalidateTag(`entity-${entityId}`);
 // Client-side cache invalidation for React Query
 function useEntityMutations() {
   const queryClient = useQueryClient();
-  
+
   const createEntity = useMutation({
     mutationFn: createEntityAction,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['entities'] });
-    }
+    },
   });
-  
+
   return { createEntity };
 }
 ```
@@ -3496,16 +3536,19 @@ function useEntityMutations() {
 ## Error Handling & User Experience
 
 ### Graceful Degradation
+
 - **Console logging** for development before implementing full features
 - **Progressive enhancement** from basic functionality to advanced features
 - **Fallback states** for failed operations
 
 ### State Management
+
 - **Server state** for data fetching and mutations
 - **Client state** only for UI interactions and temporary states
 - **URL state** for filters, pagination, and shareable states
 
 ### Race Condition Prevention
+
 ```typescript
 // Use client-side refresh instead of server-side revalidation
 // when components might unmount before showing feedback
@@ -3520,6 +3563,7 @@ const handleSuccess = () => {
 ### Environment Setup
 
 **Next.js Configuration:**
+
 ```javascript
 // next.config.js
 /** @type {import('next').NextConfig} */
@@ -3533,6 +3577,7 @@ module.exports = nextConfig;
 ```
 
 **Environment Type Safety:**
+
 ```typescript
 // types/environment.d.ts
 declare namespace NodeJS {
@@ -3547,16 +3592,3 @@ declare namespace NodeJS {
   }
 }
 ```
-
-## Best Practices Summary
-
-1. **Favor composition over inheritance** - Build reusable, polymorphic components
-2. **Separate concerns clearly** - Use distinct layers for UI, API, Service, and Data
-3. **Security by design** - Implement protection patterns from the start
-4. **Optimize for maintainability** - Use descriptive imports and clear file organization
-5. **Handle errors gracefully** - Provide meaningful feedback at every layer
-6. **Think in terms of features** - Organize code around business domains
-7. **Optimize performance** - Use appropriate caching and loading strategies
-8. **Test security assumptions** - Validate inputs at multiple layers
-
-This comprehensive guide provides architectural patterns that prioritize **security**, **user experience**, and **maintainability** while providing flexibility for various application domains through its generic patterns and reusable components. The patterns can be applied to any domain by adapting the naming and specific implementations to match your project's requirements.
