@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 
-import { Inter } from 'next/font/google';
+import { Source_Code_Pro } from 'next/font/google';
 
 import './globals.css';
 import Link from 'next/link';
 import { homePath } from '@/paths';
 
-const inter = Inter({ subsets: ['latin'] });
+const sourceCodePro = Source_Code_Pro({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Menfem App',
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={sourceCodePro.className}>
         <nav
           className="
           supports-backdrop-blur:bg-background/60

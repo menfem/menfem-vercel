@@ -25,38 +25,38 @@ export default function Home() {
       <Navigation />
       
       {/* Hero Section with About */}
-      <section className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* About Text */}
-          <div className="space-y-6">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-brand-brown leading-tight">
+          <div className="space-y-4">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium text-brand-brown leading-tight">
               Welcome to MenFem
             </h1>
             
-            <p className="text-xl text-gray-700 leading-relaxed">
-              MenFem is your cultural concierge for modern men's lifestyle, curating the best in culture, arts, style, and personal development.
+            <p className="text-base text-gray-700 leading-relaxed">
+              Your cultural concierge for modern men's lifestyle, curating the best in culture, arts, style, and personal development.
             </p>
             
-            <p className="text-lg text-gray-600 leading-relaxed">
-              In an era of AI-generated content overload, we're committed to being a trusted filter – a human-curated beacon that helps you discover what's truly worth your time. From thought-provoking reads to style insights, from cultural commentary to personal growth, we're here to elevate your everyday.
+            <p className="text-sm text-gray-600 leading-relaxed">
+              In an era of AI-generated content overload, we're committed to being a trusted filter – a human-curated beacon that helps you discover what's truly worth your time. We're here to elevate your everyday.
             </p>
             
-            <p className="text-lg text-gray-600 leading-relaxed">
-              Our mission is simple: to build a community of thoughtful, curious men who are redefining what modern masculinity means. Through carefully selected content, exclusive events, and meaningful conversations, we're creating a space where excellence meets authenticity.
+            <p className="text-sm text-gray-600 leading-relaxed">
+              Our mission: to build a community of thoughtful, curious men who are redefining what modern masculinity means through carefully selected content and meaningful conversations.
             </p>
             
-            <div className="flex flex-wrap gap-4 pt-4">
+            <div className="flex flex-wrap gap-3 pt-3">
               <Link 
                 href="/about"
-                className="bg-brand-brown hover:bg-brand-rust text-white font-medium py-3 px-6 transition-colors"
+                className="bg-brand-brown hover:bg-brand-rust text-white text-sm font-medium py-2 px-5 transition-colors"
               >
-                Learn More About Us
+                Learn More
               </Link>
               <Link 
                 href="/membership"
-                className="border-2 border-brand-brown text-brand-brown hover:bg-brand-brown hover:text-white font-medium py-3 px-6 transition-all"
+                className="border border-brand-brown text-brand-brown hover:bg-brand-brown hover:text-white text-sm font-medium py-2 px-5 transition-all"
               >
-                Join MenFem Club
+                Join Club
               </Link>
             </div>
           </div>
