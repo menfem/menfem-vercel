@@ -30,6 +30,14 @@ const CATEGORIES = [
     ]
   },
   {
+    name: "PRODUCTS",
+    href: "/products"
+  },
+  {
+    name: "STORIES",
+    href: "/stories"
+  },
+  {
     name: "THE LIST",
     href: "/the-list"
   },

@@ -5,6 +5,9 @@ import { Navigation } from "@/components/navigation"
 import { RotatingHeroImage } from "@/components/rotating-hero-image"
 import { ReadingRecommendation } from "@/components/reading-recommendation"
 import { NewsletterSignup } from "@/components/newsletter-signup"
+import { MonthlyReads } from "@/components/monthly-reads"
+import { WatchNow } from "@/components/watch-now"
+import { Stories } from "@/components/stories"
 import Link from "next/link"
 
 // Weekly reading recommendation data
@@ -67,6 +70,15 @@ export default function Home() {
 
       {/* This Week's Reading Recommendation */}
       <ReadingRecommendation {...WEEKLY_READING} />
+
+      {/* Previous Monthly Reads */}
+      <MonthlyReads />
+
+      {/* Watch Now Section */}
+      <WatchNow />
+
+      {/* Stories Section */}
+      <Stories />
 
       {/* Newsletter Signup */}
       <NewsletterSignup />
