@@ -30,33 +30,6 @@ const CATEGORIES = [
     ]
   },
   {
-    name: "TECH",
-    subcategories: [
-      { name: "Gadgets", href: "/tech/gadgets" },
-      { name: "Apps", href: "/tech/apps" },
-      { name: "AI & Innovation", href: "/tech/ai-innovation" },
-      { name: "Gaming", href: "/tech/gaming" }
-    ]
-  },
-  {
-    name: "FITNESS",
-    subcategories: [
-      { name: "Workouts", href: "/fitness/workouts" },
-      { name: "Nutrition", href: "/fitness/nutrition" },
-      { name: "Mental Health", href: "/fitness/mental-health" },
-      { name: "Sports", href: "/fitness/sports" }
-    ]
-  },
-  {
-    name: "FINANCE",
-    subcategories: [
-      { name: "Investing", href: "/finance/investing" },
-      { name: "Crypto", href: "/finance/crypto" },
-      { name: "Personal Finance", href: "/finance/personal-finance" },
-      { name: "Business", href: "/finance/business" }
-    ]
-  },
-  {
     name: "THE LIST",
     href: "/the-list"
   },
@@ -97,19 +70,22 @@ export function Navigation() {
                     {category.name}
                   </Link>
                 ) : (
-                  <button className="text-sm font-medium tracking-wide text-brand-brown hover:text-brand-terracotta transition-colors">
+                  <Link 
+                    href={`/${category.name.toLowerCase()}`}
+                    className="text-sm font-medium tracking-wide text-brand-brown hover:text-brand-terracotta transition-colors"
+                  >
                     {category.name}
-                  </button>
+                  </Link>
                 )}
                 
                 {category.subcategories && activeDropdown === index && (
-                  <div className="absolute top-full left-0 mt-2 w-48 bg-brand-cream border border-brand-sand shadow-lg">
-                    <div className="py-2">
+                  <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-brand-brown/20 shadow-2xl z-50 rounded-lg overflow-hidden">
+                    <div className="py-3">
                       {category.subcategories.map((sub) => (
                         <Link
                           key={sub.name}
                           href={sub.href}
-                          className="block px-4 py-2 text-sm text-brand-brown hover:bg-brand-sand hover:text-brand-terracotta transition-colors"
+                          className="block px-5 py-3 text-sm text-brand-brown hover:bg-brand-sage hover:text-brand-brown font-medium transition-all duration-200 hover:pl-7"
                         >
                           {sub.name}
                         </Link>

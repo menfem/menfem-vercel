@@ -1,137 +1,112 @@
-// ABOUTME: Homepage component with Service95-inspired design featuring articles and content grid
-// ABOUTME: Includes featured article hero, editor's picks, latest articles, and newsletter signup
+// ABOUTME: Homepage with about section, rotating hero image, and weekly reading recommendation
+// ABOUTME: Inspired by Service95's clean, editorial design approach
 
 import { Navigation } from "@/components/navigation"
-import { FeaturedArticle } from "@/components/featured-article"
-import { ArticleCard } from "@/components/article-card"
+import { RotatingHeroImage } from "@/components/rotating-hero-image"
+import { ReadingRecommendation } from "@/components/reading-recommendation"
 import { NewsletterSignup } from "@/components/newsletter-signup"
 import Link from "next/link"
 
-// Mock data - replace with actual data fetching
-const FEATURED_ARTICLE = {
-  title: "The Rise of AI-Powered Personal Style: How Technology is Reshaping Men's Fashion",
-  category: "Tech & Style",
-  excerpt: "From virtual try-ons to AI stylists, discover how cutting-edge technology is revolutionizing the way men approach fashion and personal style.",
-  imageUrl: "https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=1600&h=900&fit=crop",
-  href: "/articles/ai-powered-personal-style",
-  author: "Connor Royes",
-  readTime: "8 min"
+// Weekly reading recommendation data
+const WEEKLY_READING = {
+  bookTitle: "The Will to Change",
+  author: "bell hooks",
+  coverUrl: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=600&fit=crop",
+  description: "A groundbreaking exploration of how patriarchy impacts men's emotional lives and relationships. bell hooks offers a compassionate yet unflinching look at how men can transform themselves and society by embracing emotional awareness and rejecting toxic masculinity. Essential reading for understanding modern masculinity.",
+  ctaUrl: "/reading/will-to-change"
 }
-
-const EDITORS_FAVOURITES = [
-  {
-    title: "Inside London's Underground Supper Club Scene",
-    category: "Culture",
-    imageUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=450&fit=crop",
-    href: "/articles/london-supper-clubs",
-    author: "James Chen",
-    date: "July 20, 2025"
-  },
-  {
-    title: "The New Wave of Men's Wellness Retreats",
-    category: "Fitness",
-    imageUrl: "https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&h=450&fit=crop",
-    href: "/articles/mens-wellness-retreats",
-    author: "Michael Torres",
-    date: "July 18, 2025"
-  },
-  {
-    title: "Crypto Art Collecting: A Beginner's Guide",
-    category: "Finance",
-    imageUrl: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=450&fit=crop",
-    href: "/articles/crypto-art-guide",
-    author: "Alex Kim",
-    date: "July 15, 2025"
-  }
-]
-
-const LATEST_ARTICLES = [
-  {
-    title: "The Best Coffee Shops for Remote Work in Major Cities",
-    category: "Lifestyle",
-    imageUrl: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&h=450&fit=crop",
-    href: "/articles/remote-work-coffee-shops"
-  },
-  {
-    title: "Essential Gadgets for the Modern Professional",
-    category: "Tech",
-    imageUrl: "https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=800&h=450&fit=crop",
-    href: "/articles/essential-gadgets-2025"
-  },
-  {
-    title: "Mastering the Art of the Power Nap",
-    category: "Health",
-    imageUrl: "https://images.unsplash.com/photo-1531353826977-0941b4779a1c?w=800&h=450&fit=crop",
-    href: "/articles/power-nap-guide"
-  },
-  {
-    title: "Sustainable Fashion Brands Every Man Should Know",
-    category: "Style",
-    imageUrl: "https://images.unsplash.com/photo-1467043237213-65f2da53396f?w=800&h=450&fit=crop",
-    href: "/articles/sustainable-fashion-brands"
-  },
-  {
-    title: "The Psychology of High Performance",
-    category: "Personal Development",
-    imageUrl: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=800&h=450&fit=crop",
-    href: "/articles/high-performance-psychology"
-  },
-  {
-    title: "Investment Strategies for Your 30s",
-    category: "Finance",
-    imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=450&fit=crop",
-    href: "/articles/investment-strategies-30s"
-  }
-]
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-brand-sage">
       <Navigation />
       
-      {/* Featured Article */}
-      <section className="container mx-auto px-4 py-8">
-        <FeaturedArticle {...FEATURED_ARTICLE} />
+      {/* Hero Section with About */}
+      <section className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* About Text */}
+          <div className="space-y-6">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-brand-brown leading-tight">
+              Welcome to MenFem
+            </h1>
+            
+            <p className="text-xl text-gray-700 leading-relaxed">
+              MenFem is your cultural concierge for modern men's lifestyle, curating the best in culture, arts, style, and personal development.
+            </p>
+            
+            <p className="text-lg text-gray-600 leading-relaxed">
+              In an era of AI-generated content overload, we're committed to being a trusted filter – a human-curated beacon that helps you discover what's truly worth your time. From thought-provoking reads to style insights, from cultural commentary to personal growth, we're here to elevate your everyday.
+            </p>
+            
+            <p className="text-lg text-gray-600 leading-relaxed">
+              Our mission is simple: to build a community of thoughtful, curious men who are redefining what modern masculinity means. Through carefully selected content, exclusive events, and meaningful conversations, we're creating a space where excellence meets authenticity.
+            </p>
+            
+            <div className="flex flex-wrap gap-4 pt-4">
+              <Link 
+                href="/about"
+                className="bg-brand-brown hover:bg-brand-rust text-white font-medium py-3 px-6 transition-colors"
+              >
+                Learn More About Us
+              </Link>
+              <Link 
+                href="/membership"
+                className="border-2 border-brand-brown text-brand-brown hover:bg-brand-brown hover:text-white font-medium py-3 px-6 transition-all"
+              >
+                Join MenFem Club
+              </Link>
+            </div>
+          </div>
+          
+          {/* Rotating Hero Image */}
+          <div className="order-first lg:order-last">
+            <RotatingHeroImage />
+          </div>
+        </div>
       </section>
 
-      {/* Editor's Favourites */}
-      <section className="container mx-auto px-4 py-12 md:py-16">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold">Editor's Favourites</h2>
-          <Link 
-            href="/editors-favourites" 
-            className="text-brand-terracotta hover:text-brand-rust transition-colors text-sm font-medium uppercase tracking-wide"
-          >
-            See All Stories
-          </Link>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {EDITORS_FAVOURITES.map((article) => (
-            <ArticleCard key={article.href} {...article} />
-          ))}
-        </div>
-      </section>
+      {/* This Week's Reading Recommendation */}
+      <ReadingRecommendation {...WEEKLY_READING} />
 
       {/* Newsletter Signup */}
       <NewsletterSignup />
 
-      {/* The Latest */}
-      <section className="container mx-auto px-4 py-12 md:py-16">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold">The Latest</h2>
-          <Link 
-            href="/latest" 
-            className="text-brand-terracotta hover:text-brand-rust transition-colors text-sm font-medium uppercase tracking-wide"
-          >
-            View All
+      {/* Quick Links Section */}
+      <section className="container mx-auto px-4 py-16">
+        <h2 className="text-3xl font-bold text-center mb-12 text-brand-brown">Explore MenFem</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <Link href="/culture" className="group">
+            <div className="bg-white p-8 hover:shadow-xl transition-shadow">
+              <h3 className="text-xl font-bold mb-3 text-brand-brown group-hover:text-brand-terracotta transition-colors">
+                Culture & Arts
+              </h3>
+              <p className="text-gray-600">
+                Film, music, literature, and cultural commentary for the modern man.
+              </p>
+            </div>
           </Link>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {LATEST_ARTICLES.map((article) => (
-            <ArticleCard key={article.href} {...article} size="small" />
-          ))}
+          
+          <Link href="/style" className="group">
+            <div className="bg-white p-8 hover:shadow-xl transition-shadow">
+              <h3 className="text-xl font-bold mb-3 text-brand-brown group-hover:text-brand-terracotta transition-colors">
+                Style & Living
+              </h3>
+              <p className="text-gray-600">
+                Elevate your personal style and lifestyle with curated insights.
+              </p>
+            </div>
+          </Link>
+          
+          <Link href="/the-list" className="group">
+            <div className="bg-white p-8 hover:shadow-xl transition-shadow">
+              <h3 className="text-xl font-bold mb-3 text-brand-brown group-hover:text-brand-terracotta transition-colors">
+                The List
+              </h3>
+              <p className="text-gray-600">
+                Weekly curated recommendations of what's worth your attention.
+              </p>
+            </div>
+          </Link>
         </div>
       </section>
 
@@ -142,8 +117,7 @@ export default function Home() {
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-2xl font-bold mb-4">MENFEM</h3>
               <p className="text-gray-300 mb-4 max-w-md">
-                Your cultural concierge for modern men's lifestyle. Curated content on culture, 
-                style, tech, fitness, and finance.
+                A cultural concierge for the modern man. Curating excellence in lifestyle, culture, and personal development.
               </p>
               <div className="flex space-x-4">
                 <a href="#" className="text-gray-300 hover:text-white transition-colors">Instagram</a>
@@ -174,7 +148,7 @@ export default function Home() {
           </div>
           
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; {new Date().getFullYear()} Menfem. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} MenFem. All rights reserved.</p>
           </div>
         </div>
       </footer>

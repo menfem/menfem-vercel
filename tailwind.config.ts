@@ -40,6 +40,14 @@ const config: Config = {
           DEFAULT: "var(--destructive)",
           foreground: "var(--destructive-foreground)",
         },
+        brand: {
+          sage: "#B5C8C6",
+          cream: "#EBE5D0",
+          sand: "#ECD5B3",
+          brown: "#71513C",
+          terracotta: "#D4927D",
+          rust: "#8C5945",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
