@@ -76,7 +76,7 @@ export default function Home() {
         <h2 className="text-3xl font-bold text-center mb-12 text-brand-brown">Explore MenFem</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           <Link href="/culture" className="group">
-            <div className="bg-white p-8 hover:shadow-xl transition-shadow">
+            <div className="bg-brand-cream p-8 hover:shadow-xl transition-shadow">
               <h3 className="text-xl font-bold mb-3 text-brand-brown group-hover:text-brand-terracotta transition-colors">
                 Culture & Arts
               </h3>
@@ -87,7 +87,7 @@ export default function Home() {
           </Link>
           
           <Link href="/style" className="group">
-            <div className="bg-white p-8 hover:shadow-xl transition-shadow">
+            <div className="bg-brand-cream p-8 hover:shadow-xl transition-shadow">
               <h3 className="text-xl font-bold mb-3 text-brand-brown group-hover:text-brand-terracotta transition-colors">
                 Style & Living
               </h3>
@@ -98,7 +98,7 @@ export default function Home() {
           </Link>
           
           <Link href="/the-list" className="group">
-            <div className="bg-white p-8 hover:shadow-xl transition-shadow">
+            <div className="bg-brand-cream p-8 hover:shadow-xl transition-shadow">
               <h3 className="text-xl font-bold mb-3 text-brand-brown group-hover:text-brand-terracotta transition-colors">
                 The List
               </h3>
@@ -111,43 +111,43 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-brand-brown text-white py-12 mt-16">
+      <footer className="bg-brand-sage text-brand-brown py-12 mt-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-2xl font-bold mb-4">MENFEM</h3>
-              <p className="text-gray-300 mb-4 max-w-md">
+              <p className="text-gray-700 mb-4 max-w-md">
                 A cultural concierge for the modern man. Curating excellence in lifestyle, culture, and personal development.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">Instagram</a>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">Twitter</a>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">LinkedIn</a>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">YouTube</a>
+                <a href="#" className="text-gray-700 hover:text-brand-terracotta transition-colors">Instagram</a>
+                <a href="#" className="text-gray-700 hover:text-brand-terracotta transition-colors">Twitter</a>
+                <a href="#" className="text-gray-700 hover:text-brand-terracotta transition-colors">LinkedIn</a>
+                <a href="#" className="text-gray-700 hover:text-brand-terracotta transition-colors">YouTube</a>
               </div>
             </div>
             
             <div>
               <h4 className="font-medium mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
-                <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-                <li><Link href="/advertise" className="hover:text-white transition-colors">Advertise</Link></li>
-                <li><Link href="/careers" className="hover:text-white transition-colors">Careers</Link></li>
+              <ul className="space-y-2 text-gray-700">
+                <li><Link href="/about" className="hover:text-brand-terracotta transition-colors">About</Link></li>
+                <li><Link href="/contact" className="hover:text-brand-terracotta transition-colors">Contact</Link></li>
+                <li><Link href="/advertise" className="hover:text-brand-terracotta transition-colors">Advertise</Link></li>
+                <li><Link href="/careers" className="hover:text-brand-terracotta transition-colors">Careers</Link></li>
               </ul>
             </div>
             
             <div>
               <h4 className="font-medium mb-4">Legal</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Use</Link></li>
-                <li><Link href="/cookies" className="hover:text-white transition-colors">Cookie Policy</Link></li>
+              <ul className="space-y-2 text-gray-700">
+                <li><Link href="/privacy" className="hover:text-brand-terracotta transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="hover:text-brand-terracotta transition-colors">Terms of Use</Link></li>
+                <li><Link href="/cookies" className="hover:text-brand-terracotta transition-colors">Cookie Policy</Link></li>
               </ul>
             </div>
           </div>
           
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+          <div className="border-t border-gray-600 mt-8 pt-8 text-center text-gray-700">
             <p>&copy; {new Date().getFullYear()} MenFem. All rights reserved.</p>
           </div>
         </div>
