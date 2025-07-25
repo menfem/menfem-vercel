@@ -1,0 +1,256 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// User Management
+model User {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  username       String?   @unique
+  passwordHash   String
+  emailVerified  Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // Relations
+  sessions       Session[]
+  articles       Article[] @relation("AuthorArticles")
+  savedArticles  SavedArticle[]
+  comments       Comment[]
+  newsletters    NewsletterSubscription[]
+  eventRsvps     EventRsvp[]
+  membershipSub  MembershipSubscription?
+
+  @@map("users")
+}
+
+// Session Management (Lucia format)
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+// Email Verification
+model EmailVerificationToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  email     String
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("email_verification_tokens")
+}
+
+// Password Reset
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  email     String
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("password_reset_tokens")
+}
+
+// Content Management
+model Article {
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  title         String
+  subtitle      String?
+  content       String    @db.Text
+  excerpt       String
+  coverImage    String?
+  readingTime   Int       @default(5)
+  isPremium     Boolean   @default(false)
+  isPublished   Boolean   @default(false)
+  publishedAt   DateTime?
+  viewCount     Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+  
+  // Relations
+  authorId      String
+  author        User           @relation("AuthorArticles", fields: [authorId], references: [id])
+  category      Category       @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  tags          ArticleTag[]
+  savedBy       SavedArticle[]
+  comments      Comment[]
+
+  @@index([authorId])
+  @@index([categoryId])
+  @@index([slug])
+  @@index([isPublished, publishedAt])
+  @@map("articles")
+}
+
+// Categories
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  color       String?   // For UI theming
+  order       Int       @default(0)
+  
+  articles    Article[]
+
+  @@map("categories")
+}
+
+// Tags
+model Tag {
+  id       String       @id @default(cuid())
+  name     String       @unique
+  slug     String       @unique
+  
+  articles ArticleTag[]
+
+  @@map("tags")
+}
+
+// Article-Tag Junction
+model ArticleTag {
+  articleId String
+  tagId     String
+  
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, tagId])
+  @@map("article_tags")
+}
+
+// Saved Articles
+model SavedArticle {
+  userId    String
+  articleId String
+  savedAt   DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, articleId])
+  @@map("saved_articles")
+}
+
+// Comments
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  userId    String
+  articleId String
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@index([articleId])
+  @@index([userId])
+  @@map("comments")
+}
+
+// Newsletter
+model NewsletterSubscription {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  userId           String?
+  isActive         Boolean   @default(true)
+  subscribedAt     DateTime  @default(now())
+  unsubscribedAt   DateTime?
+  confirmationToken String?   @unique
+  
+  user             User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@map("newsletter_subscriptions")
+}
+
+// Events
+model Event {
+  id          String    @id @default(cuid())
+  title       String
+  description String    @db.Text
+  location    String
+  startDate   DateTime
+  endDate     DateTime
+  capacity    Int?
+  imageUrl    String?
+  isPublished Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  rsvps       EventRsvp[]
+
+  @@index([isPublished, startDate])
+  @@map("events")
+}
+
+// Event RSVPs
+model EventRsvp {
+  id        String   @id @default(cuid())
+  userId    String
+  eventId   String
+  status    RsvpStatus @default(CONFIRMED)
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+  @@map("event_rsvps")
+}
+
+// Membership Subscriptions
+model MembershipSubscription {
+  id               String    @id @default(cuid())
+  userId           String    @unique
+  stripeCustomerId String?   @unique
+  stripeSubId      String?   @unique
+  status           SubscriptionStatus @default(INACTIVE)
+  currentPeriodEnd DateTime?
+  cancelledAt      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("membership_subscriptions")
+}
+
+// Enums
+enum RsvpStatus {
+  CONFIRMED
+  WAITLISTED
+  CANCELLED
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  CANCELLED
+  PAST_DUE
+}

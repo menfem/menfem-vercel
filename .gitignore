@@ -47,3 +47,5 @@ next-env.d.ts
 CLAUDE.md
 state.md
 docs/
+
+/src/generated/prisma
