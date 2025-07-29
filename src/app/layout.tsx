@@ -4,7 +4,7 @@ import { Source_Code_Pro } from 'next/font/google';
 
 import './globals.css';
 import Link from 'next/link';
-import { homePath } from '@/paths';
+import { PATHS } from '@/paths';
 
 const sourceCodePro = Source_Code_Pro({ subsets: ['latin'] });
 
@@ -30,7 +30,7 @@ export default function RootLayout({
         "
         >
           <div>
-            <Link href={homePath()} className="text-lg bold">
+            <Link href={PATHS.HOME} className="text-lg bold">
               Home
             </Link>
           </div>
