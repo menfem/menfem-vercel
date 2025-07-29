@@ -137,7 +137,6 @@ export default function Home() {
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-2xl font-bold mb-4">MENFEM</h3>
               <p className="text-gray-700 mb-4 max-w-md">
-                A cultural concierge for the modern man. Curating excellence in
                 lifestyle, culture, and personal development.
               </p>
               <div className="flex space-x-4">
