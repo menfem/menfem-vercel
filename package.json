@@ -28,12 +28,14 @@
     "lucide-react": "^0.509.0",
     "nanoid": "^5.1.5",
     "next": "15.2.2",
+    "nuqs": "^2.4.3",
     "prisma": "^5.22.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "shadcn-ui": "^0.9.5",
     "source-code-pro": "^2.38.0",
     "tailwind-merge": "^3.3.0",
+    "use-debounce": "^10.0.5",
     "zod": "^4.0.10"
   },
   "devDependencies": {

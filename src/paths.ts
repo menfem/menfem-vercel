@@ -19,6 +19,19 @@ export const PATHS = {
     DETAIL: (slug: string) => `/articles/${slug}`,
   },
   
+  // Category routes
+  CATEGORIES: {
+    CULTURE: '/culture',
+    STYLE: '/style',
+    PERSONAL_DEVELOPMENT: '/personal-development',
+  },
+  
+  // Search and tags
+  SEARCH: '/search',
+  TAGS: {
+    DETAIL: (slug: string) => `/tags/${slug}`,
+  },
+  
   // User routes
   PROFILE: '/profile',
   DASHBOARD: '/dashboard',

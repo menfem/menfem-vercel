@@ -1,6 +1,7 @@
 // ABOUTME: Query functions for fetching articles with pagination and filters
 // ABOUTME: Provides type-safe article retrieval with metadata
 
+import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import type { PaginatedArticles } from '../types';
@@ -17,7 +18,12 @@ export type GetArticlesOptions = {
   orderDirection?: 'asc' | 'desc';
 };
 
-export async function getArticles(options: GetArticlesOptions = {}): Promise<PaginatedArticles> {
+// Create a cache key from options for React cache
+const createCacheKey = (options: GetArticlesOptions) => {
+  return JSON.stringify(options);
+};
+
+export const getArticles = cache(async (options: GetArticlesOptions = {}): Promise<PaginatedArticles> => {
   const {
     page = 1,
     limit = 10,
@@ -90,4 +96,4 @@ export async function getArticles(options: GetArticlesOptions = {}): Promise<Pag
       hasPreviousPage: page > 1,
     },
   };
-}
+});

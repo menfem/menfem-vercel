@@ -1,6 +1,7 @@
 // ABOUTME: Query function for fetching a single article by ID or slug
 // ABOUTME: Includes related data and increments view count for published articles
 
+import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
 import type { ArticleWithRelations } from '../types';
 
@@ -39,7 +40,8 @@ export async function getArticleBySlug(slug: string): Promise<ArticleWithRelatio
   return article;
 }
 
-export async function getArticleById(id: string): Promise<ArticleWithRelations | null> {
+// Cached version for read-only article fetching (no view count increment)
+export const getArticleByIdCached = cache(async (id: string): Promise<ArticleWithRelations | null> => {
   return prisma.article.findUnique({
     where: { id },
     include: {
@@ -62,4 +64,8 @@ export async function getArticleById(id: string): Promise<ArticleWithRelations |
       },
     },
   });
+});
+
+export async function getArticleById(id: string): Promise<ArticleWithRelations | null> {
+  return getArticleByIdCached(id);
 }
