@@ -23,6 +23,20 @@ export const PATHS = {
   PROFILE: '/profile',
   DASHBOARD: '/dashboard',
   
+  // Newsletter routes
+  NEWSLETTER: {
+    SUBSCRIBE: '/newsletter/subscribe',
+    UNSUBSCRIBE: '/newsletter/unsubscribe',
+    CONFIRM: (token: string) => `/newsletter/confirm/${token}`,
+  },
+
+  // Events routes
+  EVENTS: {
+    LIST: '/events',
+    DETAIL: (id: string) => `/events/${id}`,
+    RSVP: (id: string) => `/events/${id}/rsvp`,
+  },
+
   // Admin routes
   ADMIN: {
     DASHBOARD: '/admin',
