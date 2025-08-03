@@ -19,10 +19,37 @@ export const PATHS = {
     DETAIL: (slug: string) => `/articles/${slug}`,
   },
   
+  // Category routes
+  CATEGORIES: {
+    CULTURE: '/culture',
+    STYLE: '/style',
+    PERSONAL_DEVELOPMENT: '/personal-development',
+  },
+  
+  // Search and tags
+  SEARCH: '/search',
+  TAGS: {
+    DETAIL: (slug: string) => `/tags/${slug}`,
+  },
+  
   // User routes
   PROFILE: '/profile',
   DASHBOARD: '/dashboard',
   
+  // Newsletter routes
+  NEWSLETTER: {
+    SUBSCRIBE: '/newsletter/subscribe',
+    UNSUBSCRIBE: '/newsletter/unsubscribe',
+    CONFIRM: (token: string) => `/newsletter/confirm/${token}`,
+  },
+
+  // Events routes
+  EVENTS: {
+    LIST: '/events',
+    DETAIL: (id: string) => `/events/${id}`,
+    RSVP: (id: string) => `/events/${id}/rsvp`,
+  },
+
   // Admin routes
   ADMIN: {
     DASHBOARD: '/admin',

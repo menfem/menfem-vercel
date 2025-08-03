@@ -4,6 +4,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { X, Search } from "lucide-react"
 
 interface SearchModalProps {
@@ -13,6 +14,7 @@ interface SearchModalProps {
 
 export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [searchQuery, setSearchQuery] = useState("")
+  const router = useRouter()
 
   useEffect(() => {
     if (isOpen) {
@@ -25,6 +27,20 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
       document.body.style.overflow = "unset"
     }
   }, [isOpen])
+
+  const handleSearch = (query: string) => {
+    if (query.trim()) {
+      router.push(`/search?q=${encodeURIComponent(query.trim())}`)
+      onClose()
+      setSearchQuery("")
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch(searchQuery)
+    }
+  }
 
   if (!isOpen) return null
 
@@ -48,6 +64,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
               placeholder="Search Menfem..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
               className="flex-1 text-2xl md:text-3xl outline-none placeholder-brand-rust bg-transparent text-brand-brown"
               autoFocus
             />
@@ -61,7 +78,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   <button
                     key={tag}
                     className="px-4 py-2 bg-brand-cream hover:bg-brand-sand rounded-full text-sm transition-colors text-brand-brown"
-                    onClick={() => setSearchQuery(tag)}
+                    onClick={() => handleSearch(tag)}
                   >
                     {tag}
                   </button>

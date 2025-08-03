@@ -13,7 +13,10 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@lucia-auth/adapter-prisma": "^4.0.1",
@@ -23,17 +26,22 @@
     "clsx": "^2.1.1",
     "lucia": "^3.2.2",
     "lucide-react": "^0.509.0",
+    "nanoid": "^5.1.5",
     "next": "15.2.2",
+    "nuqs": "^2.4.3",
     "prisma": "^5.22.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "shadcn-ui": "^0.9.5",
     "source-code-pro": "^2.38.0",
     "tailwind-merge": "^3.3.0",
+    "use-debounce": "^10.0.5",
     "zod": "^4.0.10"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.3.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -41,6 +49,8 @@
     "eslint": "^9",
     "eslint-config-next": "15.2.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.3.0",
     "tsx": "^4.20.3",
