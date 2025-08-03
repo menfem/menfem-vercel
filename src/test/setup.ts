@@ -1,2 +1,2 @@
-// Test setup file for Jest
-import '@testing-library/jest-dom';
+// Test setup file for Vitest
+import '@testing-library/jest-dom/vitest';
