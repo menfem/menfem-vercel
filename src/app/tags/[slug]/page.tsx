@@ -8,12 +8,13 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 interface TagPageProps {
-  params: { slug: string };
-  searchParams: Record<string, string | string[] | undefined>;
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
-  const tagName = params.slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  const resolvedParams = await params;
+  const tagName = resolvedParams.slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   
   return {
     title: `${tagName} Articles | MenFem`,
@@ -26,11 +27,13 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
 }
 
 export default async function TagPage({ params, searchParams }: TagPageProps) {
-  const page = Number(searchParams.page) || 1;
+  const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
+  const page = Number(resolvedSearchParams.page) || 1;
   const limit = 12;
   
   const { list: articles, metadata } = await getArticles({
-    tagSlug: params.slug,
+    tagSlug: resolvedParams.slug,
     page,
     limit,
     orderBy: 'publishedAt',
@@ -42,7 +45,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
     notFound();
   }
 
-  const tagName = params.slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  const tagName = resolvedParams.slug.replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase());
 
   return (
     <div className="min-h-screen bg-brand-sage">
@@ -51,7 +54,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
         <div className="text-center mb-12">
           <div className="mb-4">
             <span className="bg-brand-terracotta text-white px-4 py-2 rounded-full text-sm font-medium">
-              #{params.slug}
+              #{resolvedParams.slug}
             </span>
           </div>
           <h1 className="text-4xl lg:text-5xl font-bold text-brand-brown mb-4">
@@ -77,7 +80,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
               totalPages={metadata.totalPages}
               hasNextPage={metadata.hasNextPage}
               hasPreviousPage={metadata.hasPreviousPage}
-              basePath={`/tags/${params.slug}`}
+              basePath={`/tags/${resolvedParams.slug}`}
             />
           </div>
         )}

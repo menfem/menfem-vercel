@@ -9,11 +9,12 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 interface SearchPageProps {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export function generateMetadata({ searchParams }: SearchPageProps): Metadata {
-  const query = searchParams.q as string || '';
+export async function generateMetadata({ searchParams }: SearchPageProps): Promise<Metadata> {
+  const resolvedSearchParams = await searchParams;
+  const query = resolvedSearchParams.q as string || '';
   
   if (query) {
     return {
@@ -29,12 +30,13 @@ export function generateMetadata({ searchParams }: SearchPageProps): Metadata {
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const query = searchParams.q as string || '';
-  const category = searchParams.category as string || '';
-  const tags = searchParams.tags as string || '';
-  const page = Number(searchParams.page) || 1;
-  const sortBy = (searchParams.sortBy as string) || 'publishedAt';
-  const sortOrder = (searchParams.sortOrder as string) || 'desc';
+  const resolvedSearchParams = await searchParams;
+  const query = resolvedSearchParams.q as string || '';
+  const category = resolvedSearchParams.category as string || '';
+  const tags = resolvedSearchParams.tags as string || '';
+  const page = Number(resolvedSearchParams.page) || 1;
+  const sortBy = (resolvedSearchParams.sortBy as string) || 'publishedAt';
+  const sortOrder = (resolvedSearchParams.sortOrder as string) || 'desc';
   
   const { list: articles, metadata } = await getArticles({
     search: query || undefined,

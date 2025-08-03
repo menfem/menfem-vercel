@@ -8,11 +8,12 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 interface ArticlePageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
-  const article = await getArticleBySlug(params.slug);
+  const resolvedParams = await params;
+  const article = await getArticleBySlug(resolvedParams.slug);
   if (!article) return {};
   
   return {
@@ -35,8 +36,9 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
+  const resolvedParams = await params;
   const [article, auth] = await Promise.all([
-    getArticleBySlug(params.slug),
+    getArticleBySlug(resolvedParams.slug),
     getAuth(),
   ]);
 

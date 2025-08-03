@@ -17,11 +17,12 @@ export const metadata: Metadata = {
 };
 
 interface PersonalDevelopmentPageProps {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export default async function PersonalDevelopmentPage({ searchParams }: PersonalDevelopmentPageProps) {
-  const page = Number(searchParams.page) || 1;
+  const resolvedSearchParams = await searchParams;
+  const page = Number(resolvedSearchParams.page) || 1;
   const limit = 12;
   
   const { list: articles, metadata } = await getArticles({

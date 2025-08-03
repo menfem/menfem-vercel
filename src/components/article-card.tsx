@@ -1,6 +1,7 @@
 // ABOUTME: Article card component for displaying articles in grid layouts
 // ABOUTME: Supports multiple variants and displays full article metadata
 
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { ArticleListItem } from '@/features/articles/types';
@@ -25,9 +26,9 @@ interface LegacyArticleCardProps {
 }
 
 // Overloaded function signatures
-export function ArticleCard(props: ArticleCardProps): JSX.Element;
-export function ArticleCard(props: LegacyArticleCardProps): JSX.Element;
-export function ArticleCard(props: ArticleCardProps | LegacyArticleCardProps): JSX.Element {
+export function ArticleCard(props: ArticleCardProps): React.JSX.Element;
+export function ArticleCard(props: LegacyArticleCardProps): React.JSX.Element;
+export function ArticleCard(props: ArticleCardProps | LegacyArticleCardProps): React.JSX.Element {
   // Legacy mode check
   if ('title' in props && 'category' in props && 'imageUrl' in props) {
     return <LegacyArticleCard {...props} />;
