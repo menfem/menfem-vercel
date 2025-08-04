@@ -5,6 +5,7 @@ import { getArticles } from '@/features/articles/queries/get-articles';
 import { ArticleGrid } from '@/components/article-grid';
 import { SearchFilters } from '@/components/search-filters';
 import { Pagination } from '@/components/pagination';
+import { NavigationWrapper } from '@/components/navigation-wrapper';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
@@ -37,6 +38,25 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const page = Number(resolvedSearchParams.page) || 1;
   const sortBy = (resolvedSearchParams.sortBy as string) || 'publishedAt';
   const sortOrder = (resolvedSearchParams.sortOrder as string) || 'desc';
+  const isPremiumParam = resolvedSearchParams.isPremium as string;
+  const readingTimeParam = resolvedSearchParams.readingTime as string;
+  
+  // Process isPremium parameter
+  let isPremium: boolean | undefined;
+  if (isPremiumParam === 'true') isPremium = true;
+  else if (isPremiumParam === 'false') isPremium = false;
+  
+  // Process reading time parameter
+  let minReadingTime: number | undefined;
+  let maxReadingTime: number | undefined;
+  if (readingTimeParam === 'quick') {
+    maxReadingTime = 5;
+  } else if (readingTimeParam === 'medium') {
+    minReadingTime = 5;
+    maxReadingTime = 15;
+  } else if (readingTimeParam === 'long') {
+    minReadingTime = 15;
+  }
   
   const { list: articles, metadata } = await getArticles({
     search: query || undefined,
@@ -46,10 +66,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     limit: 12,
     orderBy: sortBy as 'createdAt' | 'publishedAt' | 'viewCount',
     orderDirection: sortOrder as 'asc' | 'desc',
+    isPremium,
+    minReadingTime,
+    maxReadingTime,
   });
 
   return (
     <div className="min-h-screen bg-brand-sage">
+      <NavigationWrapper />
       <section className="container mx-auto px-4 py-16">
         {/* Search Header */}
         <div className="mb-12 text-center">

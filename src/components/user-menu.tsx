@@ -10,6 +10,7 @@ import { PATHS } from '@/paths';
 import type { User } from 'lucia';
 import { signOut } from '@/features/auth/actions/sign-out';
 import { useActionState } from 'react';
+import { isAdmin } from '@/features/admin/utils/is-admin';
 
 type UserMenuProps = {
   user: User | null;
@@ -73,6 +74,19 @@ export function UserMenu({ user }: UserMenuProps) {
               >
                 Profile Settings
               </Link>
+              
+              {isAdmin(user) && (
+                <>
+                  <div className="border-t border-gray-100 my-1"></div>
+                  <Link
+                    href="/admin"
+                    className="block px-4 py-2 text-sm text-brand-terracotta hover:bg-brand-sage/20 transition-colors font-medium"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Admin Panel
+                  </Link>
+                </>
+              )}
               
               <div className="border-t border-gray-100 my-1"></div>
               

@@ -54,6 +54,16 @@ export const getArticles = cache(async (options: GetArticlesOptions = {}): Promi
       OR: [
         { title: { contains: search, mode: 'insensitive' } },
         { content: { contains: search, mode: 'insensitive' } },
+        { excerpt: { contains: search, mode: 'insensitive' } },
+        { 
+          tags: {
+            some: {
+              tag: {
+                name: { contains: search, mode: 'insensitive' }
+              }
+            }
+          }
+        },
       ],
     }),
     ...(isPremium !== undefined && { isPremium }),

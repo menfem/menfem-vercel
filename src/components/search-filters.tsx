@@ -6,7 +6,7 @@
 import { useState } from 'react';
 import { useQueryState, useQueryStates } from 'nuqs';
 import { Button } from '@/components/ui/button';
-import { SearchBar } from '@/components/search-bar';
+import { SearchWithSuggestions } from '@/features/search/components/search-with-suggestions';
 import { parseAsString } from 'nuqs';
 
 interface SearchFiltersProps {
@@ -14,12 +14,14 @@ interface SearchFiltersProps {
 }
 
 export function SearchFilters({ currentQuery }: SearchFiltersProps) {
-  const [{ q, category, tags, sortBy, sortOrder }, setFilters] = useQueryStates({
+  const [{ q, category, tags, sortBy, sortOrder, isPremium, readingTime }, setFilters] = useQueryStates({
     q: parseAsString.withDefault(''),
     category: parseAsString.withDefault(''),
     tags: parseAsString.withDefault(''),
     sortBy: parseAsString.withDefault('publishedAt'),
     sortOrder: parseAsString.withDefault('desc'),
+    isPremium: parseAsString.withDefault(''),
+    readingTime: parseAsString.withDefault(''),
   });
 
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -28,7 +30,7 @@ export function SearchFilters({ currentQuery }: SearchFiltersProps) {
     <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
       {/* Main Search Bar */}
       <div className="mb-6">
-        <SearchBar
+        <SearchWithSuggestions
           value={q || currentQuery}
           onChange={(value) => setFilters({ q: value })}
           placeholder="Search articles..."
@@ -78,10 +80,18 @@ export function SearchFilters({ currentQuery }: SearchFiltersProps) {
         </Button>
         
         {/* Clear All Filters */}
-        {(category || tags || q !== currentQuery) && (
+        {(category || tags || isPremium || readingTime || q !== currentQuery) && (
           <Button
             variant="outline"
-            onClick={() => setFilters({ q: '', category: '', tags: '', sortBy: 'publishedAt', sortOrder: 'desc' })}
+            onClick={() => setFilters({ 
+              q: '', 
+              category: '', 
+              tags: '', 
+              sortBy: 'publishedAt', 
+              sortOrder: 'desc',
+              isPremium: '',
+              readingTime: ''
+            })}
             className="text-sm"
           >
             Clear Filters
@@ -124,8 +134,9 @@ export function SearchFilters({ currentQuery }: SearchFiltersProps) {
                   <input
                     type="radio"
                     name="contentType"
-                    value="all"
-                    defaultChecked
+                    value=""
+                    checked={isPremium === ''}
+                    onChange={() => setFilters({ isPremium: '' })}
                     className="mr-2 text-brand-terracotta focus:ring-brand-terracotta"
                   />
                   <span className="text-sm">All Articles</span>
@@ -134,7 +145,9 @@ export function SearchFilters({ currentQuery }: SearchFiltersProps) {
                   <input
                     type="radio"
                     name="contentType"
-                    value="free"
+                    value="false"
+                    checked={isPremium === 'false'}
+                    onChange={() => setFilters({ isPremium: 'false' })}
                     className="mr-2 text-brand-terracotta focus:ring-brand-terracotta"
                   />
                   <span className="text-sm">Free Articles</span>
@@ -143,7 +156,9 @@ export function SearchFilters({ currentQuery }: SearchFiltersProps) {
                   <input
                     type="radio"
                     name="contentType"
-                    value="premium"
+                    value="true"
+                    checked={isPremium === 'true'}
+                    onChange={() => setFilters({ isPremium: 'true' })}
                     className="mr-2 text-brand-terracotta focus:ring-brand-terracotta"
                   />
                   <span className="text-sm">Premium Articles</span>
@@ -156,7 +171,11 @@ export function SearchFilters({ currentQuery }: SearchFiltersProps) {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Reading Time
               </label>
-              <select className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-brand-terracotta focus:border-transparent">
+              <select 
+                value={readingTime}
+                onChange={(e) => setFilters({ readingTime: e.target.value })}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-brand-terracotta focus:border-transparent"
+              >
                 <option value="">Any Length</option>
                 <option value="quick">Quick Read (&lt; 5 min)</option>
                 <option value="medium">Medium Read (5-15 min)</option>
