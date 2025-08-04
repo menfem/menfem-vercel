@@ -7,6 +7,9 @@ import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { nanoid } from 'nanoid';
 import { getAuth } from '@/features/auth/queries/get-auth';
+import { sendEmail } from '@/lib/resend';
+import { NewsletterConfirmationEmail } from '@/emails/newsletter-confirmation';
+import { PATHS } from '@/paths';
 import {
   ActionState,
   fromErrorToActionState,
@@ -48,6 +51,21 @@ export async function subscribeToNewsletter(
         },
       });
 
+      // Send welcome back email (optional - doesn't fail if it errors)
+      try {
+        await sendEmail({
+          to: data.email,
+          subject: 'Welcome back to MenFem!',
+          react: NewsletterConfirmationEmail({
+            userEmail: data.email,
+            userName: user?.username || undefined,
+            confirmationUrl: `${process.env.BASE_URL}/articles`, // Direct to articles since already confirmed
+          }),
+        });
+      } catch (emailError) {
+        console.error('Failed to send welcome back email:', emailError);
+      }
+
       return toActionState('SUCCESS', 'Welcome back! Your subscription has been reactivated.');
     }
 
@@ -62,8 +80,23 @@ export async function subscribeToNewsletter(
       },
     });
 
-    // TODO: Send confirmation email
-    console.log('Confirmation token:', confirmationToken);
+    // Send confirmation email
+    try {
+      const confirmationUrl = `${process.env.BASE_URL}${PATHS.NEWSLETTER.CONFIRM(confirmationToken)}`;
+      
+      await sendEmail({
+        to: data.email,
+        subject: 'Confirm your MenFem newsletter subscription',
+        react: NewsletterConfirmationEmail({
+          userEmail: data.email,
+          userName: user?.username || undefined,
+          confirmationUrl,
+        }),
+      });
+    } catch (emailError) {
+      console.error('Failed to send confirmation email:', emailError);
+      // Don't fail the subscription if email fails - user can try again
+    }
 
     return toActionState(
       'SUCCESS',

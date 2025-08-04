@@ -8,6 +8,8 @@ declare namespace NodeJS {
 
     // Email
     RESEND_API_KEY: string;
+    FROM_EMAIL: string;
+    REPLY_TO_EMAIL: string;
 
     // App
     BASE_URL: string;
