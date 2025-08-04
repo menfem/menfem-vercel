@@ -1,7 +1,7 @@
 // ABOUTME: Homepage with about section, rotating hero image, and weekly reading recommendation
 // ABOUTME: Inspired by Service95's clean, editorial design approach
 
-import { Navigation } from '@/components/navigation';
+import { NavigationWrapper } from '@/components/navigation-wrapper';
 import { RotatingHeroImage } from '@/components/rotating-hero-image';
 import { ReadingRecommendation } from '@/components/reading-recommendation';
 import { NewsletterSignup } from '@/components/newsletter-signup';
@@ -24,7 +24,7 @@ const WEEKLY_READING = {
 export default function Home() {
   return (
     <div className="min-h-screen bg-brand-sage">
-      <Navigation />
+      <NavigationWrapper />
 
       {/* Hero Section with About */}
       <section className="container mx-auto px-4 py-8">

@@ -1,5 +1,5 @@
 // ABOUTME: Navigation component with dropdown menus inspired by Service95 design
-// ABOUTME: Features logo, category dropdowns, search and newsletter buttons
+// ABOUTME: Features logo, category dropdowns, search, newsletter buttons, and user menu
 
 "use client"
 
@@ -8,6 +8,8 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
 import { SearchModal } from "@/components/search-modal"
+import { UserMenu } from "@/components/user-menu"
+import type { User } from "lucia"
 
 const CATEGORIES = [
   {
@@ -47,7 +49,11 @@ const CATEGORIES = [
   }
 ]
 
-export function Navigation() {
+type NavigationProps = {
+  user: User | null;
+};
+
+export function Navigation({ user }: NavigationProps) {
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -124,6 +130,11 @@ export function Navigation() {
                 NEWSLETTER
               </Button>
             </Link>
+
+            {/* User Menu */}
+            <div className="hidden lg:flex">
+              <UserMenu user={user} />
+            </div>
 
             {/* Mobile menu button */}
             <Button
