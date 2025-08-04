@@ -15,9 +15,15 @@ declare namespace NodeJS {
     BASE_URL: string;
     NODE_ENV: 'development' | 'production' | 'test';
     
-    // Future: Stripe
-    STRIPE_SECRET_KEY?: string;
-    STRIPE_PUBLISHABLE_KEY?: string;
-    STRIPE_WEBHOOK_SECRET?: string;
+    // Phase 4: Stripe Payment Processing
+    STRIPE_SECRET_KEY: string;
+    STRIPE_PUBLISHABLE_KEY: string;
+    STRIPE_WEBHOOK_SECRET: string;
+    
+    // Phase 4: YouTube API Integration
+    YOUTUBE_API_KEY: string;
+    
+    // Phase 4: Analytics (optional)
+    VERCEL_ANALYTICS_ID?: string;
   }
 }

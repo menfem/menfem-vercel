@@ -26,6 +26,12 @@ model User {
   newsletters    NewsletterSubscription[]
   eventRsvps     EventRsvp[]
   membershipSub  MembershipSubscription?
+  
+  // Phase 4 Relations
+  purchases         Purchase[]
+  courseEnrollments CourseEnrollment[]
+  lessonCompletions LessonCompletion[]
+  analyticsEvents   AnalyticsEvent[]
 
   @@map("users")
 }
@@ -126,6 +132,8 @@ model Tag {
   slug     String       @unique
   
   articles ArticleTag[]
+  videos   VideoTag[]
+  products ProductTag[]
 
   @@map("tags")
 }
@@ -241,6 +249,290 @@ model MembershipSubscription {
   @@map("membership_subscriptions")
 }
 
+// ========================================
+// PHASE 4: VIDEO CONTENT PLATFORM
+// ========================================
+
+// Video Content Management
+model Video {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @db.Text
+  youtubeId   String?  @unique
+  embedUrl    String?
+  thumbnailUrl String?
+  duration    Int?     // in seconds
+  isPublished Boolean  @default(false)
+  isPremium   Boolean  @default(false)
+  viewCount   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  seriesId    String?
+  series      VideoSeries? @relation(fields: [seriesId], references: [id])
+  tags        VideoTag[]
+  transcripts VideoTranscript[]
+  lessons     CourseLesson[]
+
+  @@index([youtubeId])
+  @@index([isPublished, createdAt])
+  @@map("videos")
+}
+
+model VideoSeries {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  thumbnailUrl String?
+  isPublished Boolean  @default(false)
+  isPremium   Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  videos      Video[]
+
+  @@map("video_series")
+}
+
+model VideoTag {
+  videoId String
+  tagId   String
+  
+  video   Video @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  tag     Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([videoId, tagId])
+  @@map("video_tags")
+}
+
+model VideoTranscript {
+  id          String @id @default(cuid())
+  videoId     String
+  content     String @db.Text
+  timestamps  Json?  // For searchable timestamped transcripts
+  
+  video       Video  @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@map("video_transcripts")
+}
+
+// Podcast Integration
+model PodcastEpisode {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @db.Text
+  audioUrl    String
+  spotifyUrl  String?
+  appleUrl    String?
+  duration    Int?     // in seconds
+  episodeNumber Int
+  seasonNumber  Int?
+  isPublished Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished, publishedAt])
+  @@map("podcast_episodes")
+}
+
+// ========================================
+// PHASE 4: E-COMMERCE INTEGRATION
+// ========================================
+
+// Product Catalog
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String      @db.Text
+  shortDesc   String?
+  images      String[]    // Array of image URLs
+  price       Int         // Price in cents
+  comparePrice Int?       // Original price for discounts
+  isActive    Boolean     @default(true)
+  isDigital   Boolean     @default(false)
+  stock       Int?        // Null for digital products
+  type        ProductType
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  // Relations
+  categoryId  String
+  category    ProductCategory @relation(fields: [categoryId], references: [id])
+  tags        ProductTag[]
+  purchases   Purchase[]
+  
+  // Course-specific fields
+  course      Course?
+
+  @@index([slug])
+  @@index([isActive, type])
+  @@map("products")
+}
+
+model ProductCategory {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  
+  products    Product[]
+
+  @@map("product_categories")
+}
+
+model ProductTag {
+  productId String
+  tagId     String
+  
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([productId, tagId])
+  @@map("product_tags")
+}
+
+// Course Platform
+model Course {
+  id          String   @id @default(cuid())
+  productId   String   @unique
+  syllabus    String   @db.Text
+  duration    String   // "8 weeks", "Self-paced"
+  level       CourseLevel
+  
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  modules     CourseModule[]
+  enrollments CourseEnrollment[]
+
+  @@map("courses")
+}
+
+model CourseModule {
+  id          String   @id @default(cuid())
+  courseId    String
+  title       String
+  description String   @db.Text
+  order       Int
+  isPublished Boolean  @default(false)
+  
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons     CourseLesson[]
+
+  @@index([courseId, order])
+  @@map("course_modules")
+}
+
+model CourseLesson {
+  id          String      @id @default(cuid())
+  moduleId    String
+  title       String
+  content     String      @db.Text
+  videoId     String?     // Optional video content
+  order       Int
+  isPublished Boolean     @default(false)
+  
+  module      CourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  video       Video?      @relation(fields: [videoId], references: [id])
+  completions LessonCompletion[]
+
+  @@index([moduleId, order])
+  @@map("course_lessons")
+}
+
+model CourseEnrollment {
+  id          String   @id @default(cuid())
+  userId      String
+  courseId    String
+  enrolledAt  DateTime @default(now())
+  completedAt DateTime?
+  progress    Float    @default(0) // Percentage completion
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@map("course_enrollments")
+}
+
+model LessonCompletion {
+  id        String   @id @default(cuid())
+  userId    String
+  lessonId  String
+  completedAt DateTime @default(now())
+  
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson    CourseLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@map("lesson_completions")
+}
+
+// Purchase Management
+model Purchase {
+  id               String        @id @default(cuid())
+  userId           String
+  productId        String
+  stripePaymentId  String        @unique
+  amount           Int           // Amount paid in cents
+  status           PurchaseStatus @default(PENDING)
+  purchasedAt      DateTime      @default(now())
+  
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product          Product       @relation(fields: [productId], references: [id])
+
+  @@index([userId])
+  @@map("purchases")
+}
+
+// ========================================
+// PHASE 4: ANALYTICS & ADMIN TOOLS
+// ========================================
+
+// Analytics and Tracking
+model AnalyticsEvent {
+  id          String   @id @default(cuid())
+  userId      String?
+  sessionId   String?
+  eventType   String
+  eventData   Json
+  path        String?
+  userAgent   String?
+  timestamp   DateTime @default(now())
+
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([eventType, timestamp])
+  @@index([userId, timestamp])
+  @@map("analytics_events")
+}
+
+model ContentMetrics {
+  id          String   @id @default(cuid())
+  contentType String   // 'article', 'video', 'course'
+  contentId   String
+  metricType  String   // 'view', 'completion', 'engagement'
+  value       Float
+  date        DateTime @db.Date
+  
+  @@unique([contentType, contentId, metricType, date])
+  @@index([contentType, date])
+  @@map("content_metrics")
+}
+
+model RevenueMetrics {
+  id          String   @id @default(cuid())
+  date        DateTime @db.Date
+  revenue     Int      // in cents
+  subscriptions Int    @default(0)
+  coursesSold Int      @default(0)
+  
+  @@unique([date])
+  @@map("revenue_metrics")
+}
+
 // Enums
 enum RsvpStatus {
   CONFIRMED
@@ -253,4 +545,25 @@ enum SubscriptionStatus {
   INACTIVE
   CANCELLED
   PAST_DUE
+}
+
+// Phase 4 Enums
+enum ProductType {
+  PHYSICAL
+  DIGITAL
+  COURSE
+  SUBSCRIPTION
+}
+
+enum CourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum PurchaseStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
 }

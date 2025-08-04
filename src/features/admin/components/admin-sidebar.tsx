@@ -13,14 +13,22 @@ import {
   Settings,
   LogOut,
   Menu,
-  X
+  X,
+  Video,
+  ShoppingBag,
+  GraduationCap,
+  BarChart3
 } from 'lucide-react';
 import { useState } from 'react';
 import { signOut } from '@/features/auth/actions/sign-out';
 
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+  { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
   { name: 'Articles', href: '/admin/articles', icon: FileText },
+  { name: 'Videos', href: '/admin/videos', icon: Video },
+  { name: 'Products', href: '/admin/products', icon: ShoppingBag },
+  { name: 'Courses', href: '/admin/courses', icon: GraduationCap },
   { name: 'Users', href: '/admin/users', icon: Users },
   { name: 'Events', href: '/admin/events', icon: Calendar },
   { name: 'Settings', href: '/admin/settings', icon: Settings },
