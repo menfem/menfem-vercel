@@ -3,6 +3,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { PATHS } from "@/paths"
 
 interface Story {
   id: string
@@ -28,7 +29,7 @@ const FEATURED_STORIES: Story[] = [
     imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
     category: "Culture",
     readTime: "8 min read",
-    link: "/stories/evolution-modern-masculinity",
+    link: PATHS.STORIES.DETAIL("evolution-modern-masculinity"),
     featured: true
   },
   {
@@ -40,7 +41,7 @@ const FEATURED_STORIES: Story[] = [
     imageUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&h=600&fit=crop",
     category: "Lifestyle",
     readTime: "6 min read",
-    link: "/stories/art-of-slow-living"
+    link: PATHS.STORIES.DETAIL("art-of-slow-living")
   },
   {
     id: "3",
@@ -51,7 +52,7 @@ const FEATURED_STORIES: Story[] = [
     imageUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&h=600&fit=crop",
     category: "Style",
     readTime: "5 min read",
-    link: "/stories/style-beyond-fashion"
+    link: PATHS.STORIES.DETAIL("style-beyond-fashion")
   },
   {
     id: "4",
@@ -62,7 +63,7 @@ const FEATURED_STORIES: Story[] = [
     imageUrl: "https://images.unsplash.com/photo-1488161628813-04466f872be2?w=800&h=600&fit=crop",
     category: "Personal Development",
     readTime: "7 min read",
-    link: "/stories/creative-renaissance"
+    link: PATHS.STORIES.DETAIL("creative-renaissance")
   }
 ]
 
@@ -158,7 +159,7 @@ export function Stories() {
       {/* View All Stories Link */}
       <div className="text-center mt-8">
         <Link 
-          href="/stories"
+          href={PATHS.STORIES.LIST}
           className="inline-block bg-brand-brown hover:bg-brand-rust text-white font-medium py-3 px-8 transition-colors"
         >
           View All Stories

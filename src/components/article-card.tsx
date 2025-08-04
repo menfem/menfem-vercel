@@ -8,7 +8,7 @@ import type { ArticleListItem } from '@/features/articles/types';
 
 interface ArticleCardProps {
   article: ArticleListItem;
-  variant?: 'default' | 'featured' | 'compact';
+  variant?: 'default' | 'featured' | 'compact' | 'story';
   showCategory?: boolean;
   showExcerpt?: boolean;
   showAuthor?: boolean;
@@ -47,12 +47,14 @@ export function ArticleCard(props: ArticleCardProps | LegacyArticleCardProps): R
     default: 'bg-white hover:shadow-xl transition-shadow duration-300 group rounded-lg overflow-hidden',
     featured: 'bg-white hover:shadow-xl transition-shadow duration-300 group lg:col-span-2 rounded-lg overflow-hidden',
     compact: 'bg-white hover:shadow-lg transition-shadow duration-300 group flex gap-4 rounded-lg overflow-hidden p-4',
+    story: 'bg-white hover:shadow-xl transition-shadow duration-300 group rounded-lg overflow-hidden border-l-4 border-brand-terracotta',
   };
 
   const imageClasses = {
     default: 'aspect-[16/9] w-full',
     featured: 'aspect-[21/9] w-full',
     compact: 'aspect-square w-24 h-24 flex-shrink-0',
+    story: 'aspect-[4/3] w-full',
   };
 
   const publishedDate = article.publishedAt
@@ -98,7 +100,8 @@ export function ArticleCard(props: ArticleCardProps | LegacyArticleCardProps): R
         {/* Title */}
         <h3 className={`font-bold text-brand-brown group-hover:text-brand-terracotta transition-colors line-clamp-2 leading-tight ${
           variant === 'featured' ? 'text-2xl mb-3' : 
-          variant === 'compact' ? 'text-base mb-2' : 'text-xl mb-3'
+          variant === 'compact' ? 'text-base mb-2' : 
+          variant === 'story' ? 'text-xl mb-4' : 'text-xl mb-3'
         }`}>
           {article.title}
         </h3>

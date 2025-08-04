@@ -8,7 +8,7 @@ interface ArticleGridProps {
   articles: ArticleListItem[];
   showCategory?: boolean;
   showAuthor?: boolean;
-  variant?: 'grid' | 'list' | 'featured';
+  variant?: 'grid' | 'list' | 'featured' | 'story';
 }
 
 export function ArticleGrid({ 
@@ -21,6 +21,7 @@ export function ArticleGrid({
     grid: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8',
     list: 'space-y-8',
     featured: 'grid grid-cols-1 lg:grid-cols-2 gap-8',
+    story: 'grid grid-cols-1 md:grid-cols-2 gap-8',
   };
 
   if (articles.length === 0) {
@@ -33,7 +34,13 @@ export function ArticleGrid({
         <ArticleCard
           key={article.id}
           article={article}
-          variant={variant === 'featured' && index === 0 ? 'featured' : 'default'}
+          variant={
+            variant === 'featured' && index === 0 
+              ? 'featured' 
+              : variant === 'story' 
+                ? 'story' 
+                : 'default'
+          }
           showCategory={showCategory}
           showAuthor={showAuthor}
         />

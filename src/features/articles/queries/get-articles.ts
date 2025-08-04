@@ -16,6 +16,8 @@ export type GetArticlesOptions = {
   authorId?: string;
   orderBy?: 'createdAt' | 'publishedAt' | 'viewCount';
   orderDirection?: 'asc' | 'desc';
+  minReadingTime?: number;
+  maxReadingTime?: number;
 };
 
 // Create a cache key from options for React cache
@@ -34,6 +36,8 @@ export const getArticles = cache(async (options: GetArticlesOptions = {}): Promi
     authorId,
     orderBy = 'publishedAt',
     orderDirection = 'desc',
+    minReadingTime,
+    maxReadingTime,
   } = options;
 
   const where: Prisma.ArticleWhereInput = {
@@ -54,6 +58,12 @@ export const getArticles = cache(async (options: GetArticlesOptions = {}): Promi
     }),
     ...(isPremium !== undefined && { isPremium }),
     ...(authorId && { authorId }),
+    ...(minReadingTime !== undefined && {
+      readingTime: { gte: minReadingTime },
+    }),
+    ...(maxReadingTime !== undefined && {
+      readingTime: { lte: maxReadingTime },
+    }),
   };
 
   const [articles, totalCount] = await prisma.$transaction([

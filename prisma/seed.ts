@@ -17,9 +17,10 @@ async function main() {
     prisma.category.create({ data: { name: 'Culture', slug: 'culture', order: 1 } }),
     prisma.category.create({ data: { name: 'Style', slug: 'style', order: 2 } }),
     prisma.category.create({ data: { name: 'Health', slug: 'health', order: 3 } }),
-    prisma.category.create({ data: { name: 'Tech', slug: 'tech', order: 4 } }),
-    prisma.category.create({ data: { name: 'Finance', slug: 'finance', order: 5 } }),
-    prisma.category.create({ data: { name: 'Personal Development', slug: 'personal-development', order: 6 } }),
+    prisma.category.create({ data: { name: 'Products', slug: 'products', order: 4 } }),
+    prisma.category.create({ data: { name: 'Tech', slug: 'tech', order: 5 } }),
+    prisma.category.create({ data: { name: 'Finance', slug: 'finance', order: 6 } }),
+    prisma.category.create({ data: { name: 'Personal Development', slug: 'personal-development', order: 7 } }),
   ]);
 
   // Create tags
@@ -91,7 +92,7 @@ async function main() {
         publishedAt: new Date(),
         isPremium: true,
         authorId: adminUser.id,
-        categoryId: categories[4].id,
+        categoryId: categories[5].id,
         readingTime: 6,
       },
     }),

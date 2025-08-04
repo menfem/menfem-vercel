@@ -52,6 +52,9 @@
     "use-debounce": "^10.0.5",
     "zod": "^4.0.10"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@react-email/render": "^1.1.4",

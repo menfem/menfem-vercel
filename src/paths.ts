@@ -19,6 +19,12 @@ export const PATHS = {
     DETAIL: (slug: string) => `/articles/${slug}`,
   },
   
+  // Stories routes
+  STORIES: {
+    LIST: '/stories',
+    DETAIL: (slug: string) => `/stories/${slug}`,
+  },
+  
   // Category routes
   CATEGORIES: {
     CULTURE: '/culture',
