@@ -116,12 +116,14 @@ export function Navigation() {
               <Search className="h-4 w-4" />
             </Button>
             
-            <Button 
-              className="hidden lg:flex bg-brand-terracotta hover:bg-brand-rust text-white"
-              size="sm"
-            >
-              NEWSLETTER
-            </Button>
+            <Link href="/newsletter/subscribe">
+              <Button 
+                className="hidden lg:flex bg-brand-terracotta hover:bg-brand-rust text-white"
+                size="sm"
+              >
+                NEWSLETTER
+              </Button>
+            </Link>
 
             {/* Mobile menu button */}
             <Button
@@ -173,12 +175,15 @@ export function Navigation() {
                 )}
               </div>
             ))}
-            <Button 
-              className="w-full mt-4 bg-brand-terracotta hover:bg-brand-rust text-white"
-              size="sm"
-            >
-              NEWSLETTER
-            </Button>
+            <Link href="/newsletter/subscribe">
+              <Button 
+                className="w-full mt-4 bg-brand-terracotta hover:bg-brand-rust text-white"
+                size="sm"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                NEWSLETTER
+              </Button>
+            </Link>
           </div>
         )}
       </nav>
