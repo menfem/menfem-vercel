@@ -32,6 +32,17 @@ model User {
   courseEnrollments CourseEnrollment[]
   lessonCompletions LessonCompletion[]
   analyticsEvents   AnalyticsEvent[]
+  
+  // Phase 5 Relations
+  assignedInquiries ConsultingInquiry[] @relation("AssignedInquiries")
+  forumTopics       ForumTopic[]        @relation("ForumTopicAuthor")
+  forumPosts        ForumPost[]         @relation("ForumPostAuthor")
+  postReactions     PostReaction[]      @relation("PostReactions")
+  chapterMemberships ChapterMember[]
+  organizedMeetups  LocalMeetup[]       @relation("OrganizedMeetups")
+  meetupAttendees   MeetupAttendee[]
+  contentRecommendations ContentRecommendation[] @relation("ContentRecommendations")
+  userBehaviors     UserBehavior[]      @relation("UserBehaviors")
 
   @@map("users")
 }
@@ -566,4 +577,665 @@ enum PurchaseStatus {
   COMPLETED
   FAILED
   REFUNDED
+}
+
+// ========================================
+// PHASE 5: BUSINESS OPERATIONS & CONSULTING
+// ========================================
+
+// Consulting System
+model ConsultingInquiry {
+  id                String             @id @default(cuid())
+  firstName         String
+  lastName          String
+  email             String
+  company           String
+  jobTitle          String
+  phone             String?
+  industryVertical  String
+  companySize       CompanySize
+  projectType       ConsultingType[]
+  budgetRange       BudgetRange
+  timeline          String
+  projectDescription String            @db.Text
+  currentChallenges  String            @db.Text
+  previousConsulting Boolean           @default(false)
+  referralSource    String?
+  
+  // Status tracking
+  status            InquiryStatus      @default(NEW)
+  priority          Priority           @default(MEDIUM)
+  assignedTo        String?
+  
+  // Follow-up tracking
+  followUpDate      DateTime?
+  lastContactDate   DateTime?
+  meetingScheduled  Boolean            @default(false)
+  proposalSent      Boolean            @default(false)
+  
+  // Timestamps
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  
+  // Relations
+  assignedConsultant User?             @relation("AssignedInquiries", fields: [assignedTo], references: [id])
+  project           ClientProject?
+  notes             InquiryNote[]
+  activities        InquiryActivity[]
+  
+  @@index([status, priority])
+  @@index([createdAt])
+  @@map("consulting_inquiries")
+}
+
+model InquiryNote {
+  id        String   @id @default(cuid())
+  inquiryId String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  
+  inquiry   ConsultingInquiry @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+  
+  @@map("inquiry_notes")
+}
+
+model InquiryActivity {
+  id          String   @id @default(cuid())
+  inquiryId   String
+  type        String   // "call", "email", "meeting", "proposal_sent"
+  description String   @db.Text
+  createdAt   DateTime @default(now())
+  
+  inquiry     ConsultingInquiry @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+  
+  @@index([inquiryId, createdAt])
+  @@map("inquiry_activities")
+}
+
+model ClientProject {
+  id                String             @id @default(cuid())
+  projectName       String
+  clientCompany     String
+  projectType       ConsultingType
+  contractValue     Int                // In cents
+  estimatedHours    Int?
+  actualHours       Int                @default(0)
+  
+  // Project status
+  status            ProjectStatus      @default(PROPOSAL)
+  startDate         DateTime?
+  endDate           DateTime?
+  completionDate    DateTime?
+  
+  // Relations
+  inquiryId         String             @unique
+  inquiry           ConsultingInquiry  @relation(fields: [inquiryId], references: [id])
+  milestones        ProjectMilestone[]
+  deliverables      ProjectDeliverable[]
+  activities        ProjectActivity[]
+  
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  
+  @@index([status])
+  @@map("client_projects")
+}
+
+model ProjectMilestone {
+  id               String            @id @default(cuid())
+  title            String
+  description      String?
+  dueDate          DateTime
+  completedDate    DateTime?
+  status           MilestoneStatus   @default(PENDING)
+  paymentAmount    Int?              // In cents
+  paymentReceived  Boolean           @default(false)
+  
+  projectId        String
+  project          ClientProject     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  
+  @@index([projectId, dueDate])
+  @@map("project_milestones")
+}
+
+model ProjectDeliverable {
+  id          String        @id @default(cuid())
+  title       String
+  description String        @db.Text
+  fileUrl     String?
+  status      DeliverableStatus @default(PENDING)
+  
+  projectId   String
+  project     ClientProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  @@map("project_deliverables")
+}
+
+model ProjectActivity {
+  id          String        @id @default(cuid())
+  projectId   String
+  type        String        // "milestone_completed", "deliverable_sent", "payment_received"
+  description String        @db.Text
+  createdAt   DateTime      @default(now())
+  
+  project     ClientProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@index([projectId, createdAt])
+  @@map("project_activities")
+}
+
+// Speaking Engagements
+model SpeakingEngagement {
+  id              String              @id @default(cuid())
+  title           String
+  eventName       String
+  organizerName   String
+  organizerEmail  String
+  eventDate       DateTime
+  duration        Int                 // Minutes
+  format          EngagementFormat
+  audience        String
+  expectedSize    Int?
+  fee             Int?                // In cents
+  travelRequired  Boolean             @default(false)
+  location        String
+  
+  status          EngagementStatus    @default(INQUIRY)
+  notes           String?             @db.Text
+  
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  
+  @@index([eventDate])
+  @@map("speaking_engagements")
+}
+
+// ========================================
+// PHASE 5: ADVANCED COMMUNITY PLATFORM
+// ========================================
+
+// Forum System
+model Forum {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String?
+  color       String?     // Theme color
+  icon        String?     // Icon name
+  order       Int         @default(0)
+  isPrivate   Boolean     @default(false)
+  
+  // Access control
+  minimumMembershipTier MembershipTier @default(FREE)
+  
+  topics      ForumTopic[]
+  moderators  ForumModerator[]
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  @@index([slug])
+  @@map("forums")
+}
+
+model ForumModerator {
+  id      String @id @default(cuid())
+  forumId String
+  userId  String
+  
+  forum   Forum  @relation(fields: [forumId], references: [id], onDelete: Cascade)
+  
+  @@unique([forumId, userId])
+  @@map("forum_moderators")
+}
+
+model ForumTopic {
+  id              String        @id @default(cuid())
+  title           String
+  slug            String
+  content         String        @db.Text
+  isPinned        Boolean       @default(false)
+  isLocked        Boolean       @default(false)
+  viewCount       Int           @default(0)
+  
+  // Relations
+  forumId         String
+  forum           Forum         @relation(fields: [forumId], references: [id], onDelete: Cascade)
+  authorId        String
+  author          User          @relation("ForumTopicAuthor", fields: [authorId], references: [id])
+  posts           ForumPost[]
+  tags            ForumTopicTag[]
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  @@unique([forumId, slug])
+  @@index([forumId, createdAt])
+  @@map("forum_topics")
+}
+
+model ForumTopicTag {
+  topicId String
+  tagId   String
+  
+  topic   ForumTopic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  
+  @@id([topicId, tagId])
+  @@map("forum_topic_tags")
+}
+
+model ForumPost {
+  id              String        @id @default(cuid())
+  content         String        @db.Text
+  isEdited        Boolean       @default(false)
+  editedAt        DateTime?
+  
+  // Relations
+  topicId         String
+  topic           ForumTopic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  authorId        String
+  author          User          @relation("ForumPostAuthor", fields: [authorId], references: [id])
+  parentId        String?       // For threaded replies
+  parent          ForumPost?    @relation("PostReplies", fields: [parentId], references: [id])
+  replies         ForumPost[]   @relation("PostReplies")
+  reactions       PostReaction[]
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  @@index([topicId, createdAt])
+  @@index([authorId])
+  @@map("forum_posts")
+}
+
+model PostReaction {
+  id        String      @id @default(cuid())
+  type      ReactionType
+  
+  postId    String
+  post      ForumPost   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User        @relation("PostReactions", fields: [userId], references: [id])
+  
+  createdAt DateTime    @default(now())
+  
+  @@unique([postId, userId, type])
+  @@map("post_reactions")
+}
+
+// Local Chapters and Meetups
+model LocalChapter {
+  id          String    @id @default(cuid())
+  name        String
+  city        String
+  country     String
+  description String?
+  isActive    Boolean   @default(true)
+  
+  // Contact info
+  organizerEmail String
+  organizerName  String
+  
+  // Members
+  members     ChapterMember[]
+  meetups     LocalMeetup[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@unique([city, country])
+  @@map("local_chapters")
+}
+
+model ChapterMember {
+  id        String   @id @default(cuid())
+  userId    String
+  chapterId String
+  role      ChapterRole @default(MEMBER)
+  joinedAt  DateTime @default(now())
+  
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapter   LocalChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, chapterId])
+  @@map("chapter_members")
+}
+
+model LocalMeetup {
+  id            String        @id @default(cuid())
+  title         String
+  description   String        @db.Text
+  venue         String
+  address       String
+  dateTime      DateTime
+  maxAttendees  Int?
+  cost          Int?          // In cents
+  
+  // Status
+  status        MeetupStatus  @default(PLANNED)
+  
+  // Relations
+  chapterId     String
+  chapter       LocalChapter  @relation(fields: [chapterId], references: [id])
+  organizerId   String
+  organizer     User          @relation("OrganizedMeetups", fields: [organizerId], references: [id])
+  attendees     MeetupAttendee[]
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  @@index([chapterId, dateTime])
+  @@map("local_meetups")
+}
+
+model MeetupAttendee {
+  id        String        @id @default(cuid())
+  userId    String
+  meetupId  String
+  status    AttendeeStatus @default(CONFIRMED)
+  rsvpAt    DateTime      @default(now())
+  
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  meetup    LocalMeetup   @relation(fields: [meetupId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, meetupId])
+  @@map("meetup_attendees")
+}
+
+// ========================================
+// PHASE 5: AI INTEGRATION & AUTOMATION
+// ========================================
+
+// Content Recommendations
+model ContentRecommendation {
+  id              String              @id @default(cuid())
+  userId          String
+  contentType     RecommendationType
+  contentId       String              // Article/Video/Course ID
+  score           Float               // 0-1 recommendation strength
+  reason          String?             // Why this was recommended
+  
+  // Tracking
+  viewed          Boolean             @default(false)
+  clicked         Boolean             @default(false)
+  dismissed       Boolean             @default(false)
+  
+  user            User                @relation("ContentRecommendations", fields: [userId], references: [id])
+  
+  createdAt       DateTime            @default(now())
+  expiresAt       DateTime            // Recommendations expire after 30 days
+  
+  @@unique([userId, contentType, contentId])
+  @@index([userId, score])
+  @@map("content_recommendations")
+}
+
+model UserBehavior {
+  id              String          @id @default(cuid())
+  userId          String
+  eventType       BehaviorEvent
+  contentType     String?
+  contentId       String?
+  duration        Int?            // Seconds spent
+  metadata        Json?           // Additional context
+  
+  user            User            @relation("UserBehaviors", fields: [userId], references: [id])
+  
+  createdAt       DateTime        @default(now())
+  
+  @@index([userId, eventType])
+  @@index([createdAt])
+  @@map("user_behaviors")
+}
+
+// Social Media Automation
+model SocialMediaPost {
+  id              String          @id @default(cuid())
+  platform        SocialPlatform
+  contentId       String?         // Related content ID
+  contentType     String?         // article, video, course
+  postText        String          @db.Text
+  mediaUrls       String[]        // Array of media URLs
+  hashtags        String[]        // Array of hashtags
+  
+  status          PostStatus      @default(SCHEDULED)
+  scheduledFor    DateTime
+  publishedAt     DateTime?
+  
+  // Platform-specific IDs
+  platformPostId  String?
+  engagement      Json?           // Likes, shares, comments data
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  @@index([platform, scheduledFor])
+  @@index([status])
+  @@map("social_media_posts")
+}
+
+// Content Curation
+model TrendingTopic {
+  id              String   @id @default(cuid())
+  keyword         String
+  category        String?
+  trendScore      Float    // 0-1 trending strength
+  volume          Int      // Search/mention volume
+  source          String   // google, twitter, reddit, etc.
+  
+  createdAt       DateTime @default(now())
+  expiresAt       DateTime
+  
+  @@index([trendScore, createdAt])
+  @@map("trending_topics")
+}
+
+model ContentIdea {
+  id              String      @id @default(cuid())
+  title           String
+  description     String      @db.Text
+  contentType     String      // article, video, course
+  category        String
+  keywords        String[]    // SEO keywords
+  estimatedTime   String?     // "5 min read", "30 min video"
+  
+  status          IdeaStatus  @default(PENDING)
+  priority        Priority    @default(MEDIUM)
+  
+  // AI-generated metadata
+  aiPrompt        String?     @db.Text
+  aiResponse      String?     @db.Text
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  @@index([status, priority])
+  @@map("content_ideas")
+}
+
+// SEO Optimization
+model SEOAnalysis {
+  id                String   @id @default(cuid())
+  contentType       String   // article, video, page
+  contentId         String
+  targetKeywords    String[] // Array of target keywords
+  
+  // Analysis results
+  readabilityScore  Float?
+  keywordDensity    Json?    // Keyword density analysis
+  metaTitle         String?
+  metaDescription   String?
+  suggestions       Json?    // Array of improvement suggestions
+  
+  createdAt         DateTime @default(now())
+  
+  @@unique([contentType, contentId])
+  @@map("seo_analyses")
+}
+
+// ========================================
+// PHASE 5: ENUMS
+// ========================================
+
+enum CompanySize {
+  STARTUP_1_10
+  SMALL_11_50
+  MEDIUM_51_200
+  LARGE_201_1000
+  ENTERPRISE_1000_PLUS
+}
+
+enum ConsultingType {
+  BRAND_STRATEGY
+  CONTENT_STRATEGY
+  COMMUNITY_BUILDING
+  AI_INTEGRATION
+  MARKET_RESEARCH
+  SPEAKING_ENGAGEMENT
+  ADVISORY_RETAINER
+}
+
+enum BudgetRange {
+  UNDER_10K
+  TEN_TO_25K
+  TWENTY_FIVE_TO_50K
+  FIFTY_TO_100K
+  OVER_100K
+}
+
+enum InquiryStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL_SENT
+  NEGOTIATING
+  CLOSED_WON
+  CLOSED_LOST
+}
+
+enum ProjectStatus {
+  PROPOSAL
+  CONTRACTED
+  IN_PROGRESS
+  ON_HOLD
+  COMPLETED
+  CANCELLED
+}
+
+enum MilestoneStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  OVERDUE
+}
+
+enum DeliverableStatus {
+  PENDING
+  IN_PROGRESS
+  DELIVERED
+  APPROVED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum EngagementFormat {
+  KEYNOTE
+  PANEL
+  WORKSHOP
+  FIRESIDE_CHAT
+  WEBINAR
+}
+
+enum EngagementStatus {
+  INQUIRY
+  REVIEWING
+  CONFIRMED
+  COMPLETED
+  DECLINED
+}
+
+enum MembershipTier {
+  FREE
+  PREMIUM
+  VIP
+}
+
+enum ReactionType {
+  LIKE
+  LOVE
+  INSIGHTFUL
+  HELPFUL
+  DISAGREE
+}
+
+enum ChapterRole {
+  MEMBER
+  ORGANIZER
+  ADMIN
+}
+
+enum MeetupStatus {
+  PLANNED
+  CONFIRMED
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+enum AttendeeStatus {
+  CONFIRMED
+  WAITLISTED
+  CANCELLED
+}
+
+enum RecommendationType {
+  ARTICLE
+  VIDEO
+  COURSE
+  EVENT
+  PRODUCT
+}
+
+enum BehaviorEvent {
+  PAGE_VIEW
+  ARTICLE_READ
+  VIDEO_WATCH
+  COURSE_ENROLL
+  SEARCH_QUERY
+  BOOKMARK_SAVE
+  FORUM_POST
+  EVENT_RSVP
+}
+
+enum SocialPlatform {
+  TWITTER
+  LINKEDIN
+  INSTAGRAM
+  YOUTUBE
+  FACEBOOK
+}
+
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  FAILED
+}
+
+enum IdeaStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
 }

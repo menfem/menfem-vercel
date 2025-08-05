@@ -46,6 +46,10 @@ const CATEGORIES = [
   {
     name: "MENFEM CLUB",
     href: "/club"
+  },
+  {
+    name: "CONSULTING",
+    href: "/consulting"
   }
 ]
 
