@@ -3,7 +3,7 @@
 
 'use server';
 
-import { stripe } from '@/lib/stripe';
+import { getStripeInstance } from '@/lib/stripe';
 import { prisma } from '@/lib/prisma';
 import { getAuthOrRedirect } from '@/features/auth/queries/get-auth-or-redirect';
 import { 
@@ -34,6 +34,7 @@ export async function createSubscriptionCheckout(
     }
 
     // Create Stripe checkout session for subscription
+    const stripe = getStripeInstance();
     const session = await stripe.checkout.sessions.create({
       customer_email: user.email,
       payment_method_types: ['card'],

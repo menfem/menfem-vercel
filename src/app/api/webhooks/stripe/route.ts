@@ -1,7 +1,7 @@
 // ABOUTME: Stripe webhook handler for payment and subscription events
 // ABOUTME: Processes payments, subscriptions, and enrollment automation
 
-import { stripe, STRIPE_WEBHOOK_EVENTS } from '@/lib/stripe';
+import { getStripeInstance, STRIPE_WEBHOOK_EVENTS } from '@/lib/stripe';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
@@ -18,6 +18,7 @@ export async function POST(request: Request) {
   let event: any;
 
   try {
+    const stripe = getStripeInstance();
     event = stripe.webhooks.constructEvent(
       body,
       signature,

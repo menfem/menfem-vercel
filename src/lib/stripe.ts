@@ -3,13 +3,20 @@
 
 import Stripe from 'stripe';
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('STRIPE_SECRET_KEY is required');
-}
+// Only initialize Stripe if not in build mode
+export const stripe = process.env.STRIPE_SECRET_KEY 
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2023-10-16',
+    })
+  : null;
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2023-10-16',
-});
+// Runtime check for webhook route
+export function getStripeInstance(): Stripe {
+  if (!stripe) {
+    throw new Error('STRIPE_SECRET_KEY is required');
+  }
+  return stripe;
+}
 
 // Price configurations for products and subscriptions
 export const PRICES = {

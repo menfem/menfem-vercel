@@ -7,3 +7,4 @@ export type ActionState =
   | { status: 'error'; message: string; fieldErrors?: Record<string, string[]> };
 
 export const initialActionState: ActionState = { status: 'idle' };
+export const emptyActionState: ActionState = { status: 'idle' };

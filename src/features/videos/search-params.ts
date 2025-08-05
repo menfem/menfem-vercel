@@ -36,3 +36,8 @@ export const adminVideoSearchParamsCache = createSearchParamsCache({
 });
 
 export type AdminVideoSearchParams = ReturnType<typeof adminVideoSearchParamsCache.parse>;
+
+// Parser function for server components
+export function parseVideoSearchParams(searchParams: Record<string, string | string[] | undefined>) {
+  return videoSearchParamsCache.parse(searchParams);
+}
