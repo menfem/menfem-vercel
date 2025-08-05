@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AdminProductForm } from '@/features/products/components/admin/admin-product-form';
 import { getProductCategories } from '@/features/products/queries/get-product-categories';
-import { getTags } from '@/features/admin/queries/get-tags';
+import { getTags } from '@/features/admin/queries/get-categories';
 
 export default async function NewProductPage() {
   // Fetch required data for the form
