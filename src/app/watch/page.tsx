@@ -4,7 +4,7 @@
 import { Suspense } from 'react';
 import { getVideos } from '@/features/videos/queries/get-videos';
 import { getVideoSeries } from '@/features/videos/queries/get-video-series';
-import { searchParamsCache } from '@/features/videos/search-params';
+import { videoSearchParamsCache } from '@/features/videos/search-params';
 import { VideoLibrary } from '@/features/videos/components/video-library';
 import { VideoLibrarySkeleton } from '@/features/videos/components/video-library-skeleton';
 
@@ -13,7 +13,7 @@ interface PageProps {
 }
 
 export default async function WatchPage({ searchParams }: PageProps) {
-  const parsedParams = searchParamsCache.parse(searchParams);
+  const parsedParams = videoSearchParamsCache.parse(searchParams);
 
   return (
     <div className="min-h-screen bg-gray-50">
