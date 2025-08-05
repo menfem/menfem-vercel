@@ -13,6 +13,7 @@ export const getVideos = cache(async (filters: VideoFilters = {}): Promise<Pagin
     isPremium,
     isPublished = true,
     tags = [],
+    excludeIds = [],
   } = filters;
 
   // Default pagination
@@ -51,6 +52,13 @@ export const getVideos = cache(async (filters: VideoFilters = {}): Promise<Pagin
           slug: { in: tags },
         },
       },
+    };
+  }
+
+  // Exclude specific videos
+  if (excludeIds.length > 0) {
+    where.id = {
+      notIn: excludeIds,
     };
   }
 

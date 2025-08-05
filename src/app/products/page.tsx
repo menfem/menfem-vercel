@@ -1,93 +1,76 @@
-// ABOUTME: Products category page displaying articles about tech, gear, and product reviews
-// ABOUTME: Features category-specific header and filtered article listings
+// ABOUTME: E-commerce product catalog page displaying courses and digital products
+// ABOUTME: Features product filtering, search, and purchase functionality
 
-import { getArticles } from '@/features/articles/queries/get-articles';
-import { CategoryHeader } from '@/components/category-header';
-import { ArticleGrid } from '@/components/article-grid';
-import { Pagination } from '@/components/pagination';
+import { Suspense } from 'react';
+import { getProducts } from '@/features/products/queries/get-products';
+import { getProductCategories } from '@/features/products/queries/get-product-categories';
+import { ProductCatalog } from '@/features/products/components/product-catalog';
+import { ProductCatalogSkeleton } from '@/features/products/components/product-catalog-skeleton';
+import { searchParamsCache } from '@/features/products/search-params';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Products - Tech, Gear & Reviews | MenFem',
-  description: 'Discover the best products, gear, and tech reviews for the modern man. From gadgets to everyday essentials.',
+  title: 'Products & Courses | MenFem',
+  description: 'Discover premium courses, digital products, and resources for personal development, masculinity, and success.',
   openGraph: {
-    title: 'Products - Tech, Gear & Reviews | MenFem',
-    description: 'Discover the best products, gear, and tech reviews for the modern man. From gadgets to everyday essentials.',
+    title: 'Products & Courses | MenFem',
+    description: 'Discover premium courses, digital products, and resources for personal development, masculinity, and success.',
   },
 };
 
 interface ProductsPageProps {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  searchParams: Record<string, string | string[] | undefined>;
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  const resolvedSearchParams = await searchParams;
-  const page = Number(resolvedSearchParams.page) || 1;
-  const limit = 12;
-  
-  const { list: articles, metadata } = await getArticles({
-    categorySlug: 'products',
-    page,
-    limit,
-    orderBy: 'publishedAt',
-    orderDirection: 'desc',
-  });
-
-  const featuredArticle = articles[0];
-  const regularArticles = articles.slice(1);
+  const parsedParams = searchParamsCache.parse(searchParams);
 
   return (
-    <div className="min-h-screen bg-brand-sage">
-      {/* Category Header */}
-      <CategoryHeader
-        title="Products"
-        description="Tech, gear, and product reviews for the discerning gentleman. Discover essential tools and products that enhance your daily life and productivity."
-        featuredArticle={featuredArticle}
-        totalArticles={metadata.count}
-      />
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Products & Courses
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Invest in your personal development with our comprehensive courses, 
+            workshops, and digital resources designed for the modern man.
+          </p>
+        </div>
 
-      {/* Articles Section */}
-      <section className="container mx-auto px-4 pb-16">
-        {regularArticles.length > 0 && (
-          <>
-            <h2 className="text-2xl font-bold text-brand-brown mb-8 text-center">
-              Latest Articles
-            </h2>
-            <ArticleGrid articles={regularArticles} showCategory={false} />
-            
-            {metadata.totalPages > 1 && (
-              <div className="mt-12">
-                <Pagination
-                  currentPage={metadata.page}
-                  totalPages={metadata.totalPages}
-                  hasNextPage={metadata.hasNextPage}
-                  hasPreviousPage={metadata.hasPreviousPage}
-                  basePath="/products"
-                />
-              </div>
-            )}
-          </>
-        )}
-
-        {articles.length === 0 && (
-          <div className="text-center py-16">
-            <div className="max-w-md mx-auto">
-              <h2 className="text-2xl font-medium text-brand-brown mb-4">
-                No product reviews yet
-              </h2>
-              <p className="text-gray-600 mb-8">
-                We're working on bringing you comprehensive reviews of the best products and gear. Check back soon!
-              </p>
-              <a 
-                href="/articles" 
-                className="bg-brand-terracotta text-white px-6 py-3 rounded font-medium hover:bg-brand-rust transition-colors"
-              >
-                Browse All Articles
-              </a>
-            </div>
-          </div>
-        )}
-      </section>
+        <Suspense fallback={<ProductCatalogSkeleton />}>
+          <ProductCatalogContent searchParams={parsedParams} />
+        </Suspense>
+      </div>
     </div>
+  );
+}
+
+async function ProductCatalogContent({ 
+  searchParams 
+}: { 
+  searchParams: any 
+}) {
+  const [productsData, categories] = await Promise.all([
+    getProducts({
+      page: searchParams.page,
+      search: searchParams.search,
+      categoryId: searchParams.categoryId,
+      type: searchParams.type,
+      isActive: true, // Only show active products to public
+      minPrice: searchParams.minPrice,
+      maxPrice: searchParams.maxPrice,
+    }),
+    getProductCategories(),
+  ]);
+
+  return (
+    <ProductCatalog 
+      products={productsData.list}
+      metadata={productsData.metadata}
+      categories={categories}
+      searchParams={searchParams}
+    />
   );
 }

@@ -53,9 +53,13 @@ export type ProductFilters = {
   categoryId?: string;
   type?: 'PHYSICAL' | 'DIGITAL' | 'COURSE' | 'SUBSCRIPTION';
   isActive?: boolean;
+  minPrice?: number;
+  maxPrice?: number;
   priceMin?: number;
   priceMax?: number;
   tags?: string[];
+  page?: number;
+  limit?: number;
 };
 
 export type ProductFormData = {

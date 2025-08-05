@@ -12,6 +12,8 @@ export const getProducts = cache(async (filters: ProductFilters = {}): Promise<P
     categoryId,
     type,
     isActive = true,
+    minPrice,
+    maxPrice,
     priceMin,
     priceMax,
     tags = [],
@@ -46,14 +48,17 @@ export const getProducts = cache(async (filters: ProductFilters = {}): Promise<P
     where.type = type;
   }
 
-  // Price range filter
-  if (priceMin !== undefined || priceMax !== undefined) {
+  // Price range filter (support both naming conventions)
+  const finalMinPrice = minPrice || priceMin;
+  const finalMaxPrice = maxPrice || priceMax;
+  
+  if (finalMinPrice !== undefined || finalMaxPrice !== undefined) {
     where.price = {};
-    if (priceMin !== undefined) {
-      where.price.gte = priceMin;
+    if (finalMinPrice !== undefined && finalMinPrice > 0) {
+      where.price.gte = finalMinPrice * 100; // Convert dollars to cents
     }
-    if (priceMax !== undefined) {
-      where.price.lte = priceMax;
+    if (finalMaxPrice !== undefined && finalMaxPrice > 0) {
+      where.price.lte = finalMaxPrice * 100; // Convert dollars to cents
     }
   }
 

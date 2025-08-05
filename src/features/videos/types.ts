@@ -48,6 +48,9 @@ export type VideoFilters = {
   isPremium?: boolean;
   isPublished?: boolean;
   tags?: string[];
+  excludeIds?: string[];
+  page?: number;
+  limit?: number;
 };
 
 export type VideoFormData = {
