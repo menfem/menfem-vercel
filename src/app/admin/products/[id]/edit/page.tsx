@@ -12,15 +12,16 @@ import { getProductCategories } from '@/features/products/queries/get-product-ca
 import { getTags } from '@/features/admin/queries/get-categories';
 
 interface EditProductPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function EditProductPage({ params }: EditProductPageProps) {
+  const { id } = await params;
   // Fetch data in parallel
   const [product, categories, tags] = await Promise.all([
-    getProduct(params.id),
+    getProduct(id),
     getProductCategories(),
     getTags(),
   ]);

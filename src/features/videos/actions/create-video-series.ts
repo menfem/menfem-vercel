@@ -63,9 +63,7 @@ export async function createVideoSeries(
     revalidatePath('/admin/videos/series');
     revalidatePath('/watch');
 
-    return toActionState('SUCCESS', 'Video series created successfully', {
-      seriesId: series.id,
-    });
+    return toActionState('SUCCESS', 'Video series created successfully');
 
   } catch (error) {
     console.error('Create video series error:', error);

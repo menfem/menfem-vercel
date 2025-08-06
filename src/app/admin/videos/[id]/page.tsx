@@ -13,13 +13,14 @@ import { ArrowLeft, Edit, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 interface AdminVideoPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function AdminVideoPage({ params }: AdminVideoPageProps) {
   await getAdminOrRedirect();
+  const { id } = await params;
 
-  const video = await getVideo(params.id);
+  const video = await getVideo(id);
 
   if (!video) {
     notFound();

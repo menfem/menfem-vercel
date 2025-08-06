@@ -12,14 +12,15 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
 interface AdminEditVideoPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function AdminEditVideoPage({ params }: AdminEditVideoPageProps) {
   await getAdminOrRedirect();
+  const { id } = await params;
 
   const [video, videoSeries, tags] = await Promise.all([
-    getVideo(params.id),
+    getVideo(id),
     getVideoSeries(),
     getTags(),
   ]);

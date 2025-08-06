@@ -11,13 +11,14 @@ import { getAuth } from '@/features/auth/queries/get-auth'
 import { RsvpButton } from '@/features/events/components/rsvp-button'
 
 interface EventPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: EventPageProps) {
-  const event = await getEvent(params.id)
+  const { id } = await params;
+  const event = await getEvent(id)
   
   if (!event) {
     return {
@@ -37,8 +38,9 @@ export async function generateMetadata({ params }: EventPageProps) {
 }
 
 export default async function EventPage({ params }: EventPageProps) {
+  const { id } = await params;
   const auth = await getAuth()
-  const event = await getEvent(params.id, auth.user?.id)
+  const event = await getEvent(id, auth.user?.id)
 
   if (!event) {
     notFound()

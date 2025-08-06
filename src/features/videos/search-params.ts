@@ -31,7 +31,14 @@ export type VideoSearchParams = ReturnType<typeof videoSearchParamsCache.parse>;
 
 // Admin-specific search params (includes drafts by default)
 export const adminVideoSearchParamsCache = createSearchParamsCache({
-  ...videoSearchParamsCache.parsers,
+  search: parseAsString.withDefault(''),
+  page: parseAsInteger.withDefault(0),
+  limit: parseAsInteger.withDefault(10),
+  seriesId: parseAsString.withDefault(''),
+  isPremium: parseAsBoolean,
+  sortBy: parseAsString.withDefault('createdAt'),
+  sortOrder: parseAsString.withDefault('desc'),
+  tags: parseAsArrayOf(parseAsString).withDefault([]),
   isPublished: parseAsBoolean, // No default for admin (show all)
 });
 

@@ -11,12 +11,13 @@ import { CoursePlayerSkeleton } from '@/features/courses/components/course-playe
 import type { Metadata } from 'next';
 
 interface PageProps {
-  params: { id: string };
-  searchParams: { lessonId?: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ lessonId?: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const course = await getCourse(params.id);
+  const { id } = await params;
+  const course = await getCourse(id);
 
   if (!course) {
     return {
@@ -36,8 +37,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function CoursePage({ params, searchParams }: PageProps) {
+  const { id } = await params;
+  const { lessonId } = await searchParams;
   const auth = await getAuth();
-  const course = await getCourse(params.id);
+  const course = await getCourse(id);
 
   if (!course || !course.isPublished) {
     notFound();
@@ -55,7 +58,7 @@ export default async function CoursePage({ params, searchParams }: PageProps) {
             <CoursePlayer
               course={course}
               userProgress={userProgress}
-              selectedLessonId={searchParams.lessonId}
+              selectedLessonId={lessonId}
             />
           </Suspense>
         </div>

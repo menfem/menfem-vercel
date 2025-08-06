@@ -28,12 +28,12 @@ export default async function AdminCoursesPage() {
             Manage your course catalog and student progress
           </p>
         </div>
-        <Button asChild>
-          <Link href="/admin/courses/new">
+        <Link href="/admin/courses/new">
+          <Button>
             <Plus className="h-4 w-4 mr-2" />
             Create Course
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </div>
 
       {/* Stats Cards */}

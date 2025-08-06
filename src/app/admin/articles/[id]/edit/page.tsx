@@ -9,14 +9,15 @@ import { getAdminArticle } from '@/features/admin/queries/get-admin-articles';
 import { getCategories } from '@/features/admin/queries/get-categories';
 
 interface EditArticlePageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function EditArticlePage({ params }: EditArticlePageProps) {
+  const { id } = await params;
   const [article, categories] = await Promise.all([
-    getAdminArticle(params.id),
+    getAdminArticle(id),
     getCategories()
   ]);
 

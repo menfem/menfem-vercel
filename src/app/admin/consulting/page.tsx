@@ -43,12 +43,12 @@ export default async function ConsultingDashboardPage() {
         </div>
         
         <div className="flex gap-2">
-          <Button asChild>
-            <Link href="/admin/consulting/inquiries">View All Inquiries</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/admin/consulting/projects">View All Projects</Link>
-          </Button>
+          <Link href="/admin/consulting/inquiries">
+            <Button>View All Inquiries</Button>
+          </Link>
+          <Link href="/admin/consulting/projects">
+            <Button variant="outline">View All Projects</Button>
+          </Link>
         </div>
       </div>
 
@@ -143,11 +143,11 @@ export default async function ConsultingDashboardPage() {
                         {formatDistanceToNow(inquiry.createdAt, { addSuffix: true })}
                       </p>
                     </div>
-                    <Button asChild size="sm" variant="outline">
-                      <Link href={`/admin/consulting/inquiries/${inquiry.id}`}>
+                    <Link href={`/admin/consulting/inquiries/${inquiry.id}`}>
+                      <Button size="sm" variant="outline">
                         View
-                      </Link>
-                    </Button>
+                      </Button>
+                    </Link>
                   </div>
                 ))}
               </div>
@@ -187,11 +187,11 @@ export default async function ConsultingDashboardPage() {
                       <Badge variant="secondary" className="mb-2">
                         {getStatusLabel(project.status)}
                       </Badge>
-                      <Button asChild size="sm" variant="outline">
-                        <Link href={`/admin/consulting/projects/${project.id}`}>
+                      <Link href={`/admin/consulting/projects/${project.id}`}>
+                        <Button size="sm" variant="outline">
                           View
-                        </Link>
-                      </Button>
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 ))}
@@ -236,11 +236,11 @@ export default async function ConsultingDashboardPage() {
                       <span>{formatDistanceToNow(inquiry.createdAt, { addSuffix: true })}</span>
                     </div>
                   </div>
-                  <Button asChild size="sm">
-                    <Link href={`/admin/consulting/inquiries/${inquiry.id}`}>
+                  <Link href={`/admin/consulting/inquiries/${inquiry.id}`}>
+                    <Button size="sm">
                       View Details
-                    </Link>
-                  </Button>
+                    </Button>
+                  </Link>
                 </div>
               ))}
             </div>

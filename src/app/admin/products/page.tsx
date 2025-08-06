@@ -48,18 +48,18 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
           </p>
         </div>
         <div className="flex gap-2">
-          <Button asChild variant="outline">
-            <Link href="/admin/products/categories">
+          <Link href="/admin/products/categories">
+            <Button variant="outline">
               <Package className="h-4 w-4 mr-2" />
               Categories
-            </Link>
-          </Button>
-          <Button asChild>
-            <Link href="/admin/products/new">
+            </Button>
+          </Link>
+          <Link href="/admin/products/new">
+            <Button>
               <Plus className="h-4 w-4 mr-2" />
               Add Product
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </div>
       </div>
 

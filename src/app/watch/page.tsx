@@ -9,11 +9,12 @@ import { VideoLibrary } from '@/features/videos/components/video-library';
 import { VideoLibrarySkeleton } from '@/features/videos/components/video-library-skeleton';
 
 interface PageProps {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export default async function WatchPage({ searchParams }: PageProps) {
-  const parsedParams = videoSearchParamsCache.parse(searchParams);
+  const searchParamsValue = await searchParams;
+  const parsedParams = videoSearchParamsCache.parse(searchParamsValue);
 
   return (
     <div className="min-h-screen bg-gray-50">

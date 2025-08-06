@@ -36,8 +36,9 @@ interface AdminVideoFormProps {
 }
 
 export function AdminVideoForm({ video, videoSeries, tags }: AdminVideoFormProps) {
+  const serverAction = video ? updateVideo.bind(null, video.id) : createVideo;
   const [actionState, formAction] = useActionState(
-    video ? updateVideo.bind(null, video.id) : createVideo,
+    serverAction,
     emptyActionState
   );
 
@@ -60,7 +61,7 @@ export function AdminVideoForm({ video, videoSeries, tags }: AdminVideoFormProps
 
   return (
     <div className="bg-white border rounded-lg p-6">
-      <Form action={formAction}>
+      <Form action={serverAction}>
         <div className="space-y-6">
           {/* YouTube URL (only for new videos) */}
           {!video && (

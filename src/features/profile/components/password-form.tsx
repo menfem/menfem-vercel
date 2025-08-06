@@ -18,10 +18,10 @@ export function PasswordForm() {
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    if (state.status === 'success') {
+    if (state.status === 'SUCCESS') {
       toast.success(state.message);
       formRef.current?.reset();
-    } else if (state.status === 'error') {
+    } else if (state.status === 'ERROR') {
       toast.error(state.message);
     }
   }, [state]);
@@ -46,7 +46,7 @@ export function PasswordForm() {
             disabled={isPending}
             required
           />
-          {state.status === 'error' && state.fieldErrors?.currentPassword && (
+          {state.status === 'ERROR' && state.fieldErrors?.currentPassword && (
             <p className="text-sm text-red-600">{state.fieldErrors.currentPassword[0]}</p>
           )}
         </div>
@@ -62,7 +62,7 @@ export function PasswordForm() {
             required
             minLength={6}
           />
-          {state.status === 'error' && state.fieldErrors?.newPassword && (
+          {state.status === 'ERROR' && state.fieldErrors?.newPassword && (
             <p className="text-sm text-red-600">{state.fieldErrors.newPassword[0]}</p>
           )}
         </div>
@@ -78,7 +78,7 @@ export function PasswordForm() {
             required
             minLength={6}
           />
-          {state.status === 'error' && state.fieldErrors?.confirmPassword && (
+          {state.status === 'ERROR' && state.fieldErrors?.confirmPassword && (
             <p className="text-sm text-red-600">{state.fieldErrors.confirmPassword[0]}</p>
           )}
         </div>

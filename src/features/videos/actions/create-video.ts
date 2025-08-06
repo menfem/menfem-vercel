@@ -118,9 +118,7 @@ export async function createVideo(
       revalidatePath(`/watch/series/${video.seriesId}`);
     }
 
-    return toActionState('SUCCESS', 'Video created successfully', {
-      videoId: video.id,
-    });
+    return toActionState('SUCCESS', 'Video created successfully');
 
   } catch (error) {
     console.error('Create video error:', error);

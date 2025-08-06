@@ -98,7 +98,7 @@ export async function updateVideo(
         youtubeId = newYoutubeId;
         embedUrl = urls.embed;
         thumbnailUrl = youtubeMetadata.thumbnailUrl;
-        duration = youtubeMetadata.duration;
+        duration = youtubeMetadata.duration ?? null;
       } catch {
         return {
           status: 'ERROR',

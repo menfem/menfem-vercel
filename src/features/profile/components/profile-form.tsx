@@ -22,9 +22,9 @@ export function ProfileForm({ user }: ProfileFormProps) {
   const [state, formAction, isPending] = useActionState(updateProfile, initialActionState);
 
   useEffect(() => {
-    if (state.status === 'success') {
+    if (state.status === 'SUCCESS') {
       toast.success(state.message);
-    } else if (state.status === 'error') {
+    } else if (state.status === 'ERROR') {
       toast.error(state.message);
     }
   }, [state]);
@@ -50,7 +50,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
               placeholder="Enter your username"
               disabled={isPending}
             />
-            {state.status === 'error' && state.fieldErrors?.username && (
+            {state.status === 'ERROR' && state.fieldErrors?.username && (
               <p className="text-sm text-red-600">{state.fieldErrors.username[0]}</p>
             )}
           </div>
@@ -65,7 +65,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
               placeholder="Enter your email"
               disabled={isPending}
             />
-            {state.status === 'error' && state.fieldErrors?.email && (
+            {state.status === 'ERROR' && state.fieldErrors?.email && (
               <p className="text-sm text-red-600">{state.fieldErrors.email[0]}</p>
             )}
           </div>

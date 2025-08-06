@@ -20,13 +20,14 @@ import { getAdminArticle } from '@/features/admin/queries/get-admin-articles';
 import { AdminArticleActions } from '@/features/admin/components/admin-article-actions';
 
 interface ArticleDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function ArticleDetailPage({ params }: ArticleDetailPageProps) {
-  const article = await getAdminArticle(params.id);
+  const { id } = await params;
+  const article = await getAdminArticle(id);
 
   if (!article) {
     notFound();

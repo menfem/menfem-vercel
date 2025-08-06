@@ -10,12 +10,13 @@ import { RelatedProducts } from '@/features/products/components/related-products
 import type { Metadata } from 'next';
 
 interface PageProps {
-  params: { slug: string };
-  searchParams: { success?: string };
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ success?: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const product = await getProduct(params.slug);
+  const { slug } = await params;
+  const product = await getProduct(slug);
 
   if (!product) {
     return {
@@ -35,7 +36,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ProductPage({ params, searchParams }: PageProps) {
-  const product = await getProduct(params.slug);
+  const { slug } = await params;
+  const { success } = await searchParams;
+  const product = await getProduct(slug);
 
   if (!product || !product.isActive) {
     notFound();
@@ -49,7 +52,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
           <div className="lg:col-span-3">
             <ProductDetails 
               product={product} 
-              purchaseSuccess={searchParams.success === 'true'}
+              purchaseSuccess={success === 'true'}
             />
           </div>
 

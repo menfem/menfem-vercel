@@ -50,7 +50,7 @@ export function EnhancedVideoPlayer({
   const [showSettings, setShowSettings] = useState(false);
   
   const videoRef = useRef<HTMLVideoElement>(null);
-  const progressIntervalRef = useRef<NodeJS.Timeout>();
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Progress tracking
   useEffect(() => {
