@@ -14,15 +14,16 @@ import {
 } from '@/components/ui/select';
 
 interface AdminAnalyticsPageProps {
-  searchParams: {
+  searchParams: Promise<{
     timeframe?: string;
-  };
+  }>;
 }
 
 export default async function AdminAnalyticsPage({ searchParams }: AdminAnalyticsPageProps) {
   await getAdminOrRedirect();
-
-  const timeframe = searchParams.timeframe || '30d';
+  
+  const resolvedSearchParams = await searchParams;
+  const timeframe = resolvedSearchParams.timeframe || '30d';
 
   return (
     <div className="space-y-6">

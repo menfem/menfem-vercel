@@ -1,7 +1,7 @@
 // ABOUTME: Performance optimization utilities for the MenFem platform
 // ABOUTME: Provides caching, lazy loading, and performance monitoring helpers
 
-import { cache } from 'react';
+import React, { cache } from 'react';
 
 // Image optimization helpers
 export const getOptimizedImageProps = (

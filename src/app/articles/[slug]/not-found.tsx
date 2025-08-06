@@ -10,7 +10,7 @@ export default function NotFound() {
       <div className="text-center max-w-md mx-auto px-4">
         <h1 className="text-4xl font-bold text-brand-brown mb-4">Article Not Found</h1>
         <p className="text-gray-600 mb-8 leading-relaxed">
-          The article you're looking for doesn't exist or has been moved.
+          The article you&apos;re looking for doesn&apos;t exist or has been moved.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/articles">

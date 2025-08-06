@@ -3,33 +3,26 @@
 
 import Link from 'next/link';
 import { Suspense } from 'react';
-import { 
-  Plus, 
-  Search,
-  Filter,
-  Eye,
-  Edit,
-  MoreHorizontal
-} from 'lucide-react';
-import { getAdminArticles } from '@/features/admin/queries/get-admin-articles';
+import { Plus } from 'lucide-react';
 import { AdminArticlesList } from '@/features/admin/components/admin-articles-list';
 import { AdminArticlesFilters } from '@/features/admin/components/admin-articles-filters';
 
 interface AdminArticlesPageProps {
-  searchParams?: {
+  searchParams?: Promise<{
     search?: string;
     published?: string;
     category?: string;
     page?: string;
-  };
+  }>;
 }
 
 export default async function AdminArticlesPage({ 
-  searchParams = {} 
+  searchParams 
 }: AdminArticlesPageProps) {
-  const page = parseInt(searchParams.page || '1');
-  const published = searchParams.published === 'true' ? true : 
-                   searchParams.published === 'false' ? false : undefined;
+  const resolvedSearchParams = await searchParams || {};
+  const page = parseInt(resolvedSearchParams.page || '1');
+  const published = resolvedSearchParams.published === 'true' ? true : 
+                   resolvedSearchParams.published === 'false' ? false : undefined;
 
   return (
     <div className="space-y-6">
@@ -50,17 +43,17 @@ export default async function AdminArticlesPage({
 
       {/* Filters */}
       <AdminArticlesFilters 
-        currentSearch={searchParams.search || ''}
-        currentPublished={searchParams.published}
-        currentCategory={searchParams.category}
+        currentSearch={resolvedSearchParams.search || ''}
+        currentPublished={resolvedSearchParams.published}
+        currentCategory={resolvedSearchParams.category}
       />
 
       {/* Articles List */}
       <Suspense fallback={<AdminArticlesListSkeleton />}>
         <AdminArticlesList
-          search={searchParams.search}
+          search={resolvedSearchParams.search}
           published={published}
-          category={searchParams.category}
+          category={resolvedSearchParams.category}
           page={page}
         />
       </Suspense>

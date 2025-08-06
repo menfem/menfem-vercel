@@ -56,7 +56,7 @@ export default function NewsletterSubscribePage() {
                 </div>
                 <h3 className="font-semibold text-brand-brown mb-2">Weekly Delivery</h3>
                 <p className="text-gray-600 text-sm">
-                  Every Friday, get the week's best recommendations
+                  Every Friday, get the week&apos;s best recommendations
                 </p>
               </div>
               <div className="text-center">

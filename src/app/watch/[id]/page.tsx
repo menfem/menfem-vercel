@@ -13,11 +13,12 @@ import { PremiumPaywall } from '@/features/videos/components/premium-paywall';
 import { incrementVideoViews } from '@/features/videos/actions/increment-views';
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function VideoPage({ params }: PageProps) {
-  const video = await getVideo(params.id);
+  const resolvedParams = await params;
+  const video = await getVideo(resolvedParams.id);
 
   if (!video || !video.isPublished) {
     notFound();

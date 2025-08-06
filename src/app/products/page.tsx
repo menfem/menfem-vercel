@@ -19,11 +19,12 @@ export const metadata: Metadata = {
 };
 
 interface ProductsPageProps {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  const parsedParams = searchParamsCache.parse(searchParams);
+  const resolvedSearchParams = await searchParams;
+  const parsedParams = searchParamsCache.parse(resolvedSearchParams);
 
   return (
     <div className="min-h-screen bg-gray-50">

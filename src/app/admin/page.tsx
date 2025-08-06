@@ -6,7 +6,6 @@ import {
   FileText, 
   Users, 
   Eye, 
-  Calendar,
   Plus,
   TrendingUp
 } from 'lucide-react';

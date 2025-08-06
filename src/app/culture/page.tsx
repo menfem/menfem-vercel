@@ -1,6 +1,7 @@
 // ABOUTME: Culture category page displaying articles about film, music, art, and books
 // ABOUTME: Features category-specific header and filtered article listings
 
+import Link from 'next/link';
 import { getArticles } from '@/features/articles/queries/get-articles';
 import { CategoryHeader } from '@/components/category-header';
 import { ArticleGrid } from '@/components/article-grid';
@@ -76,14 +77,14 @@ export default async function CulturePage({ searchParams }: CulturePageProps) {
                 No culture articles yet
               </h2>
               <p className="text-gray-600 mb-8">
-                We're working on bringing you amazing content about film, music, art, and more. Check back soon!
+                We&apos;re working on bringing you amazing content about film, music, art, and more. Check back soon!
               </p>
-              <a 
+              <Link 
                 href="/articles" 
                 className="bg-brand-terracotta text-white px-6 py-3 rounded font-medium hover:bg-brand-rust transition-colors"
               >
                 Browse All Articles
-              </a>
+              </Link>
             </div>
           </div>
         )}

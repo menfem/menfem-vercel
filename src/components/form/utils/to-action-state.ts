@@ -2,15 +2,7 @@
 // ABOUTME: Provides standardized error and success handling for server actions
 
 import { z } from 'zod';
-
-export type ActionState = {
-  status?: 'SUCCESS' | 'ERROR';
-  message?: string;
-  fieldErrors?: Record<string, string[] | undefined>;
-  formData?: FormData;
-  timestamp?: number;
-  payload?: any;
-};
+import type { ActionState } from '@/types/action-state';
 
 export const emptyActionState: ActionState = {};
 

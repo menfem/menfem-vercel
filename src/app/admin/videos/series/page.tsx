@@ -1,7 +1,6 @@
 // ABOUTME: Admin video series management page
 // ABOUTME: Lists and manages video series with creation and editing options
 
-import { Suspense } from 'react';
 import Link from 'next/link';
 import { getAdminOrRedirect } from '@/features/admin/queries/get-admin-or-redirect';
 import { getVideoSeries } from '@/features/videos/queries/get-video-series';

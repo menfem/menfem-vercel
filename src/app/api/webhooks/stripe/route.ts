@@ -70,7 +70,7 @@ async function handleCheckoutCompleted(session: any) {
 
   await prisma.$transaction(async (tx) => {
     // Create purchase record
-    const purchase = await tx.purchase.create({
+    const _purchase = await tx.purchase.create({
       data: {
         userId: metadata.userId,
         productId: metadata.productId,

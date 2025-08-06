@@ -7,13 +7,14 @@ import { ClientDashboard } from '@/features/consulting/components/client-portal/
 import { getClientProject } from '@/features/consulting/queries/get-client-projects';
 
 interface ClientPortalPageProps {
-  params: {
+  params: Promise<{
     projectId: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: ClientPortalPageProps): Promise<Metadata> {
-  const project = await getClientProject(params.projectId);
+  const resolvedParams = await params;
+  const project = await getClientProject(resolvedParams.projectId);
   
   if (!project) {
     return {
@@ -29,7 +30,8 @@ export async function generateMetadata({ params }: ClientPortalPageProps): Promi
 }
 
 export default async function ClientPortalPage({ params }: ClientPortalPageProps) {
-  const project = await getClientProject(params.projectId);
+  const resolvedParams = await params;
+  const project = await getClientProject(resolvedParams.projectId);
 
   if (!project) {
     notFound();

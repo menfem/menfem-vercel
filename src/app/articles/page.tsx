@@ -1,6 +1,7 @@
 // ABOUTME: Main articles listing page with search, filtering, and pagination
 // ABOUTME: Server component that displays all published articles with metadata
 
+import Link from 'next/link';
 import { getArticles } from '@/features/articles/queries/get-articles';
 import { ArticleGrid } from '@/components/article-grid';
 import { ArticleFilters } from '@/components/article-filters';
@@ -79,18 +80,18 @@ export default async function ArticlesPage({ searchParams }: ArticlesPageProps) 
                 }
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a 
+                <Link 
                   href="/articles" 
                   className="bg-brand-terracotta text-white px-6 py-3 rounded font-medium hover:bg-brand-rust transition-colors"
                 >
                   View All Articles
-                </a>
-                <a 
+                </Link>
+                <Link 
                   href="/" 
                   className="border border-brand-brown text-brand-brown px-6 py-3 rounded font-medium hover:bg-brand-cream transition-colors"
                 >
                   Return Home
-                </a>
+                </Link>
               </div>
             </div>
           </div>

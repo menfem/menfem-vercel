@@ -19,13 +19,13 @@ export default function ClientPortalNotFound() {
         
         <CardContent className="text-center space-y-4">
           <p className="text-gray-600">
-            We couldn't find the project you're looking for. This could be because:
+            We couldn&apos;t find the project you&apos;re looking for. This could be because:
           </p>
           
           <ul className="text-sm text-gray-500 text-left space-y-2">
             <li>• The project ID is incorrect</li>
-            <li>• The project hasn't been set up yet</li>
-            <li>• You don't have access to this project</li>
+            <li>• The project hasn&apos;t been set up yet</li>
+            <li>• You don&apos;t have access to this project</li>
             <li>• The project has been completed or archived</li>
           </ul>
           

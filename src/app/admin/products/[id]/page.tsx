@@ -4,31 +4,30 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Edit, Eye, Package, TrendingUp, Users, Calendar } from 'lucide-react';
+import { ArrowLeft, Edit, Eye, Package, TrendingUp, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import { AdminProductActions } from '@/features/products/components/admin/admin-product-actions';
 import { getProduct } from '@/features/products/queries/get-product';
 import { formatPrice } from '@/features/products/utils/format-price';
 import { format } from 'date-fns';
 
 interface ProductDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
-  const product = await getProduct(params.id);
+  const resolvedParams = await params;
+  const product = await getProduct(resolvedParams.id);
 
   if (!product) {
     notFound();
   }
 
   const hasImages = product.images && product.images.length > 0;
-  const primaryImage = hasImages ? product.images[0] : null;
   const isLowStock = product.stock !== null && product.stock <= 10;
   const isOutOfStock = product.stock === 0;
 

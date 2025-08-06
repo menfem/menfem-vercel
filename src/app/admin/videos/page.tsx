@@ -10,11 +10,13 @@ import { Plus } from 'lucide-react';
 import { getAdminOrRedirect } from '@/features/admin/queries/get-admin-or-redirect';
 
 interface AdminVideosPageProps {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export default async function AdminVideosPage({ searchParams }: AdminVideosPageProps) {
   await getAdminOrRedirect();
+  
+  const resolvedSearchParams = await searchParams;
 
   return (
     <div className="space-y-6">
@@ -46,7 +48,7 @@ export default async function AdminVideosPage({ searchParams }: AdminVideosPageP
 
       {/* Videos List */}
       <Suspense fallback={<AdminVideosListSkeleton />}>
-        <AdminVideosList searchParams={searchParams} />
+        <AdminVideosList searchParams={resolvedSearchParams} />
       </Suspense>
     </div>
   );

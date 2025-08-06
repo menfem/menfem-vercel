@@ -11,13 +11,14 @@ import { AdminCourseModulesList } from '@/features/courses/components/admin/admi
 import { getCourse } from '@/features/courses/queries/get-course';
 
 interface CourseModulesPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function CourseModulesPage({ params }: CourseModulesPageProps) {
-  const course = await getCourse(params.id);
+  const resolvedParams = await params;
+  const course = await getCourse(resolvedParams.id);
 
   if (!course) {
     notFound();
