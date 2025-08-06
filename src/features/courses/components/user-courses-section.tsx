@@ -6,11 +6,37 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { formatPrice } from '@/features/products/utils/format-price';
 import { BookOpen, Clock, CheckCircle, Play } from 'lucide-react';
 
 interface UserCoursesSectionProps {
-  courses: any[]; // CourseEnrollment with progress
+  courses: Array<{
+    id: string;
+    course: {
+      id: string;
+      title: string;
+      description: string;
+      thumbnailUrl?: string;
+      slug: string;
+      product: {
+        price: number;
+        category?: {
+          name: string;
+        };
+      };
+      modules: Array<{
+        lessons: Array<{
+          id: string;
+          completions: Array<{ id: string }>;
+        }>;
+      }>;
+    };
+    enrolledAt: Date;
+    progress?: {
+      progressPercentage: number;
+      completedLessons: number;
+      totalLessons: number;
+    };
+  }>;
 }
 
 export function UserCoursesSection({ courses }: UserCoursesSectionProps) {
@@ -36,7 +62,23 @@ export function UserCoursesSection({ courses }: UserCoursesSectionProps) {
   );
 }
 
-function EnrolledCourseCard({ enrollment }: { enrollment: any }) {
+function EnrolledCourseCard({ enrollment }: { 
+  enrollment: {
+    id: string;
+    course: {
+      id: string;
+      title: string;
+      description: string;
+      thumbnailUrl?: string;
+      slug: string;
+    };
+    progress?: {
+      progressPercentage: number;
+      completedLessons: number;
+      totalLessons: number;
+    };
+  }
+}) {
   const { course, progress, enrolledAt, completedAt } = enrollment;
   const product = course.product;
   const isCompleted = completedAt !== null;

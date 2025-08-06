@@ -3,7 +3,7 @@
 
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { rsvpToEvent, cancelRsvp } from '../actions/rsvp-event'
 import { useRouter } from 'next/navigation'

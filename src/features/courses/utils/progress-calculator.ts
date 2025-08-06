@@ -22,7 +22,7 @@ export function calculateCourseProgress(
 
   let totalLessons = 0;
   let completedLessons = 0;
-  let nextLesson: any = null;
+  let nextLesson: LessonWithCompletion | null = null;
   let foundNext = false;
 
   const modules: ModuleProgress[] = enrollment.course.modules.map(module => {
@@ -34,17 +34,21 @@ export function calculateCourseProgress(
       
       if (isCompleted) {
         completedLessons++;
-      } else if (!foundNext && !nextLesson) {
-        nextLesson = lesson;
-        foundNext = true;
       }
 
-      return {
+      const lessonWithCompletion: LessonWithCompletion = {
         ...lesson,
         isCompleted,
         completedAt: completion?.completedAt,
         completions: completion ? [completion] : [],
       };
+
+      if (!isCompleted && !foundNext && !nextLesson) {
+        nextLesson = lessonWithCompletion;
+        foundNext = true;
+      }
+
+      return lessonWithCompletion;
     });
 
     const moduleCompletedLessons = lessonsWithCompletion.filter(l => l.isCompleted).length;

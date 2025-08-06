@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Edit, Eye, Trash2, ShoppingCart } from 'lucide-react';
+import { Edit, Eye, ShoppingCart } from 'lucide-react';
 import { AdminPagination } from '@/features/admin/components/admin-pagination';
 import { AdminProductActions } from './admin-product-actions';
 import { formatPrice } from '../../utils/format-price';

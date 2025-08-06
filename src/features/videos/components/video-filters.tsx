@@ -22,7 +22,7 @@ interface VideoFiltersProps {
   searchParams: Record<string, string | string[] | undefined>;
 }
 
-export function VideoFilters({ videoSeries, searchParams: _searchParams }: VideoFiltersProps) {
+export function VideoFilters({ videoSeries }: Omit<VideoFiltersProps, 'searchParams'>) {
   const [search, setSearch] = useQueryState('search', parseAsString.withDefault(''));
   const [seriesId, setSeriesId] = useQueryState('seriesId', parseAsString.withDefault(''));
   const [isPremium, setIsPremium] = useQueryState('isPremium', parseAsBoolean);

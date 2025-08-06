@@ -40,7 +40,7 @@ export function AdminProductCategoriesList({ categories }: AdminProductCategorie
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const handleDelete = async (categoryId: string, categoryName: string) => {
+  const handleDelete = async (categoryId: string) => {
     setDeletingId(categoryId);
     
     try {
@@ -166,7 +166,7 @@ export function AdminProductCategoriesList({ categories }: AdminProductCategorie
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={() => handleDelete(category.id, category.name)}
+                          onClick={() => handleDelete(category.id)}
                           disabled={category._count.products > 0 || deletingId === category.id}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >

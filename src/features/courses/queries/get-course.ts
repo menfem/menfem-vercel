@@ -213,7 +213,7 @@ export const getUserCourseProgress = cache(async (
     },
   });
 
-  return calculateCourseProgress(enrollment as any, userCompletions);
+  return calculateCourseProgress(enrollment, userCompletions);
 });
 
 export const isUserEnrolled = cache(async (courseId: string, userId: string): Promise<boolean> => {
@@ -269,7 +269,7 @@ export const getUserEnrolledCourses = cache(async (userId: string): Promise<Cour
   });
 
   return enrollments.map(enrollment => 
-    calculateCourseProgress(enrollment as any, userCompletions)
+    calculateCourseProgress(enrollment, userCompletions)
   );
 });
 

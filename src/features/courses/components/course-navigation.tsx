@@ -5,11 +5,11 @@
 
 import { X, Play, CheckCircle, Circle, ChevronDown, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
-import type { CourseWithRelations } from '../types';
+import type { CourseWithRelations, CourseProgress } from '../types';
 
 interface CourseNavigationProps {
   course: CourseWithRelations;
-  userProgress: any; // CourseEnrollment with progress
+  userProgress: CourseProgress;
   currentLessonId: string;
   onLessonSelect: (lessonId: string) => void;
   onClose: () => void;
@@ -45,16 +45,16 @@ export function CourseNavigation({
   };
 
   const getModuleProgress = (moduleId: string) => {
-    const module = course.modules.find(m => m.id === moduleId);
-    if (!module) return { completed: 0, total: 0 };
+    const courseModule = course.modules.find(m => m.id === moduleId);
+    if (!courseModule) return { completed: 0, total: 0 };
     
-    const completed = module.lessons.filter(lesson => 
+    const completed = courseModule.lessons.filter(lesson => 
       isLessonCompleted(lesson.id)
     ).length;
     
     return {
       completed,
-      total: module.lessons.length
+      total: courseModule.lessons.length
     };
   };
 

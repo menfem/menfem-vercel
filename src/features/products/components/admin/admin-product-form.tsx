@@ -20,7 +20,7 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Upload, X, Plus } from 'lucide-react';
+import { Loader2, X, Plus } from 'lucide-react';
 import { createProduct } from '../../actions/create-product';
 import { updateProduct } from '../../actions/update-product';
 import { PRODUCT_TYPES, COURSE_PRICING, SUBSCRIPTION_PRICING } from '../../constants';

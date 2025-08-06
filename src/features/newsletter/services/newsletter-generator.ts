@@ -98,7 +98,20 @@ export class NewsletterGenerator {
   /**
    * Format articles into newsletter content structure
    */
-  private formatNewsletterContent(articles: any[]): NewsletterContent {
+  private formatNewsletterContent(articles: Array<{
+    id: string;
+    title: string;
+    subtitle?: string;
+    excerpt: string;
+    slug: string;
+    coverImage?: string;
+    author: {
+      username?: string;
+      email: string;
+    };
+    readingTime: number;
+    publishedAt: Date;
+  }>): NewsletterContent {
     const [featuredArticle, ...otherArticles] = articles;
 
     return {

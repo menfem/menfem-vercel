@@ -45,16 +45,12 @@ export function useDebounce<T>(value: T, delay: number): T {
 // Memoized data fetchers
 export const getCachedCourses = cache(async (filters?: Record<string, unknown>) => {
   // This would integrate with your actual data fetching
-  const searchParams = new URLSearchParams(filters);
-  const _cacheKey = `courses-${searchParams.toString()}`;
-  
   // Implementation would go here
   return [];
 });
 
 export const getCachedProducts = cache(async (filters?: Record<string, unknown>) => {
-  const searchParams = new URLSearchParams(filters);
-  const _cacheKey = `products-${searchParams.toString()}`;
+  // Implementation would go here
   
   return [];
 });

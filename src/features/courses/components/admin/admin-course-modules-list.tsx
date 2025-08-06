@@ -203,7 +203,17 @@ function LessonItem({
   moduleId,
   lessonNumber,
 }: {
-  lesson: any;
+  lesson: {
+    id: string;
+    title: string;
+    isPublished: boolean;
+    video?: unknown;
+    course?: {
+      product?: {
+        slug: string;
+      };
+    };
+  };
   courseId: string;
   moduleId: string;
   lessonNumber: number;

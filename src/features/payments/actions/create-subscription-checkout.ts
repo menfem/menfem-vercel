@@ -7,15 +7,12 @@ import { getStripeInstance } from '@/lib/stripe';
 import { prisma } from '@/lib/prisma';
 import { getAuthOrRedirect } from '@/features/auth/queries/get-auth-or-redirect';
 import { 
-  fromErrorToActionState, 
   toActionState 
 } from '@/components/form/utils/to-action-state';
 import type { ActionState } from '@/types/action-state';
 
 export async function createSubscriptionCheckout(
-  priceId: string,
-  prevState?: ActionState,
-  formData?: FormData
+  priceId: string
 ): Promise<ActionState> {
   try {
     // Check authentication

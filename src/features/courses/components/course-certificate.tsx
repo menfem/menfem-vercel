@@ -81,7 +81,7 @@ export function CourseCertificate({
           text: `I just completed ${certificate.courseTitle} and earned my certificate!`,
           url: window.location.href,
         });
-      } catch (error) {
+      } catch {
         // User cancelled or error occurred
       }
     } else {

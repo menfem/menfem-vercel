@@ -85,7 +85,7 @@ export const getClientProjects = cache(async (
   limit: number = 10
 ) => {
   try {
-    const where: any = {};
+    const where: Record<string, unknown> = {};
 
     // Apply filters
     if (filters?.status && filters.status.length > 0) {

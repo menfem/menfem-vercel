@@ -99,7 +99,7 @@ export async function updateVideo(
         embedUrl = urls.embed;
         thumbnailUrl = youtubeMetadata.thumbnailUrl;
         duration = youtubeMetadata.duration;
-      } catch (_error) {
+      } catch {
         return {
           status: 'ERROR',
           message: 'Failed to fetch video information from YouTube',

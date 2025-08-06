@@ -109,7 +109,7 @@ export function AdminProductsFilters({ categories, currentFilters }: AdminProduc
         {/* Type Filter */}
         <Select
           value={currentFilters.type || 'all'}
-          onValueChange={(value) => updateFilters({ type: value === 'all' ? undefined : value as any })}
+          onValueChange={(value) => updateFilters({ type: value === 'all' ? undefined : value as 'COURSE' | 'SUBSCRIPTION' | 'DIGITAL_PRODUCT' })}
         >
           <SelectTrigger>
             <SelectValue placeholder="All Types" />
@@ -157,7 +157,7 @@ export function AdminProductsFilters({ categories, currentFilters }: AdminProduc
           onValueChange={(value) => {
             const [sortBy, sortOrder] = value.split('_');
             updateFilters({ 
-              sortBy: sortBy as any,
+              sortBy: sortBy as 'name' | 'price' | 'createdAt' | 'type',
               sortOrder: sortOrder as 'asc' | 'desc'
             });
           }}

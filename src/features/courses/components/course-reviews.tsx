@@ -46,8 +46,6 @@ interface CourseReviewsProps {
 }
 
 export function CourseReviews({
-  courseId,
-  courseTitle,
   reviews,
   averageRating,
   totalReviews,

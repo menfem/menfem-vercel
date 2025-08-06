@@ -8,7 +8,6 @@ import { BookOpen, Clock, CheckCircle, ArrowRight, Calendar, Trophy } from 'luci
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { CourseProgressBar } from './course-progress-bar';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
@@ -141,7 +140,7 @@ export function DashboardCourseOverview({
               key={filter.key}
               variant={selectedFilter === filter.key ? "default" : "outline"}
               size="sm"
-              onClick={() => setSelectedFilter(filter.key as any)}
+              onClick={() => setSelectedFilter(filter.key as 'all' | 'in-progress' | 'completed')}
               className="text-xs"
             >
               {filter.label} ({filter.count})

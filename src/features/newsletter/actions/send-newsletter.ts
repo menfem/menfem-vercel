@@ -37,7 +37,25 @@ export async function sendWeeklyNewsletter(
   }
 }
 
-export async function previewNewsletter(): Promise<any> {
+export async function previewNewsletter(): Promise<{
+  success: boolean;
+  data?: {
+    featuredArticle: {
+      id: string;
+      title: string;
+      excerpt: string;
+      slug: string;
+    };
+    recentArticles: Array<{
+      id: string;
+      title: string;
+      excerpt: string;
+      slug: string;
+    }>;
+    weekOf: string;
+  };
+  error?: string;
+}> {
   try {
     const { user } = await getAuthOrRedirect();
     

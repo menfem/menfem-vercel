@@ -4,7 +4,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Play, Lock, CheckCircle, Clock, Users, BookOpen } from 'lucide-react';
+import { Play, Lock, CheckCircle, Clock, Users, BookOpen, Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { PricingCard } from '@/features/products/components/pricing-card';
 import { cn } from '@/lib/utils';

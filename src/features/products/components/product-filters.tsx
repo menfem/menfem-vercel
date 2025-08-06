@@ -23,7 +23,7 @@ interface ProductFiltersProps {
   searchParams: Record<string, string | string[] | undefined>;
 }
 
-export function ProductFilters({ categories, searchParams: _searchParams }: ProductFiltersProps) {
+export function ProductFilters({ categories }: Omit<ProductFiltersProps, 'searchParams'>) {
   const [search, setSearch] = useQueryState('search', parseAsString.withDefault(''));
   const [categoryId, setCategoryId] = useQueryState('categoryId', parseAsString.withDefault(''));
   const [type, setType] = useQueryState('type', parseAsString.withDefault(''));

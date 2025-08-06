@@ -136,7 +136,7 @@ export async function completeLesson(
 
 // Helper function to calculate course progress
 async function calculateCourseProgressForUser(
-  tx: any,
+  tx: Parameters<Parameters<typeof prisma.$transaction>[0]>[0],
   courseId: string,
   userId: string
 ) {

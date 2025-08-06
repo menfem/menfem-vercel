@@ -52,7 +52,7 @@ export function CourseCompletionCelebration({
           text: `Just finished the ${course.title} course. Great insights on personal development and relationships!`,
           url: window.location.origin + `/courses/${course.id}`
         });
-      } catch (error) {
+      } catch {
         // User cancelled or error occurred
       }
       setIsSharing(false);

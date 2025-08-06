@@ -199,7 +199,7 @@ export function AdminCourseDashboard({ courses, stats }: AdminCourseDashboardPro
               </SelectContent>
             </Select>
 
-            <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
+            <Select value={sortBy} onValueChange={(value) => setSortBy(value as typeof sortBy)}>
               <SelectTrigger className="w-full sm:w-40">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>

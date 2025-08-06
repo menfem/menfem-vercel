@@ -40,7 +40,7 @@ export function LessonCompleteButton({
           setOptimisticCompleted(false);
           toast.error(result.message || 'Failed to complete lesson');
         }
-      } catch (error) {
+      } catch {
         // Revert optimistic update on error
         setOptimisticCompleted(false);
         toast.error('Failed to complete lesson');

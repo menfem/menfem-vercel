@@ -68,7 +68,7 @@ export async function createVideo(
     let youtubeMetadata;
     try {
       youtubeMetadata = await fetchYouTubeMetadata(youtubeId);
-    } catch (_error) {
+    } catch {
       return {
         status: 'ERROR',
         message: 'Failed to fetch video information from YouTube',

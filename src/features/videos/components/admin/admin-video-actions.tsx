@@ -41,7 +41,7 @@ export function AdminVideoActions({ video }: AdminVideoActionsProps) {
     try {
       await navigator.clipboard.writeText(url);
       toast.success('Video URL copied to clipboard');
-    } catch (_error) {
+    } catch {
       toast.error('Failed to copy URL');
     }
   };
@@ -52,7 +52,7 @@ export function AdminVideoActions({ video }: AdminVideoActionsProps) {
       const newStatus = !video.isPublished;
       toast.success(`Video ${newStatus ? 'published' : 'unpublished'} successfully`);
       router.refresh();
-    } catch (_error) {
+    } catch {
       toast.error('Failed to update video status');
     }
   };
@@ -63,7 +63,7 @@ export function AdminVideoActions({ video }: AdminVideoActionsProps) {
       // TODO: Implement delete video action
       toast.success('Video deleted successfully');
       router.push('/admin/videos');
-    } catch (_error) {
+    } catch {
       toast.error('Failed to delete video');
       setIsDeleting(false);
     }

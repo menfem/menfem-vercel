@@ -9,11 +9,11 @@ import { CourseNavigation } from './course-navigation';
 import { LessonContent } from './lesson-content';
 import { CourseHeader } from './course-header';
 import { LessonCompleteButton } from './lesson-complete-button';
-import type { CourseWithRelations } from '../types';
+import type { CourseWithRelations, CourseProgress } from '../types';
 
 interface CoursePlayerProps {
   course: CourseWithRelations;
-  userProgress: any; // CourseEnrollment with progress
+  userProgress: CourseProgress;
   selectedLessonId?: string;
 }
 
@@ -23,7 +23,7 @@ export function CoursePlayer({
   selectedLessonId
 }: CoursePlayerProps) {
   const router = useRouter();
-  const [currentLesson, setCurrentLesson] = useState<any>(null);
+  const [currentLesson, setCurrentLesson] = useState<(typeof allLessons)[0] | null>(null);
   const [isNavigationOpen, setIsNavigationOpen] = useState(true);
 
   // Find all lessons across modules

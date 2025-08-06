@@ -12,7 +12,7 @@ export const getCourses = cache(async (filters: CourseFilters = {}): Promise<Cou
   } = filters;
 
   // Build where clause
-  const where: any = {
+  const where: Record<string, unknown> = {
     product: {
       isActive: true,
       type: 'COURSE',

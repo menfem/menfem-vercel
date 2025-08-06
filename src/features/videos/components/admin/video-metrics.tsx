@@ -62,10 +62,6 @@ export async function VideoMetrics({ videoId }: VideoMetricsProps) {
   const completeEvents = engagementData.filter(e => e.eventType === 'video_complete').length;
   const completionRate = playEvents > 0 ? Math.round((completeEvents / playEvents) * 100) : 0;
 
-  // Calculate trend (simplified)
-  const last7Days = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-  const recentEvents = engagementData.filter(e => e.timestamp >= last7Days);
-  const _trend = recentEvents.length > 0 ? '+' : '';
 
   return (
     <div className="bg-white rounded-lg border p-6">
