@@ -3,7 +3,7 @@
 
 import type { ConsultingInquiry } from '@prisma/client';
 import type { ProposalData, ServiceItem, PricingStructure, TimelineItem } from '../types';
-import { ConsultingType, BudgetRange, CompanySize } from '@prisma/client';
+import { ConsultingType, CompanySize } from '@prisma/client';
 
 export class ProposalGenerator {
   async generateProposal(inquiry: ConsultingInquiry): Promise<ProposalData> {

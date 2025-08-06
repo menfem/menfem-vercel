@@ -4,7 +4,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Button } from '@/components/ui/button';
 import { Calendar, Clock, FileText, MessageSquare, CheckCircle2, AlertCircle } from 'lucide-react';
 import { formatDate, formatDistanceToNow } from 'date-fns';
 import type { ClientProjectWithRelations } from '../../types';
@@ -206,7 +205,13 @@ export async function ClientDashboard({ project }: ClientDashboardProps) {
 }
 
 // Helper Components
-function MilestonesTimeline({ milestones }: { milestones: any[] }) {
+function MilestonesTimeline({ milestones }: { milestones: Array<{
+  id: string;
+  title: string;
+  status: MilestoneStatus;
+  targetDate: Date;
+  completedDate?: Date;
+}> }) {
   const sortedMilestones = milestones.sort((a, b) => 
     new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
   );
@@ -247,7 +252,12 @@ function MilestonesTimeline({ milestones }: { milestones: any[] }) {
   );
 }
 
-function ActivityFeed({ activities }: { activities: any[] }) {
+function ActivityFeed({ activities }: { activities: Array<{
+  id: string;
+  type: string;
+  description: string;
+  createdAt: Date;
+}> }) {
   if (activities.length === 0) {
     return (
       <p className="text-gray-500 text-center py-8">
@@ -274,7 +284,7 @@ function ActivityFeed({ activities }: { activities: any[] }) {
 }
 
 // Helper Functions
-function calculateProjectProgress(milestones: any[]): number {
+function calculateProjectProgress(milestones: Array<{ status: MilestoneStatus }>): number {
   if (milestones.length === 0) return 0;
   
   const completedMilestones = milestones.filter(
@@ -284,7 +294,11 @@ function calculateProjectProgress(milestones: any[]): number {
   return Math.round((completedMilestones / milestones.length) * 100);
 }
 
-function getNextMilestone(milestones: any[]) {
+function getNextMilestone(milestones: Array<{
+  status: MilestoneStatus;
+  targetDate: Date;
+  title: string;
+}>) {
   return milestones
     .filter(m => m.status !== MilestoneStatus.COMPLETED)
     .sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())[0];

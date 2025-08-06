@@ -9,7 +9,6 @@ import type {
   InquiryNote,
   InquiryActivity,
   ProjectActivity,
-  SpeakingEngagement,
   CompanySize,
   ConsultingType,
   BudgetRange,

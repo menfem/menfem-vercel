@@ -23,7 +23,7 @@ export async function completeLesson(
     const { user } = await getAuthOrRedirect();
 
     // Validate input
-    const validatedData = completeLessonSchema.parse({
+    completeLessonSchema.parse({
       lessonId,
       userId: user.id,
     });

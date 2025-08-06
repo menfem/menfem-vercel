@@ -8,7 +8,7 @@ import type {
   ConsultingInquiryFilters,
   ConsultingStats 
 } from '../types';
-import { InquiryStatus, Priority, ProjectStatus } from '@prisma/client';
+import { InquiryStatus, ProjectStatus } from '@prisma/client';
 
 // Cached function to get consulting inquiries with filters
 export const getConsultingInquiries = cache(async (
@@ -17,7 +17,7 @@ export const getConsultingInquiries = cache(async (
   limit: number = 10
 ) => {
   try {
-    const where: any = {};
+    const where: Record<string, unknown> = {};
 
     // Apply filters
     if (filters?.status && filters.status.length > 0) {
@@ -77,7 +77,7 @@ export const getConsultingInquiries = cache(async (
     ]);
 
     return {
-      inquiries: inquiries as any[],
+      inquiries,
       metadata: {
         totalCount,
         totalPages: Math.ceil(totalCount / limit),
@@ -154,7 +154,6 @@ export const getConsultingStats = cache(async (
       newInquiries,
       totalInquiries,
       activeProjects,
-      totalProjects,
       inquiriesByStatus,
       projectsByStatus,
       monthlyRevenue,
@@ -176,9 +175,6 @@ export const getConsultingStats = cache(async (
           status: { in: ['CONTRACTED', 'IN_PROGRESS'] }
         }
       }),
-
-      // Total projects
-      prisma.clientProject.count(),
 
       // Inquiries by status
       prisma.consultingInquiry.groupBy({

@@ -22,7 +22,7 @@ export async function generateProposal(formData: FormData) {
     await getAuthOrRedirect(); // TODO: Add admin role check
 
     // Validate input
-    const { inquiryId, customMessage, sendImmediately } = generateProposalSchema.parse({
+    const { inquiryId, sendImmediately } = generateProposalSchema.parse({
       inquiryId: formData.get('inquiryId')?.toString(),
       customMessage: formData.get('customMessage')?.toString(),
       sendImmediately: formData.get('sendImmediately') === 'on'
@@ -96,7 +96,7 @@ export async function generateProposal(formData: FormData) {
 
       // Create deliverables
       await Promise.all(
-        proposalData.deliverables.slice(0, 10).map((deliverable, index) => // Limit to 10 deliverables
+        proposalData.deliverables.slice(0, 10).map((deliverable) => // Limit to 10 deliverables
           prisma.projectDeliverable.create({
             data: {
               title: deliverable,

@@ -109,8 +109,8 @@ export function isModuleCompleted(moduleProgress: ModuleProgress): boolean {
  * Gets the next lesson in course sequence
  */
 export function getNextLesson(progress: CourseProgress): LessonWithCompletion | null {
-  for (const module of progress.modules) {
-    for (const lesson of module.lessons) {
+  for (const courseModule of progress.modules) {
+    for (const lesson of courseModule.lessons) {
       if (!lesson.isCompleted) {
         return lesson;
       }
@@ -124,9 +124,9 @@ export function getNextLesson(progress: CourseProgress): LessonWithCompletion | 
  */
 export function getCurrentModule(progress: CourseProgress): ModuleProgress | null {
   // Find the first module that's not completed
-  for (const module of progress.modules) {
-    if (module.progressPercentage < 100) {
-      return module;
+  for (const courseModule of progress.modules) {
+    if (courseModule.progressPercentage < 100) {
+      return courseModule;
     }
   }
   
@@ -192,7 +192,7 @@ export function calculateLearningStreak(completions: LessonCompletion[]): number
     .sort((a, b) => b.completedAt.getTime() - a.completedAt.getTime());
 
   let streak = 0;
-  let currentDate = new Date();
+  const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
 
   // Group completions by date

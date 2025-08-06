@@ -6,7 +6,6 @@
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { 
   fromErrorToActionState, 
   toActionState 
@@ -187,7 +186,7 @@ export async function updateInquiryStatus(
       await tx.consultingInquiry.update({
         where: { id: inquiryId },
         data: { 
-          status: status as any,
+          status: status as 'new' | 'qualified' | 'proposal_sent' | 'negotiating' | 'won' | 'lost' | 'on_hold',
           lastContactDate: new Date()
         }
       });

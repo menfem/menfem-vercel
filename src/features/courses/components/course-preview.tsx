@@ -4,10 +4,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Play, Lock, CheckCircle, Clock, Users, Star, BookOpen, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Play, Lock, CheckCircle, Clock, Users, BookOpen } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import { PricingCard } from '@/features/products/components/pricing-card';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
@@ -212,7 +210,7 @@ export function CoursePreview({ course, productSlug }: CoursePreviewProps) {
                 </div>
 
                 <div className="space-y-2">
-                  {selectedModuleData.lessons.map((lesson, index) => (
+                  {selectedModuleData.lessons.map((lesson) => (
                     <div
                       key={lesson.id}
                       className="flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50"

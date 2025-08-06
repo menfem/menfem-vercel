@@ -23,7 +23,7 @@ export async function enrollInCourse(
     const { user } = await getAuthOrRedirect();
 
     // Validate input
-    const validatedData = enrollInCourseSchema.parse({
+    enrollInCourseSchema.parse({
       courseId,
       userId: user.id,
     });

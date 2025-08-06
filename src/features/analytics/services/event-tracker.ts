@@ -16,7 +16,7 @@ import type {
 
 interface QueuedEvent {
   eventType: TrackableEventType;
-  eventData: Record<string, any>;
+  eventData: Record<string, unknown>;
   timestamp: string;
   sessionId: string;
   path: string;
@@ -93,7 +93,7 @@ export class EventTracker {
     return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  private async track(eventType: TrackableEventType, eventData: Record<string, any> = {}) {
+  private async track(eventType: TrackableEventType, eventData: Record<string, unknown> = {}) {
     if (!this.isEnabled) return;
 
     try {
@@ -233,7 +233,7 @@ export class EventTracker {
   }
 
   // Custom event tracking
-  trackCustomEvent(eventType: string, data: Record<string, any>) {
+  trackCustomEvent(eventType: string, data: Record<string, unknown>) {
     this.track(eventType as TrackableEventType, data);
   }
 

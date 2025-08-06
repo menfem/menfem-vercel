@@ -31,13 +31,22 @@ export function RevenueChart({ data, height = 300 }: RevenueChartProps) {
   }
 
   // Format tooltip to show currency
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const CustomTooltip = ({ active, payload, label }: {
+    active?: boolean;
+    payload?: Array<{
+      color: string;
+      name: string;
+      dataKey: string;
+      value: number;
+    }>;
+    label?: string;
+  }) => {
     if (!active || !payload || !payload.length) return null;
 
     return (
       <div className="bg-white p-3 border rounded-lg shadow-lg">
         <p className="font-medium text-gray-900 mb-2">{label}</p>
-        {payload.map((entry: any, index: number) => (
+        {payload.map((entry, index: number) => (
           <p key={index} style={{ color: entry.color }} className="text-sm">
             {entry.name}: {
               entry.dataKey === 'revenue' 

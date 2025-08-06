@@ -6,7 +6,7 @@ export interface AnalyticsEvent {
   userId?: string;
   sessionId?: string;
   eventType: string;
-  eventData: Record<string, any>;
+  eventData: Record<string, unknown>;
   path?: string;
   userAgent?: string;
   timestamp: Date;
@@ -153,7 +153,7 @@ export interface SearchEvent {
 export interface AnalyticsQueryOptions {
   timeframe?: MetricsTimeframe;
   groupBy?: 'day' | 'week' | 'month';
-  filters?: Record<string, any>;
+  filters?: Record<string, unknown>;
   limit?: number;
   offset?: number;
 }
