@@ -15,13 +15,13 @@ import { cn } from '@/lib/utils';
 interface PurchaseButtonProps {
   product: ProductListItem;
   className?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'default' | 'lg';
 }
 
 export function PurchaseButton({ 
   product, 
   className,
-  size = 'md'
+  size = 'default'
 }: PurchaseButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,17 +32,35 @@ export function PurchaseButton({
       let checkoutUrl: string;
       
       if (product.type === 'SUBSCRIPTION') {
+        const formData = new FormData();
+        formData.append('productId', product.id);
+        formData.append('successUrl', `/products/${product.slug}?success=true`);
+        
         const result = await createSubscriptionCheckout(
-          product.id,
-          `/products/${product.slug}?success=true`
+          { status: undefined, message: undefined },
+          formData
         );
-        checkoutUrl = result.url;
+        
+        if (result.status === 'SUCCESS' && result.payload?.sessionUrl) {
+          checkoutUrl = result.payload.sessionUrl;
+        } else {
+          throw new Error(result.message || 'Failed to create checkout');
+        }
       } else {
+        const formData = new FormData();
+        formData.append('productId', product.id);
+        formData.append('successUrl', `/products/${product.slug}?success=true`);
+        
         const result = await createCheckoutSession(
-          product.id,
-          `/products/${product.slug}?success=true`
+          { status: undefined, message: undefined },
+          formData
         );
-        checkoutUrl = result.url;
+        
+        if (result.status === 'SUCCESS' && result.payload?.sessionUrl) {
+          checkoutUrl = result.payload.sessionUrl;
+        } else {
+          throw new Error(result.message || 'Failed to create checkout');
+        }
       }
 
       if (checkoutUrl) {

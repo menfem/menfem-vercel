@@ -42,7 +42,7 @@ export default async function CoursePage({ params, searchParams }: PageProps) {
   const auth = await getAuth();
   const course = await getCourse(id);
 
-  if (!course || !course.isPublished) {
+  if (!course || !course.product.isActive) {
     notFound();
   }
 

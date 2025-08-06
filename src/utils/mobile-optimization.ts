@@ -40,7 +40,7 @@ export const getMobileProps = (baseProps: Record<string, unknown>) => {
       // Optimize for mobile
       className: `${baseProps.className || ''} touch-manipulation`,
       style: {
-        ...baseProps.style,
+        ...(baseProps.style as object || {}),
         WebkitTapHighlightColor: 'transparent',
       }
     };

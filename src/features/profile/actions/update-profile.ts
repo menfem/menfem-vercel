@@ -38,7 +38,7 @@ export async function updateProfile(prevState: ActionState, formData: FormData):
 
       if (existingUser && existingUser.id !== user.id) {
         return {
-          status: 'error' as const,
+          status: 'ERROR' as const,
           message: 'Email is already taken',
         };
       }
@@ -52,7 +52,7 @@ export async function updateProfile(prevState: ActionState, formData: FormData):
 
       if (existingUser && existingUser.id !== user.id) {
         return {
-          status: 'error' as const,
+          status: 'ERROR' as const,
           message: 'Username is already taken',
         };
       }
@@ -68,7 +68,7 @@ export async function updateProfile(prevState: ActionState, formData: FormData):
     revalidatePath('/dashboard');
 
     return {
-      status: 'success' as const,
+      status: 'SUCCESS' as const,
       message: 'Profile updated successfully',
     };
   } catch (error) {

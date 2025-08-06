@@ -9,11 +9,11 @@ import { CourseNavigation } from './course-navigation';
 import { LessonContent } from './lesson-content';
 import { CourseHeader } from './course-header';
 import { LessonCompleteButton } from './lesson-complete-button';
-import type { CourseWithRelations, CourseProgress } from '../types';
+import type { CourseWithRelations, UserCourseProgress } from '../types';
 
 interface CoursePlayerProps {
   course: CourseWithRelations;
-  userProgress: CourseProgress;
+  userProgress: UserCourseProgress;
   selectedLessonId?: string;
 }
 

@@ -30,10 +30,10 @@ import { Badge } from '@/components/ui/badge';
 import { Edit, Trash2, Loader2, Package } from 'lucide-react';
 import { deleteProductCategory } from '../../actions/delete-product-category';
 import { toast } from 'sonner';
-import type { ProductCategoryWithProducts } from '../../types';
+import type { ProductCategoryWithCount } from '../../types';
 
 interface AdminProductCategoriesListProps {
-  categories: ProductCategoryWithProducts[];
+  categories: ProductCategoryWithCount[];
 }
 
 export function AdminProductCategoriesList({ categories }: AdminProductCategoriesListProps) {

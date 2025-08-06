@@ -90,6 +90,87 @@ export type CourseProgress = {
   lastAccessedAt?: Date;
 };
 
+export type UserCourseProgress = CourseEnrollment & {
+  course: {
+    product: {
+      category: {
+        name: string;
+        id: string;
+        slug: string;
+        description: string | null;
+      };
+    } & {
+      id: string;
+      name: string;
+      slug: string;
+      description: string;
+      shortDesc: string | null;
+      images: string[];
+      price: number;
+      comparePrice: number | null;
+      isActive: boolean;
+      isDigital: boolean;
+      stock: number | null;
+      type: string;
+      categoryId: string;
+      courseId: string | null;
+      createdAt: Date;
+      updatedAt: Date;
+    };
+    modules: ({
+      lessons: ({
+        completions: {
+          id: string;
+          userId: string;
+          lessonId: string;
+          completedAt: Date;
+        }[];
+        video: {
+          id: string;
+          title: string;
+          description: string;
+          youtubeId: string | null;
+          embedUrl: string | null;
+          thumbnailUrl: string | null;
+          duration: number | null;
+          isPublished: boolean;
+          isPremium: boolean;
+          viewCount: number;
+          createdAt: Date;
+          updatedAt: Date;
+          seriesId: string | null;
+        } | null;
+      } & {
+        id: string;
+        moduleId: string;
+        title: string;
+        content: string;
+        videoId: string | null;
+        order: number;
+        isPublished: boolean;
+      })[];
+    } & {
+      id: string;
+      courseId: string;
+      title: string;
+      description: string;
+      order: number;
+      isPublished: boolean;
+    })[];
+  } & {
+    id: string;
+    productId: string;
+    syllabus: string;
+    duration: string;
+    level: string;
+  };
+  progress: {
+    totalLessons: number;
+    completedLessons: number;
+    percentage: number;
+  };
+};
+
 export type CourseFormData = {
   productId: string;
   syllabus: string;

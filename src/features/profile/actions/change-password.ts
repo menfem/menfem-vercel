@@ -37,7 +37,7 @@ export async function changePassword(prevState: ActionState, formData: FormData)
 
     if (!fullUser) {
       return {
-        status: 'error' as const,
+        status: 'ERROR' as const,
         message: 'User not found',
       };
     }
@@ -50,7 +50,7 @@ export async function changePassword(prevState: ActionState, formData: FormData)
 
     if (!isCurrentPasswordValid) {
       return {
-        status: 'error' as const,
+        status: 'ERROR' as const,
         message: 'Current password is incorrect',
         fieldErrors: {
           currentPassword: ['Current password is incorrect'],
@@ -68,7 +68,7 @@ export async function changePassword(prevState: ActionState, formData: FormData)
     });
 
     return {
-      status: 'success' as const,
+      status: 'SUCCESS' as const,
       message: 'Password changed successfully',
     };
   } catch (error) {
@@ -76,7 +76,7 @@ export async function changePassword(prevState: ActionState, formData: FormData)
     
     if (error instanceof z.ZodError) {
       return {
-        status: 'error' as const,
+        status: 'ERROR' as const,
         message: 'Invalid input data',
         fieldErrors: error.flatten().fieldErrors,
       };

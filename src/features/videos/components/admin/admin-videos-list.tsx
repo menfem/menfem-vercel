@@ -15,7 +15,13 @@ interface AdminVideosListProps {
 
 export async function AdminVideosList({ searchParams }: AdminVideosListProps) {
   const parsedParams = parseVideoSearchParams(searchParams);
-  const { list: videos, metadata } = await getVideos(parsedParams);
+  // Convert null values to undefined for compatibility
+  const videoFilters = {
+    ...parsedParams,
+    seriesId: parsedParams.seriesId || undefined,
+    isPremium: parsedParams.isPremium || undefined,
+  };
+  const { list: videos, metadata } = await getVideos(videoFilters);
 
   if (videos.length === 0) {
     return (
@@ -60,7 +66,16 @@ export async function AdminVideosList({ searchParams }: AdminVideosListProps) {
 
       {/* Pagination */}
       {metadata.totalPages > 1 && (
-        <AdminPagination metadata={metadata} />
+        <AdminPagination 
+          pagination={{
+            page: metadata.page,
+            limit: metadata.limit,
+            total: metadata.count,
+            pages: metadata.totalPages,
+            hasNext: metadata.hasNextPage,
+            hasPrev: metadata.hasPreviousPage,
+          }} 
+        />
       )}
     </div>
   );

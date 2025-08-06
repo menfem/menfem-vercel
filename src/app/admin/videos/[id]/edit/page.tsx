@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getAdminOrRedirect } from '@/features/admin/queries/get-admin-or-redirect';
 import { getVideo } from '@/features/videos/queries/get-video';
-import { getVideoSeries } from '@/features/videos/queries/get-video-series';
+import { getVideoSeriesForAdmin } from '@/features/videos/queries/get-video-series';
 import { getTags } from '@/features/admin/queries/get-categories';
 import { AdminVideoForm } from '@/features/videos/components/admin/admin-video-form';
 import { Button } from '@/components/ui/button';
@@ -21,7 +21,7 @@ export default async function AdminEditVideoPage({ params }: AdminEditVideoPageP
 
   const [video, videoSeries, tags] = await Promise.all([
     getVideo(id),
-    getVideoSeries(),
+    getVideoSeriesForAdmin(),
     getTags(),
   ]);
 

@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { getAdminOrRedirect } from '@/features/admin/queries/get-admin-or-redirect';
-import { getVideoSeries } from '@/features/videos/queries/get-video-series';
+import { getVideoSeriesForAdmin } from '@/features/videos/queries/get-video-series';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Plus, ArrowLeft, Edit, Trash2 } from 'lucide-react';
@@ -11,7 +11,7 @@ import { Plus, ArrowLeft, Edit, Trash2 } from 'lucide-react';
 export default async function AdminVideoSeriesPage() {
   await getAdminOrRedirect();
   
-  const videoSeries = await getVideoSeries();
+  const videoSeries = await getVideoSeriesForAdmin();
 
   return (
     <div className="space-y-6">
@@ -38,7 +38,7 @@ export default async function AdminVideoSeriesPage() {
 
       {/* Series List */}
       <div className="space-y-4">
-        {videoSeries.length === 0 ? (
+        {!videoSeries || videoSeries.length === 0 ? (
           <div className="text-center py-12">
             <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
               📺
@@ -54,7 +54,7 @@ export default async function AdminVideoSeriesPage() {
           </div>
         ) : (
           <div className="grid gap-4">
-            {videoSeries.map((series) => (
+            {videoSeries?.map((series) => (
               <div key={series.id} className="bg-white border rounded-lg p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">

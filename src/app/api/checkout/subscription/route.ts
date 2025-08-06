@@ -2,7 +2,7 @@
 // ABOUTME: Handles premium subscription sign-ups with proper user authentication
 
 import { NextRequest, NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe';
+import { getStripeInstance } from '@/lib/stripe';
 import { getAuth } from '@/features/auth/queries/get-auth';
 import { prisma } from '@/lib/prisma';
 
@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create Stripe checkout session
+    const stripe = getStripeInstance();
     const session = await stripe.checkout.sessions.create({
       customer_email: auth.user.email,
       payment_method_types: ['card'],

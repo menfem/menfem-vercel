@@ -34,7 +34,7 @@ export function VideoLibrary({
   if (videos.length === 0) {
     return (
       <div className="space-y-6">
-        <VideoFilters videoSeries={videoSeries} searchParams={searchParams} />
+        <VideoFilters videoSeries={videoSeries} />
         
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🎥</div>
@@ -52,7 +52,7 @@ export function VideoLibrary({
   return (
     <div className="space-y-6">
       {/* Filters */}
-      <VideoFilters videoSeries={videoSeries} searchParams={searchParams} />
+      <VideoFilters videoSeries={videoSeries} />
 
       {/* View Mode Toggle */}
       <div className="flex items-center justify-between">

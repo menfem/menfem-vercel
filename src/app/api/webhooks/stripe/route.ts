@@ -1,6 +1,7 @@
 // ABOUTME: Stripe webhook handler for payment and subscription events
 // ABOUTME: Processes payments, subscriptions, and enrollment automation
 
+import Stripe from 'stripe';
 import { getStripeInstance, STRIPE_WEBHOOK_EVENTS } from '@/lib/stripe';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
@@ -8,14 +9,14 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   const body = await request.text();
-  const signature = headers().get('stripe-signature');
+  const signature = (await headers()).get('stripe-signature');
 
   if (!signature) {
     console.error('Missing stripe-signature header');
     return new NextResponse('Missing signature', { status: 400 });
   }
 
-  let event: import('stripe').Event;
+  let event: Stripe.Event;
 
   try {
     const stripe = getStripeInstance();
@@ -74,8 +75,8 @@ async function handleCheckoutCompleted(session: import('stripe').Stripe.Checkout
       data: {
         userId: metadata.userId,
         productId: metadata.productId,
-        stripePaymentId: payment_intent,
-        amount: amount_total,
+        stripePaymentId: payment_intent as string,
+        amount: amount_total as number,
         status: 'COMPLETED',
       },
     });
@@ -102,12 +103,12 @@ async function handleCheckoutCompleted(session: import('stripe').Stripe.Checkout
         where: { userId: metadata.userId },
         create: {
           userId: metadata.userId,
-          stripeCustomerId: session.customer,
-          stripeSubId: session.subscription,
+          stripeCustomerId: session.customer as string,
+          stripeSubId: session.subscription as string,
           status: 'ACTIVE',
         },
         update: {
-          stripeSubId: session.subscription,
+          stripeSubId: session.subscription as string,
           status: 'ACTIVE',
         },
       });
@@ -122,7 +123,7 @@ async function handleSubscriptionCreated(subscription: import('stripe').Stripe.S
   
   // Find user by Stripe customer ID
   const membershipSub = await prisma.membershipSubscription.findUnique({
-    where: { stripeCustomerId: customer },
+    where: { stripeCustomerId: customer as string },
   });
 
   if (membershipSub) {
@@ -131,7 +132,7 @@ async function handleSubscriptionCreated(subscription: import('stripe').Stripe.S
       data: {
         stripeSubId: subscriptionId,
         status: 'ACTIVE',
-        currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+        currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
       },
     });
   }
@@ -140,7 +141,8 @@ async function handleSubscriptionCreated(subscription: import('stripe').Stripe.S
 }
 
 async function handleSubscriptionUpdated(subscription: import('stripe').Stripe.Subscription) {
-  const { id: subscriptionId, status, current_period_end } = subscription;
+  const { id: subscriptionId, status } = subscription;
+  const current_period_end = (subscription as any).current_period_end;
   
   const membershipSub = await prisma.membershipSubscription.findUnique({
     where: { stripeSubId: subscriptionId },
@@ -180,7 +182,7 @@ async function handleSubscriptionDeleted(subscription: import('stripe').Stripe.S
 }
 
 async function handlePaymentSucceeded(invoice: import('stripe').Stripe.Invoice) {
-  const { subscription: subscriptionId } = invoice;
+  const subscriptionId = (invoice as any).subscription;
   
   if (subscriptionId) {
     const membershipSub = await prisma.membershipSubscription.findUnique({
@@ -201,7 +203,7 @@ async function handlePaymentSucceeded(invoice: import('stripe').Stripe.Invoice) 
 }
 
 async function handlePaymentFailed(invoice: import('stripe').Stripe.Invoice) {
-  const { subscription: subscriptionId } = invoice;
+  const subscriptionId = (invoice as any).subscription;
   
   if (subscriptionId) {
     const membershipSub = await prisma.membershipSubscription.findUnique({

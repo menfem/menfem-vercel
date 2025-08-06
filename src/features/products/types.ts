@@ -43,6 +43,13 @@ export type ProductCategoryWithProducts = ProductCategory & {
   };
 };
 
+export type ProductCategoryWithCount = ProductCategory & {
+  productCount: number;
+  _count: {
+    products: number;
+  };
+};
+
 export type UserPurchase = Purchase & {
   product: ProductWithRelations;
   user: Pick<User, 'id' | 'email' | 'username'>;

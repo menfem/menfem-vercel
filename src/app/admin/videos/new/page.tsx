@@ -3,7 +3,7 @@
 
 import { AdminVideoForm } from '@/features/videos/components/admin/admin-video-form';
 import { getAdminOrRedirect } from '@/features/admin/queries/get-admin-or-redirect';
-import { getVideoSeries } from '@/features/videos/queries/get-video-series';
+import { getVideoSeriesForAdmin } from '@/features/videos/queries/get-video-series';
 import { getTags } from '@/features/admin/queries/get-categories'; // Reuse tags query
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
@@ -14,7 +14,7 @@ export default async function AdminNewVideoPage() {
 
   // Fetch data needed for the form
   const [videoSeries, tags] = await Promise.all([
-    getVideoSeries(),
+    getVideoSeriesForAdmin(),
     getTags(),
   ]);
 
