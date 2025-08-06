@@ -43,13 +43,13 @@ export function useDebounce<T>(value: T, delay: number): T {
 }
 
 // Memoized data fetchers
-export const getCachedCourses = cache(async (filters?: Record<string, unknown>) => {
+export const getCachedCourses = cache(async () => {
   // This would integrate with your actual data fetching
   // Implementation would go here
   return [];
 });
 
-export const getCachedProducts = cache(async (filters?: Record<string, unknown>) => {
+export const getCachedProducts = cache(async () => {
   // Implementation would go here
   
   return [];
