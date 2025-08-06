@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { formatPrice } from '@/features/products/utils/format-price';
 import { PurchaseButton } from '@/features/products/components/purchase-button';
-import { BookOpen, Clock, Users, Star } from 'lucide-react';
+import { BookOpen, Clock, Users } from 'lucide-react';
 import type { CourseWithRelations } from '../types';
 
 interface AvailableCoursesProps {

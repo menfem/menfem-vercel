@@ -6,7 +6,6 @@
 import { useRouter } from 'next/navigation';
 import { useActionState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -182,7 +181,7 @@ export function AdminCourseForm({ courseProducts, course }: AdminCourseFormProps
         </CardHeader>
         <CardContent>
           <div className="text-sm text-blue-800 space-y-2">
-            <p>After creating your course, you'll be able to:</p>
+            <p>After creating your course, you&apos;ll be able to:</p>
             <ul className="list-disc list-inside space-y-1 ml-4">
               <li>Add course modules to organize your content</li>
               <li>Create lessons within each module</li>

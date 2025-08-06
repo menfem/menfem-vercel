@@ -84,7 +84,7 @@ export function LessonContent({ lesson }: LessonContentProps) {
             No content available
           </h3>
           <p className="text-gray-500">
-            This lesson doesn't have any content yet.
+            This lesson doesn&apos;t have any content yet.
           </p>
         </div>
       )}

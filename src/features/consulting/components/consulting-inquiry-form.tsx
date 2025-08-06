@@ -31,7 +31,7 @@ export function ConsultingInquiryForm() {
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-4">Start Your Consulting Journey</h1>
         <p className="text-lg text-muted-foreground">
-          Tell us about your project and we'll get back to you within 24 hours
+          Tell us about your project and we&apos;ll get back to you within 24 hours
         </p>
       </div>
 

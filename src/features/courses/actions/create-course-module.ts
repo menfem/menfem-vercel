@@ -83,7 +83,7 @@ export async function createCourseModule(
     }
 
     // Create the module
-    const module = await prisma.courseModule.create({
+    const courseModule = await prisma.courseModule.create({
       data: {
         ...validatedData,
         order: moduleOrder,
@@ -96,7 +96,7 @@ export async function createCourseModule(
     revalidatePath(`/courses/${validatedData.courseId}`);
 
     return toActionState('SUCCESS', 'Course module created successfully', {
-      moduleId: module.id,
+      moduleId: courseModule.id,
       courseId: validatedData.courseId,
     });
 

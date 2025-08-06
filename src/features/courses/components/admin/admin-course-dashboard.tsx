@@ -9,11 +9,9 @@ import {
   Users, 
   TrendingUp, 
   DollarSign, 
-  Clock, 
   BarChart3,
   Plus,
   Search,
-  Filter,
   MoreVertical,
   Edit,
   Eye,
@@ -36,7 +34,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
 
 interface AdminCourseDashboardProps {
   courses: Array<{

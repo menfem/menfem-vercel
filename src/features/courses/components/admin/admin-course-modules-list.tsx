@@ -7,7 +7,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { 
   ChevronDown, 
@@ -20,7 +20,6 @@ import {
   BookOpen,
   PlayCircle 
 } from 'lucide-react';
-import { format } from 'date-fns';
 import type { CourseModuleWithLessons } from '../../types';
 
 interface AdminCourseModulesListProps {

@@ -3,7 +3,7 @@
 
 import { cache } from 'react';
 import { prisma } from '@/lib/prisma';
-import type { DashboardMetrics, MetricsTimeframe, RevenueChartData } from '../types';
+import type { DashboardMetrics, RevenueChartData } from '../types';
 import { TIMEFRAMES } from '../constants';
 
 export const getDashboardMetrics = cache(async (
@@ -207,7 +207,7 @@ async function getContentMetricsData(startDate: Date, endDate: Date) {
       }
       
       content.contentTitle = title;
-    } catch (error) {
+    } catch {
       content.contentTitle = 'Unknown Content';
     }
   }

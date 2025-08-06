@@ -21,7 +21,6 @@ export function MetricCard({
   const isPositive = change >= 0;
   const changeColor = isPositive ? 'text-green-600' : 'text-red-600';
   const trendIcon = trend === 'up' ? '↗' : '↘';
-  const bgColor = isPositive ? 'bg-green-50' : 'bg-red-50';
 
   return (
     <div className="bg-white rounded-lg shadow-sm border p-6">

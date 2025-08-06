@@ -34,7 +34,7 @@ export async function createCourseLesson(
     const validatedData = createCourseLessonSchema.parse(rawData);
 
     // Check if module exists
-    const module = await prisma.courseModule.findUnique({
+    const courseModule = await prisma.courseModule.findUnique({
       where: { id: validatedData.moduleId },
       include: {
         course: true,
@@ -46,7 +46,7 @@ export async function createCourseLesson(
       },
     });
 
-    if (!module) {
+    if (!courseModule) {
       return {
         status: 'ERROR',
         message: 'Course module not found',
@@ -111,14 +111,14 @@ export async function createCourseLesson(
 
     // Revalidate relevant pages
     revalidatePath('/admin/courses');
-    revalidatePath(`/admin/courses/${module.courseId}`);
+    revalidatePath(`/admin/courses/${courseModule.courseId}`);
     revalidatePath(`/admin/courses/modules/${validatedData.moduleId}`);
-    revalidatePath(`/courses/${module.courseId}`);
+    revalidatePath(`/courses/${courseModule.courseId}`);
 
     return toActionState('SUCCESS', 'Course lesson created successfully', {
       lessonId: lesson.id,
       moduleId: validatedData.moduleId,
-      courseId: module.courseId,
+      courseId: courseModule.courseId,
     });
 
   } catch (error) {

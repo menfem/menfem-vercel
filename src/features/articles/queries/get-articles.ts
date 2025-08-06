@@ -21,9 +21,9 @@ export type GetArticlesOptions = {
 };
 
 // Create a cache key from options for React cache
-const createCacheKey = (options: GetArticlesOptions) => {
-  return JSON.stringify(options);
-};
+// const createCacheKey = (options: GetArticlesOptions) => {
+//   return JSON.stringify(options);
+// };
 
 export const getArticles = cache(async (options: GetArticlesOptions = {}): Promise<PaginatedArticles> => {
   const {

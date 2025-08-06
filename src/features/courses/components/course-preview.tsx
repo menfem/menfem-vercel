@@ -164,7 +164,7 @@ export function CoursePreview({ course, productSlug }: CoursePreviewProps) {
           {/* Learning Outcomes */}
           {course.learningOutcomes && course.learningOutcomes.length > 0 && (
             <div className="bg-white rounded-lg shadow-sm border p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">What You'll Learn</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">What You&apos;ll Learn</h2>
               <div className="grid md:grid-cols-2 gap-3">
                 {course.learningOutcomes.map((outcome, index) => (
                   <div key={index} className="flex items-start gap-3">
@@ -312,7 +312,7 @@ export function CoursePreview({ course, productSlug }: CoursePreviewProps) {
                       </div>
                       <span className="font-medium text-gray-900">{testimonial.author}</span>
                     </div>
-                    <p className="text-gray-700 italic">"{testimonial.content}"</p>
+                    <p className="text-gray-700 italic">&quot;{testimonial.content}&quot;</p>
                   </div>
                 ))}
               </div>

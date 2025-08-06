@@ -82,7 +82,7 @@ export function CourseCompletionCelebration({
             🎉 Congratulations!
           </DialogTitle>
           <DialogDescription className="text-lg mt-2">
-            You've successfully completed <strong>{course.title}</strong>
+            You&apos;ve successfully completed <strong>{course.title}</strong>
           </DialogDescription>
         </DialogHeader>
 
@@ -121,7 +121,7 @@ export function CourseCompletionCelebration({
             <div className="border-t pt-6">
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                 <ArrowRight className="h-5 w-5 text-blue-600" />
-                What's Next?
+                What&apos;s Next?
               </h3>
               
               {nextSteps.suggestedCourses && nextSteps.suggestedCourses.length > 0 && (

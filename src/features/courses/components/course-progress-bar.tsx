@@ -101,7 +101,7 @@ export function CourseProgressBar({
           <div className="flex items-center">
             <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
             <span className="text-green-800 font-medium">
-              🎉 Congratulations! You've completed this course!
+              🎉 Congratulations! You&apos;ve completed this course!
             </span>
           </div>
         </div>

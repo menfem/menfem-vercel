@@ -18,7 +18,6 @@ import {
   TrendingUp 
 } from 'lucide-react';
 import { formatPrice } from '@/features/products/utils/format-price';
-import { format } from 'date-fns';
 import type { CourseWithRelations } from '../../types';
 
 interface AdminCoursesListProps {

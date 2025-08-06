@@ -10,7 +10,7 @@ import type { TrackableEventType } from '../types';
 
 interface TrackEventData {
   eventType: TrackableEventType;
-  eventData: Record<string, any>;
+  eventData: Record<string, unknown>;
   sessionId: string;
   path: string;
   userAgent: string;

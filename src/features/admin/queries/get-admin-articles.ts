@@ -20,7 +20,7 @@ export async function getAdminArticles(options: AdminArticlesOptions = {}) {
     limit = 20
   } = options;
 
-  const where: any = {};
+  const where: Record<string, unknown> = {};
 
   // Filter by published status
   if (published !== undefined) {

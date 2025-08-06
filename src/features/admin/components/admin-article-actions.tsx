@@ -32,7 +32,7 @@ export function AdminArticleActions({ article }: AdminArticleActionsProps) {
       } else {
         toast.error(result.message);
       }
-    } catch (error) {
+    } catch {
       toast.error('Failed to update article status');
     }
     setIsLoading(false);
@@ -54,7 +54,7 @@ export function AdminArticleActions({ article }: AdminArticleActionsProps) {
         toast.error(result.message);
       }
       // Success case handles redirect automatically
-    } catch (error) {
+    } catch {
       toast.error('Failed to delete article');
     }
     setIsLoading(false);

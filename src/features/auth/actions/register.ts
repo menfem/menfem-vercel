@@ -56,7 +56,7 @@ export async function register(
     const passwordHash = await hashPassword(data.password);
 
     // Create user and verification token in transaction
-    const { user, verificationToken } = await prisma.$transaction(async (tx) => {
+    const { verificationToken } = await prisma.$transaction(async (tx) => {
       const userId = generateId(15);
       const user = await tx.user.create({
         data: {
