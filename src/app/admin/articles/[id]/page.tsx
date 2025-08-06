@@ -3,6 +3,7 @@
 
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { formatDistance } from 'date-fns';
 import { 
   ArrowLeft, 
@@ -75,10 +76,11 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
         {/* Cover Image */}
         {article.coverImage && (
           <div className="aspect-[16/9] w-full">
-            <img
+            <Image
               src={article.coverImage}
               alt={article.title}
               className="w-full h-full object-cover"
+              fill
             />
           </div>
         )}

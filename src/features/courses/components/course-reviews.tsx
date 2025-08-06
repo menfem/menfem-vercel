@@ -4,6 +4,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Star, MessageSquare, ThumbsUp, Calendar, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -263,11 +264,14 @@ export function CourseReviews({
                   {/* Author Avatar */}
                   <div className="flex-shrink-0">
                     {review.author.avatar ? (
-                      <img
-                        src={review.author.avatar}
-                        alt={review.author.name}
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
+                      <div className="relative w-10 h-10">
+                        <Image
+                          src={review.author.avatar}
+                          alt={review.author.name}
+                          className="rounded-full object-cover"
+                          fill
+                        />
+                      </div>
                     ) : (
                       <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
                         <User className="h-5 w-5 text-gray-400" />

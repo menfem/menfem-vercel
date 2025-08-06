@@ -4,6 +4,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Play, Lock, CheckCircle, Clock, Users, BookOpen, Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { PricingCard } from '@/features/products/components/pricing-card';
@@ -140,11 +141,12 @@ export function CoursePreview({ course, productSlug }: CoursePreviewProps) {
           </div>
 
           {course.thumbnailUrl && (
-            <div className="relative">
-              <img 
+            <div className="relative w-full h-64">
+              <Image 
                 src={course.thumbnailUrl} 
                 alt={course.title}
-                className="w-full rounded-lg shadow-lg"
+                className="rounded-lg shadow-lg object-cover"
+                fill
               />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-4">
@@ -267,11 +269,14 @@ export function CoursePreview({ course, productSlug }: CoursePreviewProps) {
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Your Instructor</h2>
               <div className="flex items-start gap-4">
                 {course.instructor.avatar ? (
-                  <img 
-                    src={course.instructor.avatar} 
-                    alt={course.instructor.name}
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
+                  <div className="relative w-16 h-16">
+                    <Image 
+                      src={course.instructor.avatar} 
+                      alt={course.instructor.name}
+                      className="rounded-full object-cover"
+                      fill
+                    />
+                  </div>
                 ) : (
                   <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
                     <Users className="h-6 w-6 text-gray-400" />

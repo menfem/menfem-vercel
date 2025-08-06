@@ -4,6 +4,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { BookOpen, Clock, CheckCircle, ArrowRight, Calendar, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -161,11 +162,14 @@ export function DashboardCourseOverview({
                   <p className="text-gray-600 text-sm line-clamp-2">{course.description}</p>
                 </div>
                 {course.thumbnailUrl && (
-                  <img 
-                    src={course.thumbnailUrl} 
-                    alt={course.title}
-                    className="w-16 h-16 rounded-lg object-cover ml-4"
-                  />
+                  <div className="relative w-16 h-16 ml-4">
+                    <Image 
+                      src={course.thumbnailUrl} 
+                      alt={course.title}
+                      className="rounded-lg object-cover"
+                      fill
+                    />
+                  </div>
                 )}
               </div>
 

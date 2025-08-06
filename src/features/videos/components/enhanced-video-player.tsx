@@ -4,6 +4,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { Play, Pause, Volume2, VolumeX, Maximize } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -171,10 +172,11 @@ export function EnhancedVideoPlayer({
           </div>
         </div>
         {video.thumbnailUrl && (
-          <img 
+          <Image 
             src={video.thumbnailUrl} 
             alt={video.title}
-            className="absolute inset-0 w-full h-full object-cover opacity-20"
+            className="absolute inset-0 object-cover opacity-20"
+            fill
           />
         )}
       </div>

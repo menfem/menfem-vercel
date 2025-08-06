@@ -2,6 +2,7 @@
 // ABOUTME: Handles premium subscription conversion and course pricing display
 
 import { Suspense } from 'react';
+import Image from 'next/image';
 import { Check, Star, Zap } from 'lucide-react';
 import { getPremiumAccess } from '@/features/auth/queries/get-premium-access';
 import { getProducts } from '@/features/products/queries/get-products';
@@ -139,11 +140,14 @@ export default async function PricingPage() {
               <div key={course.id} className="bg-white rounded-xl shadow-lg p-6">
                 <div className="mb-4">
                   {course.images?.[0] && (
-                    <img 
-                      src={course.images[0]} 
-                      alt={course.name}
-                      className="w-full h-48 object-cover rounded-lg mb-4"
-                    />
+                    <div className="relative w-full h-48 mb-4">
+                      <Image 
+                        src={course.images[0]} 
+                        alt={course.name}
+                        className="object-cover rounded-lg"
+                        fill
+                      />
+                    </div>
                   )}
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     {course.name}

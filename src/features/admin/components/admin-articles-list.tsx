@@ -2,6 +2,7 @@
 // ABOUTME: Displays articles in a table format with edit/delete/publish controls
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { formatDistance } from 'date-fns';
 import { 
   Eye, 
@@ -108,11 +109,14 @@ export async function AdminArticlesList({
                   <td className="px-6 py-4">
                     <div className="flex items-start space-x-3">
                       {article.coverImage && (
-                        <img
-                          src={article.coverImage}
-                          alt=""
-                          className="w-12 h-12 rounded-md object-cover flex-shrink-0"
-                        />
+                        <div className="relative w-12 h-12 flex-shrink-0">
+                          <Image
+                            src={article.coverImage}
+                            alt=""
+                            className="rounded-md object-cover"
+                            fill
+                          />
+                        </div>
                       )}
                       <div className="flex-1 min-w-0">
                         <Link

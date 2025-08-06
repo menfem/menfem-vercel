@@ -4,6 +4,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { 
   BookOpen, 
   Users, 
@@ -250,11 +251,14 @@ export function AdminCourseDashboard({ courses, stats }: AdminCourseDashboardPro
                     {/* Course Thumbnail */}
                     <div className="flex-shrink-0">
                       {course.thumbnailUrl ? (
-                        <img 
-                          src={course.thumbnailUrl} 
-                          alt={course.title}
-                          className="w-24 h-24 rounded-lg object-cover"
-                        />
+                        <div className="relative w-24 h-24">
+                          <Image 
+                            src={course.thumbnailUrl} 
+                            alt={course.title}
+                            className="rounded-lg object-cover"
+                            fill
+                          />
+                        </div>
                       ) : (
                         <div className="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center">
                           <BookOpen className="h-8 w-8 text-gray-400" />
