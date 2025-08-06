@@ -80,7 +80,7 @@ export function ProductDetails({ product, purchaseSuccess }: ProductDetailsProps
           <div>
             <h3 className="font-medium text-green-900">Purchase Successful!</h3>
             <p className="text-sm text-green-700">
-              Thank you for your purchase. You'll receive confirmation details via email.
+              Thank you for your purchase. You&apos;ll receive confirmation details via email.
             </p>
           </div>
           <Button

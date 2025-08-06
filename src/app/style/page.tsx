@@ -1,6 +1,7 @@
 // ABOUTME: Style category page displaying articles about fashion, grooming, and lifestyle
 // ABOUTME: Features category-specific header and filtered article listings
 
+import Link from 'next/link';
 import { getArticles } from '@/features/articles/queries/get-articles';
 import { CategoryHeader } from '@/components/category-header';
 import { ArticleGrid } from '@/components/article-grid';
@@ -76,14 +77,14 @@ export default async function StylePage({ searchParams }: StylePageProps) {
                 No style articles yet
               </h2>
               <p className="text-gray-600 mb-8">
-                We're working on bringing you the latest in fashion, grooming, and lifestyle content. Check back soon!
+                We&apos;re working on bringing you the latest in fashion, grooming, and lifestyle content. Check back soon!
               </p>
-              <a 
+              <Link 
                 href="/articles" 
                 className="bg-brand-terracotta text-white px-6 py-3 rounded font-medium hover:bg-brand-rust transition-colors"
               >
                 Browse All Articles
-              </a>
+              </Link>
             </div>
           </div>
         )}

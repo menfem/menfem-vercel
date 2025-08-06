@@ -3,7 +3,6 @@
 
 import { Suspense } from 'react';
 import { Check, Star, Zap } from 'lucide-react';
-import { getAuthOrRedirect } from '@/features/auth/queries/get-auth-or-redirect';
 import { getPremiumAccess } from '@/features/auth/queries/get-premium-access';
 import { getProducts } from '@/features/products/queries/get-products';
 import { PricingCard } from '@/features/products/components/pricing-card';
@@ -185,14 +184,14 @@ export default async function PricingPage() {
                 Can I cancel my subscription anytime?
               </h3>
               <p className="text-gray-600">
-                Yes, you can cancel your premium subscription at any time. You'll continue to have 
+                Yes, you can cancel your premium subscription at any time. You&apos;ll continue to have 
                 access to premium content until the end of your billing period.
               </p>
             </div>
 
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                What's included in the courses?
+                What&apos;s included in the courses?
               </h3>
               <p className="text-gray-600">
                 Each course includes video lessons, written materials, exercises, and lifetime access. 
@@ -205,8 +204,8 @@ export default async function PricingPage() {
                 Is there a money-back guarantee?
               </h3>
               <p className="text-gray-600">
-                We offer a 30-day money-back guarantee on all courses. If you're not completely 
-                satisfied, we'll refund your purchase in full.
+                We offer a 30-day money-back guarantee on all courses. If you&apos;re not completely 
+                satisfied, we&apos;ll refund your purchase in full.
               </p>
             </div>
 
@@ -215,7 +214,7 @@ export default async function PricingPage() {
                 How do I access premium content?
               </h3>
               <p className="text-gray-600">
-                Once you subscribe, you'll immediately have access to all premium videos and content. 
+                Once you subscribe, you&apos;ll immediately have access to all premium videos and content. 
                 Premium content is marked with a special badge throughout the site.
               </p>
             </div>

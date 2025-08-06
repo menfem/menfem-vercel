@@ -7,7 +7,7 @@ export type ActionState = {
   fieldErrors?: Record<string, string[] | undefined>;
   formData?: FormData;
   timestamp?: number;
-  payload?: any;
+  payload?: unknown;
 };
 
 export const initialActionState: ActionState = { status: 'idle' };

@@ -4,12 +4,11 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { CalendarDays, MapPin, Users, ArrowLeft, Clock } from 'lucide-react'
+import { CalendarDays, MapPin, Users, ArrowLeft } from 'lucide-react'
 import { format } from 'date-fns'
 import { getEvent } from '@/features/events/queries/get-event'
 import { getAuth } from '@/features/auth/queries/get-auth'
 import { RsvpButton } from '@/features/events/components/rsvp-button'
-import { Button } from '@/components/ui/button'
 
 interface EventPageProps {
   params: {

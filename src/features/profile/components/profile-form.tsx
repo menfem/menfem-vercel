@@ -11,7 +11,7 @@ import { updateProfile } from '../actions/update-profile';
 import { UserProfile } from '../types';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
-import { ActionState, initialActionState } from '@/types/action-state';
+import { initialActionState } from '@/types/action-state';
 
 type ProfileFormProps = {
   user: UserProfile;

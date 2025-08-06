@@ -36,7 +36,7 @@ export default async function WatchPage({ searchParams }: PageProps) {
 async function VideoLibraryContent({ 
   searchParams 
 }: { 
-  searchParams: any 
+  searchParams: Record<string, string | string[] | undefined>
 }) {
   const [videosData, videoSeries] = await Promise.all([
     getVideos({

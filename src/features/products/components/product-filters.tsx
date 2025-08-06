@@ -20,10 +20,10 @@ import type { ProductCategory } from '../types';
 
 interface ProductFiltersProps {
   categories: ProductCategory[];
-  searchParams: any;
+  searchParams: Record<string, string | string[] | undefined>;
 }
 
-export function ProductFilters({ categories, searchParams }: ProductFiltersProps) {
+export function ProductFilters({ categories, searchParams: _searchParams }: ProductFiltersProps) {
   const [search, setSearch] = useQueryState('search', parseAsString.withDefault(''));
   const [categoryId, setCategoryId] = useQueryState('categoryId', parseAsString.withDefault(''));
   const [type, setType] = useQueryState('type', parseAsString.withDefault(''));
@@ -124,7 +124,7 @@ export function ProductFilters({ categories, searchParams }: ProductFiltersProps
           
           {search && (
             <Badge variant="secondary" className="flex items-center gap-1">
-              Search: "{search}"
+              Search: &quot;{search}&quot;
               <button onClick={() => setSearch('')}>
                 <X className="w-3 h-3" />
               </button>

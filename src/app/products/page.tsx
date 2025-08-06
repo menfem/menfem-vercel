@@ -51,7 +51,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 async function ProductCatalogContent({ 
   searchParams 
 }: { 
-  searchParams: any 
+  searchParams: Record<string, string | string[] | undefined>
 }) {
   const [productsData, categories] = await Promise.all([
     getProducts({

@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { changePassword } from '../actions/change-password';
 import { toast } from 'sonner';
 import { useEffect, useRef } from 'react';
-import { ActionState, initialActionState } from '@/types/action-state';
+import { initialActionState } from '@/types/action-state';
 
 
 export function PasswordForm() {

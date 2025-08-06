@@ -20,7 +20,7 @@ interface ProductCatalogProps {
     hasPreviousPage: boolean;
   };
   categories: ProductCategory[];
-  searchParams: any;
+  searchParams: Record<string, string | string[] | undefined>;
 }
 
 export function ProductCatalog({ 

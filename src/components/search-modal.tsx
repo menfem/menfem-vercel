@@ -4,7 +4,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 import { X } from "lucide-react"
 import { SearchWithSuggestions } from '@/features/search/components/search-with-suggestions'
 

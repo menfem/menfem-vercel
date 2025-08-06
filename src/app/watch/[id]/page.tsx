@@ -53,7 +53,7 @@ export default async function VideoPage({ params }: PageProps) {
   );
 }
 
-async function VideoPlayerSection({ video }: { video: any }) {
+async function VideoPlayerSection({ video }: { video: { isPremium: boolean; embedUrl: string; title: string } }) {
   const { hasAccess } = await getPremiumAccess();
 
   if (video.isPremium && !hasAccess) {

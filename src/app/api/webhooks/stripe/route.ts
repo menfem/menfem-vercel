@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     return new NextResponse('Missing signature', { status: 400 });
   }
 
-  let event: any;
+  let event: import('stripe').Event;
 
   try {
     const stripe = getStripeInstance();
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
   }
 }
 
-async function handleCheckoutCompleted(session: any) {
+async function handleCheckoutCompleted(session: import('stripe').Stripe.Checkout.Session) {
   const { metadata, payment_intent, amount_total, mode } = session;
   
   if (!metadata?.productId || !metadata?.userId) {
@@ -70,7 +70,7 @@ async function handleCheckoutCompleted(session: any) {
 
   await prisma.$transaction(async (tx) => {
     // Create purchase record
-    const _purchase = await tx.purchase.create({
+    await tx.purchase.create({
       data: {
         userId: metadata.userId,
         productId: metadata.productId,
@@ -117,7 +117,7 @@ async function handleCheckoutCompleted(session: any) {
   console.log(`Purchase completed for user ${metadata.userId}, product ${metadata.productId}`);
 }
 
-async function handleSubscriptionCreated(subscription: any) {
+async function handleSubscriptionCreated(subscription: import('stripe').Stripe.Subscription) {
   const { customer, id: subscriptionId } = subscription;
   
   // Find user by Stripe customer ID
@@ -139,7 +139,7 @@ async function handleSubscriptionCreated(subscription: any) {
   console.log(`Subscription created: ${subscriptionId}`);
 }
 
-async function handleSubscriptionUpdated(subscription: any) {
+async function handleSubscriptionUpdated(subscription: import('stripe').Stripe.Subscription) {
   const { id: subscriptionId, status, current_period_end } = subscription;
   
   const membershipSub = await prisma.membershipSubscription.findUnique({
@@ -159,7 +159,7 @@ async function handleSubscriptionUpdated(subscription: any) {
   console.log(`Subscription updated: ${subscriptionId}`);
 }
 
-async function handleSubscriptionDeleted(subscription: any) {
+async function handleSubscriptionDeleted(subscription: import('stripe').Stripe.Subscription) {
   const { id: subscriptionId } = subscription;
   
   const membershipSub = await prisma.membershipSubscription.findUnique({
@@ -179,7 +179,7 @@ async function handleSubscriptionDeleted(subscription: any) {
   console.log(`Subscription cancelled: ${subscriptionId}`);
 }
 
-async function handlePaymentSucceeded(invoice: any) {
+async function handlePaymentSucceeded(invoice: import('stripe').Stripe.Invoice) {
   const { subscription: subscriptionId } = invoice;
   
   if (subscriptionId) {
@@ -200,7 +200,7 @@ async function handlePaymentSucceeded(invoice: any) {
   console.log(`Payment succeeded for subscription: ${subscriptionId}`);
 }
 
-async function handlePaymentFailed(invoice: any) {
+async function handlePaymentFailed(invoice: import('stripe').Stripe.Invoice) {
   const { subscription: subscriptionId } = invoice;
   
   if (subscriptionId) {

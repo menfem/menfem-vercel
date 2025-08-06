@@ -18,7 +18,7 @@ type UserMenuProps = {
 
 export function UserMenu({ user }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [signOutState, signOutAction, isPending] = useActionState(signOut, null);
+  const [, signOutAction, isPending] = useActionState(signOut, null);
 
   if (!user) {
     return (

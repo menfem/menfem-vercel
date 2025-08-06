@@ -4,8 +4,6 @@
 import { Lucia } from 'lucia';
 import { PrismaAdapter } from '@lucia-auth/adapter-prisma';
 import { prisma } from '@/lib/prisma';
-import { cookies } from 'next/headers';
-import { cache } from 'react';
 
 const adapter = new PrismaAdapter(prisma.session, prisma.user);
 

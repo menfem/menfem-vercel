@@ -43,24 +43,24 @@ export function useDebounce<T>(value: T, delay: number): T {
 }
 
 // Memoized data fetchers
-export const getCachedCourses = cache(async (filters?: any) => {
+export const getCachedCourses = cache(async (filters?: Record<string, unknown>) => {
   // This would integrate with your actual data fetching
   const searchParams = new URLSearchParams(filters);
-  const cacheKey = `courses-${searchParams.toString()}`;
+  const _cacheKey = `courses-${searchParams.toString()}`;
   
   // Implementation would go here
   return [];
 });
 
-export const getCachedProducts = cache(async (filters?: any) => {
+export const getCachedProducts = cache(async (filters?: Record<string, unknown>) => {
   const searchParams = new URLSearchParams(filters);
-  const cacheKey = `products-${searchParams.toString()}`;
+  const _cacheKey = `products-${searchParams.toString()}`;
   
   return [];
 });
 
 // Lazy loading utilities
-export const createLazyComponent = <T extends Record<string, any>>(
+export const createLazyComponent = <T extends Record<string, unknown>>(
   importFn: () => Promise<{ default: React.ComponentType<T> }>
 ) => {
   return React.lazy(importFn);
@@ -108,12 +108,12 @@ export const performanceMonitor = new PerformanceMonitor();
 
 // Batch processing for analytics events
 export class EventBatcher {
-  private events: any[] = [];
+  private events: Array<Record<string, unknown>> = [];
   private batchSize = 10;
   private flushInterval = 5000; // 5 seconds
   private timeoutId: NodeJS.Timeout | null = null;
   
-  add(event: any) {
+  add(event: Record<string, unknown>) {
     this.events.push({
       ...event,
       timestamp: Date.now(),
@@ -173,7 +173,7 @@ export const preloadImage = (src: string) => {
 
 // Memory optimization for large lists
 export const useVirtualization = (
-  items: any[],
+  items: Array<Record<string, unknown>>,
   itemHeight: number,
   containerHeight: number
 ) => {
@@ -236,7 +236,7 @@ export const registerServiceWorker = () => {
 };
 
 // Web vitals tracking
-export const trackWebVitals = (metric: any) => {
+export const trackWebVitals = (metric: Record<string, unknown>) => {
   if (process.env.NODE_ENV === 'production') {
     // Send to analytics
     eventBatcher.add({

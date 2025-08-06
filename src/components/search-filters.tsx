@@ -4,7 +4,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useQueryState, useQueryStates } from 'nuqs';
+import { useQueryStates } from 'nuqs';
 import { Button } from '@/components/ui/button';
 import { SearchWithSuggestions } from '@/features/search/components/search-with-suggestions';
 import { parseAsString } from 'nuqs';

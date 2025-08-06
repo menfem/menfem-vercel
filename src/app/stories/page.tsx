@@ -1,6 +1,7 @@
 // ABOUTME: Main stories listing page displaying all featured stories and articles
 // ABOUTME: Server component with search, filtering, and pagination for story content
 
+import Link from 'next/link';
 import { getArticles } from '@/features/articles/queries/get-articles';
 import { ArticleGrid } from '@/components/article-grid';
 import { ArticleFilters } from '@/components/article-filters';
@@ -87,18 +88,18 @@ export default async function StoriesPage({ searchParams }: StoriesPageProps) {
                 }
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a 
+                <Link 
                   href="/stories" 
                   className="bg-brand-terracotta text-white px-6 py-3 rounded font-medium hover:bg-brand-rust transition-colors"
                 >
                   View All Stories
-                </a>
-                <a 
+                </Link>
+                <Link 
                   href="/articles" 
                   className="border border-brand-brown text-brand-brown px-6 py-3 rounded font-medium hover:bg-brand-cream transition-colors"
                 >
                   Browse Articles
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -110,7 +111,7 @@ export default async function StoriesPage({ searchParams }: StoriesPageProps) {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-brand-brown mb-4">Want to Share Your Story?</h2>
           <p className="text-gray-700 max-w-2xl mx-auto mb-8">
-            We're always looking for authentic voices and meaningful perspectives. 
+            We&apos;re always looking for authentic voices and meaningful perspectives. 
             Join our community of thoughtful writers and contributors.
           </p>
           <a 

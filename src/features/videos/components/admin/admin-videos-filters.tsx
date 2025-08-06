@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Search, X, Filter } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { useDebouncedCallback } from 'use-debounce';
 
 export function AdminVideosFilters() {
@@ -167,7 +167,7 @@ export function AdminVideosFilters() {
         <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t">
           {currentSearch && (
             <Badge variant="secondary" className="flex items-center gap-1">
-              Search: "{currentSearch}"
+              Search: &quot;{currentSearch}&quot;
               <button 
                 onClick={() => {
                   setSearch('');

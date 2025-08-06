@@ -71,7 +71,7 @@ export async function updateVideoSeries(
     }
 
     // Update the video series
-    const updatedSeries = await prisma.videoSeries.update({
+    await prisma.videoSeries.update({
       where: { id: seriesId },
       data: {
         title: validatedData.title,

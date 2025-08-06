@@ -22,7 +22,7 @@ export const getVideos = cache(async (filters: VideoFilters = {}): Promise<Pagin
   const skip = (page - 1) * limit;
 
   // Build where clause
-  const where: any = {
+  const where: Record<string, unknown> = {
     isPublished,
   };
 

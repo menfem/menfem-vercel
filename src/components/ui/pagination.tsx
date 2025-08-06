@@ -3,7 +3,6 @@
 
 'use client';
 
-import Link from 'next/link';
 import { useQueryState } from 'nuqs';
 import { Button } from './button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';

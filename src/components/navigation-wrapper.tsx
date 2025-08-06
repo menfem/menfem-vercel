@@ -3,7 +3,6 @@
 
 import { getAuth } from '@/features/auth/queries/get-auth';
 import { Navigation } from './navigation';
-import type { User } from 'lucia';
 
 export async function NavigationWrapper() {
   const { user } = await getAuth();

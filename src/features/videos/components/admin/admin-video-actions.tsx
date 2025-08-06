@@ -41,7 +41,7 @@ export function AdminVideoActions({ video }: AdminVideoActionsProps) {
     try {
       await navigator.clipboard.writeText(url);
       toast.success('Video URL copied to clipboard');
-    } catch (error) {
+    } catch (_error) {
       toast.error('Failed to copy URL');
     }
   };
@@ -52,7 +52,7 @@ export function AdminVideoActions({ video }: AdminVideoActionsProps) {
       const newStatus = !video.isPublished;
       toast.success(`Video ${newStatus ? 'published' : 'unpublished'} successfully`);
       router.refresh();
-    } catch (error) {
+    } catch (_error) {
       toast.error('Failed to update video status');
     }
   };
@@ -63,7 +63,7 @@ export function AdminVideoActions({ video }: AdminVideoActionsProps) {
       // TODO: Implement delete video action
       toast.success('Video deleted successfully');
       router.push('/admin/videos');
-    } catch (error) {
+    } catch (_error) {
       toast.error('Failed to delete video');
       setIsDeleting(false);
     }
@@ -114,7 +114,7 @@ export function AdminVideoActions({ video }: AdminVideoActionsProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Video</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete "{video.title}"? This action cannot be undone.
+              Are you sure you want to delete &quot;{video.title}&quot;? This action cannot be undone.
               The video will be permanently removed from your content library.
             </AlertDialogDescription>
           </AlertDialogHeader>

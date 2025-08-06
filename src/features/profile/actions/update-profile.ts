@@ -25,7 +25,7 @@ export async function updateProfile(prevState: ActionState, formData: FormData):
 
     // Remove empty strings and convert to undefined
     const cleanData = Object.fromEntries(
-      Object.entries(rawData).filter(([_, value]) => value && value.trim() !== '')
+      Object.entries(rawData).filter(([, value]) => value && value.trim() !== '')
     );
 
     const validatedData = updateProfileSchema.parse(cleanData);

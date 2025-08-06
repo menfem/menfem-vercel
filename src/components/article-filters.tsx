@@ -4,17 +4,14 @@
 'use client';
 
 import { useState } from 'react';
-import { useQueryState, useQueryStates } from 'nuqs';
+import { useQueryStates } from 'nuqs';
 import { Button } from '@/components/ui/button';
 import { SearchBar } from '@/components/search-bar';
 import { parseAsString } from 'nuqs';
 
-interface ArticleFiltersProps {
-  categories?: Array<{ id: string; name: string; slug: string }>;
-  tags?: Array<{ id: string; name: string; slug: string }>;
-}
+// No props needed for this component
 
-export function ArticleFilters({ categories, tags }: ArticleFiltersProps) {
+export function ArticleFilters() {
   const [{ search, category, sortBy, sortOrder }, setFilters] = useQueryStates({
     search: parseAsString.withDefault(''),
     category: parseAsString.withDefault(''),

@@ -19,10 +19,10 @@ import type { VideoSeriesWithVideos } from '../types';
 
 interface VideoFiltersProps {
   videoSeries: VideoSeriesWithVideos[];
-  searchParams: any;
+  searchParams: Record<string, string | string[] | undefined>;
 }
 
-export function VideoFilters({ videoSeries, searchParams }: VideoFiltersProps) {
+export function VideoFilters({ videoSeries, searchParams: _searchParams }: VideoFiltersProps) {
   const [search, setSearch] = useQueryState('search', parseAsString.withDefault(''));
   const [seriesId, setSeriesId] = useQueryState('seriesId', parseAsString.withDefault(''));
   const [isPremium, setIsPremium] = useQueryState('isPremium', parseAsBoolean);
@@ -104,7 +104,7 @@ export function VideoFilters({ videoSeries, searchParams }: VideoFiltersProps) {
           
           {search && (
             <Badge variant="secondary" className="flex items-center gap-1">
-              Search: "{search}"
+              Search: &quot;{search}&quot;
               <button onClick={() => setSearch('')}>
                 <X className="w-3 h-3" />
               </button>

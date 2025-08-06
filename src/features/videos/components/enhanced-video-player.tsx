@@ -4,7 +4,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Play, Pause, Volume2, VolumeX, Maximize, RotateCcw, Settings } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Maximize } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
@@ -24,7 +24,7 @@ interface EnhancedVideoPlayerProps {
   hasAccess: boolean;
   onProgress?: (progressSeconds: number, totalSeconds: number) => void;
   onComplete?: () => void;
-  onEngagement?: (eventType: string, data: any) => void;
+  onEngagement?: (eventType: string, data: Record<string, unknown>) => void;
   showControls?: boolean;
   autoPlay?: boolean;
   className?: string;

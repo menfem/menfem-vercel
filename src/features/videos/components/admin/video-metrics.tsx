@@ -65,7 +65,7 @@ export async function VideoMetrics({ videoId }: VideoMetricsProps) {
   // Calculate trend (simplified)
   const last7Days = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const recentEvents = engagementData.filter(e => e.timestamp >= last7Days);
-  const trend = recentEvents.length > 0 ? '+' : '';
+  const _trend = recentEvents.length > 0 ? '+' : '';
 
   return (
     <div className="bg-white rounded-lg border p-6">

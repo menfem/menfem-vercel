@@ -46,7 +46,7 @@ export default async function CoursesPage() {
   );
 }
 
-async function CoursesContent({ user }: { user: any }) {
+async function CoursesContent({ user }: { user: { id: string } | null }) {
   if (user) {
     // Show enrolled courses and available courses
     const [userCourses, availableCourses] = await Promise.all([

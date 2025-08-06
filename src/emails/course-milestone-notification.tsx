@@ -9,7 +9,6 @@ import {
   Heading,
   Hr,
   Html,
-  Img,
   Link,
   Preview,
   Section,
@@ -151,7 +150,7 @@ export default function CourseMilestoneNotification({
               {milestone.type === 'course_completed' ? (
                 <div className="text-center space-y-4">
                   <Text className="text-gray-700 mb-4">
-                    🎓 You've earned your certificate of completion! Share your achievement and continue your learning journey.
+                    🎓 You&apos;ve earned your certificate of completion! Share your achievement and continue your learning journey.
                   </Text>
                   
                   <div className="space-y-3">
@@ -205,22 +204,22 @@ export default function CourseMilestoneNotification({
                 <div className="space-y-2 text-sm text-gray-700">
                   <Text>• Set aside dedicated time for learning each day</Text>
                   <Text>• Take notes as you go through the lessons</Text>
-                  <Text>• Don't hesitate to replay sections you want to review</Text>
+                  <Text>• Don&apos;t hesitate to replay sections you want to review</Text>
                 </div>
               )}
               
               {milestone.type === 'halfway_complete' && (
                 <div className="space-y-2 text-sm text-gray-700">
-                  <Text>• You're doing great! Consistency is key to success</Text>
+                  <Text>• You&apos;re doing great! Consistency is key to success</Text>
                   <Text>• Review previous lessons to reinforce your learning</Text>
-                  <Text>• Apply what you've learned in real-world scenarios</Text>
+                  <Text>• Apply what you&apos;ve learned in real-world scenarios</Text>
                 </div>
               )}
               
               {milestone.type === 'almost_complete' && (
                 <div className="space-y-2 text-sm text-gray-700">
-                  <Text>• You're almost there! Don't lose momentum now</Text>
-                  <Text>• Prepare to implement what you've learned</Text>
+                  <Text>• You&apos;re almost there! Don&apos;t lose momentum now</Text>
+                  <Text>• Prepare to implement what you&apos;ve learned</Text>
                   <Text>• Think about sharing your new knowledge with others</Text>
                 </div>
               )}
@@ -237,7 +236,7 @@ export default function CourseMilestoneNotification({
             {/* Footer */}
             <Section className="bg-white rounded-b-lg p-6 text-center border-t border-gray-200">
               <Text className="text-gray-600 text-sm mb-4">
-                Keep up the excellent work! We're proud of your dedication to learning.
+                Keep up the excellent work! We&apos;re proud of your dedication to learning.
               </Text>
               
               <Hr className="my-4" />

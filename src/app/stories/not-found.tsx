@@ -19,8 +19,8 @@ export default function StoriesNotFound() {
           </h2>
           
           <p className="text-gray-700 text-lg mb-8 leading-relaxed">
-            The story you're looking for doesn't exist or may have been moved. 
-            But don't worry – we have plenty of other compelling stories waiting for you.
+            The story you&apos;re looking for doesn&apos;t exist or may have been moved. 
+            But don&apos;t worry – we have plenty of other compelling stories waiting for you.
           </p>
           
           {/* Navigation Options */}

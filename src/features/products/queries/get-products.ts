@@ -25,7 +25,7 @@ export const getProducts = cache(async (filters: ProductFilters = {}): Promise<P
   const skip = (page - 1) * limit;
 
   // Build where clause
-  const where: any = {
+  const where: Record<string, unknown> = {
     isActive,
   };
 
@@ -121,7 +121,7 @@ export const getActiveProducts = cache(async (filters: Omit<ProductFilters, 'isA
 });
 
 export const getProductsByType = cache(async (type: string, filters: Omit<ProductFilters, 'type'> = {}) => {
-  return getProducts({ ...filters, type: type as any });
+  return getProducts({ ...filters, type: type as 'COURSE' | 'PRODUCT' });
 });
 
 export const getCourseProducts = cache(async (filters: Omit<ProductFilters, 'type'> = {}) => {

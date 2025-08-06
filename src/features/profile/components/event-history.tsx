@@ -62,7 +62,7 @@ export function EventHistory({ user }: EventHistoryProps) {
         </div>
         
         <div className="text-center py-8 bg-gray-50 rounded-lg">
-          <p className="text-gray-600 mb-4">You haven't RSVP'd to any events yet.</p>
+          <p className="text-gray-600 mb-4">You haven&apos;t RSVP&apos;d to any events yet.</p>
           <Link 
             href="/the-list"
             className="inline-block bg-brand-brown hover:bg-brand-rust text-white px-4 py-2 rounded transition-colors"
@@ -106,7 +106,7 @@ export function EventHistory({ user }: EventHistoryProps) {
                   {format(new Date(rsvp.event.startDate), 'h:mm a')}
                 </p>
                 <p className="text-xs text-gray-500 mt-2">
-                  RSVP'd on {format(new Date(rsvp.createdAt), 'MMM d, yyyy')}
+                  RSVP&apos;d on {format(new Date(rsvp.createdAt), 'MMM d, yyyy')}
                 </p>
               </div>
             ))}

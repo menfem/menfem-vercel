@@ -7,7 +7,6 @@ import { getProduct } from '@/features/products/queries/get-product';
 import { getProducts } from '@/features/products/queries/get-products';
 import { ProductDetails } from '@/features/products/components/product-details';
 import { RelatedProducts } from '@/features/products/components/related-products';
-import { ProductDetailsSkeleton } from '@/features/products/components/product-details-skeleton';
 import type { Metadata } from 'next';
 
 interface PageProps {

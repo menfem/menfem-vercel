@@ -222,7 +222,7 @@ export function SearchWithSuggestions({
                   <Search className="h-4 w-4 text-brand-terracotta" />
                   <div className="flex-1">
                     <div className="font-medium text-brand-terracotta">
-                      Search for "{inputValue.trim()}"
+                      Search for &quot;{inputValue.trim()}&quot;
                     </div>
                     <div className="text-xs text-gray-500">
                       Press Enter or click to search

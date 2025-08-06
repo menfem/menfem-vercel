@@ -4,7 +4,7 @@
 import { NextResponse } from 'next/server';
 import { NewsletterGenerator } from '@/features/newsletter/services/newsletter-generator';
 
-export async function POST(_request: Request) {
+export async function POST() {
   try {
     // TODO: Add API key authentication when ready for production
     // const authHeader = request.headers.get('authorization');

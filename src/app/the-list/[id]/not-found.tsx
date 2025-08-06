@@ -16,7 +16,7 @@ export default function EventNotFound() {
         </h1>
         
         <p className="text-brand-rust mb-8">
-          The event you're looking for doesn't exist or is no longer available. 
+          The event you&apos;re looking for doesn&apos;t exist or is no longer available. 
           It may have been cancelled or moved.
         </p>
         

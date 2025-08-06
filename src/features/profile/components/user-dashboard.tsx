@@ -26,7 +26,7 @@ export function UserDashboard({ user, stats }: UserDashboardProps) {
           Welcome back{user.username ? `, ${user.username}` : ''}!
         </h1>
         <p className="text-gray-700">
-          Here's what's happening with your MenFem account.
+          Here&apos;s what&apos;s happening with your MenFem account.
         </p>
       </div>
 

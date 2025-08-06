@@ -3,7 +3,7 @@
 
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { createCheckoutSession } from '../actions/create-checkout-session';
 import { Loader2 } from 'lucide-react';
@@ -20,7 +20,6 @@ interface PricingCardProps {
 
 export function PricingCard({
   type,
-  price,
   productId,
   priceId,
   buttonText = 'Get Started',

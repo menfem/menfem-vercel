@@ -31,7 +31,7 @@ export const isTouchDevice = () => {
 };
 
 // Mobile-optimized component props
-export const getMobileProps = (baseProps: Record<string, any>) => {
+export const getMobileProps = (baseProps: Record<string, unknown>) => {
   if (typeof window === 'undefined') return baseProps;
   
   if (isMobile()) {

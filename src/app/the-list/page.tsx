@@ -50,7 +50,7 @@ export default function TheListPage() {
           <p className="text-lg text-brand-rust max-w-2xl mx-auto">
             Join our London-based community events, workshops, and meetups. 
             Connect with others exploring the intersection of masculinity and femininity 
-            in today's world.
+            in today&apos;s world.
           </p>
         </div>
 

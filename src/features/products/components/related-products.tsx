@@ -3,7 +3,6 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Badge } from '@/components/ui/badge';
 import { formatPrice } from '../utils/format-price';
 import type { ProductListItem } from '../types';
 import { BookOpen, Download, Package, Crown } from 'lucide-react';

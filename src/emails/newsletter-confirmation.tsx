@@ -39,7 +39,7 @@ export const NewsletterConfirmationEmail = ({
                 MenFem
               </Text>
               <Text className="text-lg text-gray-600">
-                The Modern Men's Movement
+                The Modern Men&apos;s Movement
               </Text>
             </Section>
 
@@ -50,7 +50,7 @@ export const NewsletterConfirmationEmail = ({
               </Text>
               
               <Text className="text-gray-700 mb-4 leading-relaxed">
-                Thank you for subscribing to the MenFem newsletter! We're excited to have you join our community of men who are redefining what it means to be masculine in the modern world.
+                Thank you for subscribing to the MenFem newsletter! We&apos;re excited to have you join our community of men who are redefining what it means to be masculine in the modern world.
               </Text>
 
               <Text className="text-gray-700 mb-6 leading-relaxed">
@@ -68,7 +68,7 @@ export const NewsletterConfirmationEmail = ({
               </Section>
 
               <Text className="text-sm text-gray-500 mb-6">
-                If the button doesn't work, you can copy and paste this link into your browser:
+                If the button doesn&apos;t work, you can copy and paste this link into your browser:
                 <br />
                 <span className="text-blue-600 break-all">{confirmationUrl}</span>
               </Text>
@@ -93,7 +93,7 @@ export const NewsletterConfirmationEmail = ({
                 This email was sent from MenFem to {userEmail}
               </Text>
               <Text className="text-xs text-gray-400">
-                If you didn't sign up for our newsletter, you can safely ignore this email.
+                If you didn&apos;t sign up for our newsletter, you can safely ignore this email.
               </Text>
             </Section>
           </Container>

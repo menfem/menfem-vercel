@@ -4,7 +4,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { VideoCard } from './video-card';
 import { VideoFilters } from './video-filters';
 import { Pagination } from '@/components/ui/pagination';
@@ -21,7 +20,7 @@ interface VideoLibraryProps {
     hasPreviousPage: boolean;
   };
   videoSeries: VideoSeriesWithVideos[];
-  searchParams: any;
+  searchParams: Record<string, string | string[] | undefined>;
 }
 
 export function VideoLibrary({ 

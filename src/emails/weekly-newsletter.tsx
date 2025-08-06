@@ -72,7 +72,7 @@ export const WeeklyNewsletterEmail = ({
               </Text>
               
               <Text className="text-gray-700 mb-6 leading-relaxed">
-                Welcome to your weekly dose of modern masculinity insights. This week we're exploring new perspectives on culture, style, and personal development.
+                Welcome to your weekly dose of modern masculinity insights. This week we&apos;re exploring new perspectives on culture, style, and personal development.
               </Text>
             </Section>
 
@@ -183,7 +183,7 @@ export const WeeklyNewsletterEmail = ({
                 This newsletter was sent to {userEmail}
               </Text>
               <Text className="text-xs text-gray-400 mb-2">
-                You're receiving this because you subscribed to MenFem updates.
+                You&apos;re receiving this because you subscribed to MenFem updates.
               </Text>
               <Text className="text-xs text-gray-400">
                 <a href={unsubscribeUrl} className="text-gray-600 hover:text-gray-800 underline">

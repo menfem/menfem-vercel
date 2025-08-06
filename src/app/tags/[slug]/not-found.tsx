@@ -10,7 +10,7 @@ export default function NotFound() {
       <div className="text-center max-w-md mx-auto px-4">
         <h1 className="text-4xl font-bold text-brand-brown mb-4">Tag Not Found</h1>
         <p className="text-gray-600 mb-8 leading-relaxed">
-          We couldn't find any articles with this tag, or the tag doesn't exist.
+          We couldn&apos;t find any articles with this tag, or the tag doesn&apos;t exist.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/search">
