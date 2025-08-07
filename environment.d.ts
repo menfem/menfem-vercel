@@ -21,7 +21,7 @@ declare namespace NodeJS {
     STRIPE_WEBHOOK_SECRET: string;
     
     // Phase 4: YouTube API Integration
-    YOUTUBE_API_KEY: string;
+    YOUTUBE_API_KEY?: string;
     
     // Phase 4: Analytics (optional)
     VERCEL_ANALYTICS_ID?: string;

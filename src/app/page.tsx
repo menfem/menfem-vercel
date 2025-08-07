@@ -136,9 +136,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-2xl font-bold mb-4">MENFEM</h3>
-              <p className="text-gray-700 mb-4 max-w-md">
-                lifestyle, culture and more
-              </p>
+              <p className="text-gray-700 mb-4 max-w-md">lifestyle, culture</p>
               <div className="flex space-x-4">
                 <a
                   href="#"
