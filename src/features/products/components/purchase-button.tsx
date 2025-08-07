@@ -36,13 +36,11 @@ export function PurchaseButton({
         formData.append('productId', product.id);
         formData.append('successUrl', `/products/${product.slug}?success=true`);
         
-        const result = await createSubscriptionCheckout(
-          { status: undefined, message: undefined },
-          formData
-        );
+        const result = await createSubscriptionCheckout(formData);
         
-        if (result.status === 'SUCCESS' && result.payload?.sessionUrl) {
-          checkoutUrl = result.payload.sessionUrl;
+        if (result.status === 'SUCCESS' && result.payload) {
+          const payload = result.payload as { sessionUrl: string };
+          checkoutUrl = payload.sessionUrl;
         } else {
           throw new Error(result.message || 'Failed to create checkout');
         }
@@ -51,13 +49,11 @@ export function PurchaseButton({
         formData.append('productId', product.id);
         formData.append('successUrl', `/products/${product.slug}?success=true`);
         
-        const result = await createCheckoutSession(
-          { status: undefined, message: undefined },
-          formData
-        );
+        const result = await createCheckoutSession(formData);
         
-        if (result.status === 'SUCCESS' && result.payload?.sessionUrl) {
-          checkoutUrl = result.payload.sessionUrl;
+        if (result.status === 'SUCCESS' && result.payload) {
+          const payload = result.payload as { sessionUrl: string };
+          checkoutUrl = payload.sessionUrl;
         } else {
           throw new Error(result.message || 'Failed to create checkout');
         }

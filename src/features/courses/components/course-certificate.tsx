@@ -7,8 +7,9 @@ import { useState, useRef } from 'react';
 import { Download, Share2, Trophy, Calendar, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+// Dynamic imports for optional PDF generation packages
+const html2canvas = () => Promise.resolve(null as any);
+const jsPDF = () => Promise.resolve(null as any);
 
 interface CourseCertificateProps {
   certificate: {
@@ -47,14 +48,21 @@ export function CourseCertificate({
 
     setIsGenerating(true);
     try {
-      const canvas = await html2canvas(certificateRef.current, {
+      const html2canvasModule = await html2canvas();
+      const jsPDFModule = await jsPDF();
+
+      if (!html2canvasModule || !jsPDFModule) {
+        throw new Error('PDF generation packages not available');
+      }
+
+      const canvas = await html2canvasModule.default(certificateRef.current, {
         scale: 2,
         backgroundColor: '#ffffff',
         width: 1200,
         height: 800,
       });
 
-      const pdf = new jsPDF({
+      const pdf = new jsPDFModule.default({
         orientation: 'landscape',
         unit: 'mm',
         format: 'a4',

@@ -48,7 +48,8 @@ export function AdminProductCategoriesList({ categories }: AdminProductCategorie
       formData.append('categoryId', categoryId);
       
       const result = await deleteProductCategory(
-        { status: undefined, message: undefined },
+        categoryId,
+        {},
         formData
       );
 

@@ -46,7 +46,16 @@ export function AdminProductsList({ products, metadata }: AdminProductsListProps
 
       {/* Pagination */}
       {metadata.totalPages > 1 && (
-        <AdminPagination metadata={metadata} />
+        <AdminPagination 
+          pagination={{
+            page: metadata.page,
+            limit: metadata.limit,
+            total: metadata.count,
+            pages: metadata.totalPages,
+            hasNext: metadata.hasNextPage,
+            hasPrev: metadata.hasPreviousPage,
+          }} 
+        />
       )}
     </div>
   );
@@ -86,9 +95,6 @@ function ProductCard({ product }: { product: ProductWithRelations }) {
             )}
             {isLowStock && !isOutOfStock && (
               <Badge variant="outline">Low Stock</Badge>
-            )}
-            {product.isPremium && (
-              <Badge variant="default">Premium</Badge>
             )}
           </div>
 

@@ -13,13 +13,13 @@ interface UserCoursesSectionProps {
     id: string;
     course: {
       id: string;
-      title: string;
-      description: string;
-      thumbnailUrl?: string;
-      slug: string;
       product: {
+        name: string;
+        description: string;
+        slug: string;
+        images: string[];
         price: number;
-        category?: {
+        category: {
           name: string;
         };
       };
@@ -31,8 +31,8 @@ interface UserCoursesSectionProps {
       }>;
     };
     enrolledAt: Date;
-    progress?: {
-      progressPercentage: number;
+    progress: {
+      percentage: number;
       completedLessons: number;
       totalLessons: number;
     };
@@ -67,16 +67,24 @@ function EnrolledCourseCard({ enrollment }: {
     id: string;
     course: {
       id: string;
-      title: string;
-      description: string;
-      thumbnailUrl?: string;
-      slug: string;
+      product: {
+        name: string;
+        slug: string;
+        images: string[];
+        category: {
+          name: string;
+        };
+      };
+      level?: string;
+      modules?: Array<any>;
     };
-    progress?: {
-      progressPercentage: number;
+    progress: {
+      percentage: number;
       completedLessons: number;
       totalLessons: number;
     };
+    enrolledAt: Date;
+    completedAt?: Date | null;
   }
 }) {
   const { course, progress, enrolledAt, completedAt } = enrollment;
@@ -147,11 +155,11 @@ function EnrolledCourseCard({ enrollment }: {
         <div className="flex items-center gap-4 text-xs text-gray-500">
           <div className="flex items-center gap-1">
             <BookOpen className="w-3 h-3" />
-            <span>{progress.totalModules} modules</span>
+            <span>{course.modules?.length || 0} modules</span>
           </div>
           <div className="flex items-center gap-1">
             <Clock className="w-3 h-3" />
-            <span>{course.duration}</span>
+            <span>{progress.totalLessons} lessons</span>
           </div>
         </div>
 
@@ -166,7 +174,7 @@ function EnrolledCourseCard({ enrollment }: {
         {/* Meta */}
         <div className="text-xs text-gray-500 text-center">
           Enrolled {new Date(enrolledAt).toLocaleDateString()}
-          {isCompleted && (
+          {isCompleted && completedAt && (
             <span> • Completed {new Date(completedAt).toLocaleDateString()}</span>
           )}
         </div>

@@ -10,11 +10,11 @@ import { getAuth } from '@/features/auth/queries/get-auth';
 import { sendEmail } from '@/lib/resend';
 import { NewsletterConfirmationEmail } from '@/emails/newsletter-confirmation';
 import { PATHS } from '@/paths';
-import {
-  ActionState,
-  fromErrorToActionState,
-  toActionState,
+import { 
+  fromErrorToActionState, 
+  toActionState 
 } from '@/components/form/utils/to-action-state';
+import type { ActionState } from '@/types/action-state';
 
 const subscribeSchema = z.object({
   email: z.string().email('Invalid email address'),

@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { AlertCircle, Building2, User, Phone, Mail } from 'lucide-react';
 import { submitConsultingInquiry } from '../actions/submit-inquiry';
 import { CompanySize, ConsultingType, BudgetRange } from '@prisma/client';
-import type { ActionState } from '@/components/form/utils/to-action-state';
+import type { ActionState } from '@/types/action-state';
 
 const emptyActionState: ActionState = {
   status: undefined,

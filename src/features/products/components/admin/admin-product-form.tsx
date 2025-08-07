@@ -3,7 +3,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useActionState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -45,10 +45,15 @@ export function AdminProductForm({ categories, tags, product }: AdminProductForm
   const router = useRouter();
   const isEditing = Boolean(product);
   
-  const [actionState, formAction] = useActionState(
-    isEditing ? updateProduct : createProduct,
-    initialState
-  );
+  const handleAction = async (prevState: ActionState, formData: FormData): Promise<ActionState> => {
+    if (isEditing && product) {
+      return await updateProduct(product.id, prevState, formData);
+    } else {
+      return await createProduct(prevState, formData);
+    }
+  };
+
+  const [actionState, formAction] = useActionState(handleAction, initialState);
 
   // Form state
   const [selectedType, setSelectedType] = useState(product?.type || 'DIGITAL');
@@ -58,8 +63,8 @@ export function AdminProductForm({ categories, tags, product }: AdminProductForm
   const [images, setImages] = useState<string[]>(product?.images || []);
   const [imageInput, setImageInput] = useState('');
 
-  // Handle form submission with toast feedback
-  const handleSubmit = async (formData: FormData) => {
+  // Handle form submission
+  const handleSubmit = (formData: FormData) => {
     // Add selected tags and images to form data
     selectedTags.forEach(tagId => formData.append('tags', tagId));
     images.forEach(image => formData.append('images', image));
@@ -68,17 +73,21 @@ export function AdminProductForm({ categories, tags, product }: AdminProductForm
       formData.append('id', product.id);
     }
 
-    const result = await formAction(formData);
-    
-    if (result.status === 'SUCCESS') {
-      toast.success(result.message);
+    // Let formAction handle the submission
+    formAction(formData);
+  };
+
+  // Handle action state changes for feedback
+  useEffect(() => {
+    if (actionState.status === 'SUCCESS') {
+      toast.success(actionState.message || 'Product saved successfully');
       if (!isEditing) {
         router.push('/admin/products');
       }
-    } else if (result.status === 'ERROR') {
-      toast.error(result.message);
+    } else if (actionState.status === 'ERROR') {
+      toast.error(actionState.message || 'Failed to save product');
     }
-  };
+  }, [actionState, isEditing, router]);
 
   const handleAddImage = () => {
     if (imageInput.trim() && !images.includes(imageInput.trim())) {
@@ -197,7 +206,7 @@ export function AdminProductForm({ categories, tags, product }: AdminProductForm
             <Select 
               name="type" 
               value={selectedType}
-              onValueChange={setSelectedType}
+              onValueChange={(value) => setSelectedType(value as 'PHYSICAL' | 'DIGITAL' | 'COURSE' | 'SUBSCRIPTION')}
               defaultValue={product?.type}
             >
               <SelectTrigger>

@@ -89,10 +89,10 @@ export class NewsletterGenerator {
         throw new Error('No articles available for newsletter generation');
       }
 
-      return this.formatNewsletterContent(fallbackArticles);
+      return this.formatNewsletterContent(fallbackArticles.filter(a => a.publishedAt) as any);
     }
 
-    return this.formatNewsletterContent(recentArticles);
+    return this.formatNewsletterContent(recentArticles.filter(a => a.publishedAt) as any);
   }
 
   /**
@@ -101,12 +101,12 @@ export class NewsletterGenerator {
   private formatNewsletterContent(articles: Array<{
     id: string;
     title: string;
-    subtitle?: string;
+    subtitle: string | null;
     excerpt: string;
     slug: string;
-    coverImage?: string;
+    coverImage?: string | null;
     author: {
-      username?: string;
+      username: string | null;
       email: string;
     };
     readingTime: number;
@@ -118,12 +118,12 @@ export class NewsletterGenerator {
       featuredArticle: {
         id: featuredArticle.id,
         title: featuredArticle.title,
-        subtitle: featuredArticle.subtitle,
+        subtitle: featuredArticle.subtitle || undefined,
         excerpt: featuredArticle.excerpt,
         slug: featuredArticle.slug,
-        coverImage: featuredArticle.coverImage,
+        coverImage: featuredArticle.coverImage || undefined,
         author: {
-          username: featuredArticle.author.username,
+          username: featuredArticle.author.username || undefined,
           email: featuredArticle.author.email,
         },
         readingTime: featuredArticle.readingTime,
@@ -132,12 +132,12 @@ export class NewsletterGenerator {
       recentArticles: otherArticles.slice(0, 3).map((article) => ({
         id: article.id,
         title: article.title,
-        subtitle: article.subtitle,
+        subtitle: article.subtitle || undefined,
         excerpt: article.excerpt,
         slug: article.slug,
-        coverImage: article.coverImage,
+        coverImage: article.coverImage || undefined,
         author: {
-          username: article.author.username,
+          username: article.author.username || undefined,
           email: article.author.email,
         },
         readingTime: article.readingTime,

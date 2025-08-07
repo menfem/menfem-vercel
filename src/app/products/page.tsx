@@ -51,17 +51,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 async function ProductCatalogContent({ 
   searchParams 
 }: { 
-  searchParams: Record<string, string | string[] | undefined>
+  searchParams: any
 }) {
   const [productsData, categories] = await Promise.all([
     getProducts({
-      page: searchParams.page,
-      search: searchParams.search,
-      categoryId: searchParams.categoryId,
-      type: searchParams.type,
+      ...searchParams,
       isActive: true, // Only show active products to public
-      minPrice: searchParams.minPrice,
-      maxPrice: searchParams.maxPrice,
     }),
     getProductCategories(),
   ]);
@@ -71,7 +66,6 @@ async function ProductCatalogContent({
       products={productsData.list}
       metadata={productsData.metadata}
       categories={categories}
-      searchParams={searchParams}
     />
   );
 }

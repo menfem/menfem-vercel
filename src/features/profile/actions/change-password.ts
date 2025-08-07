@@ -83,7 +83,7 @@ export async function changePassword(prevState: ActionState, formData: FormData)
     }
 
     return {
-      status: 'error' as const,
+      status: 'ERROR' as const,
       message: 'Failed to change password',
     };
   }

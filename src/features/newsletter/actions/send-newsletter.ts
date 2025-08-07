@@ -5,11 +5,11 @@
 
 import { NewsletterGenerator } from '../services/newsletter-generator';
 import { getAuthOrRedirect } from '@/features/auth/queries/get-auth-or-redirect';
-import {
-  ActionState,
-  fromErrorToActionState,
-  toActionState,
+import { 
+  fromErrorToActionState, 
+  toActionState 
 } from '@/components/form/utils/to-action-state';
+import type { ActionState } from '@/types/action-state';
 
 export async function sendWeeklyNewsletter(
   _actionState: ActionState,
@@ -64,7 +64,11 @@ export async function previewNewsletter(): Promise<{
     }
 
     const generator = new NewsletterGenerator();
-    return await generator.previewNewsletter();
+    const content = await generator.previewNewsletter();
+    return {
+      success: true,
+      data: content,
+    };
   } catch (error) {
     console.error('Newsletter preview failed:', error);
     throw error;

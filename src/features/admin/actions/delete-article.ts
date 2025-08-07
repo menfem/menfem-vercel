@@ -33,7 +33,7 @@ export async function deleteArticle(
 
     if (!article) {
       return {
-        status: 'error',
+        status: 'ERROR',
         message: 'Article not found',
       };
     }
@@ -52,7 +52,7 @@ export async function deleteArticle(
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
-        status: 'error',
+        status: 'ERROR',
         message: 'Validation failed',
         fieldErrors: error.flatten().fieldErrors,
       };
@@ -60,7 +60,7 @@ export async function deleteArticle(
 
     console.error('Error deleting article:', error);
     return {
-      status: 'error',
+      status: 'ERROR',
       message: 'Failed to delete article',
     };
   }
@@ -80,7 +80,7 @@ export async function toggleArticleStatus(
 
     if (!article) {
       return {
-        status: 'error',
+        status: 'ERROR',
         message: 'Article not found',
       };
     }
@@ -97,14 +97,14 @@ export async function toggleArticleStatus(
     revalidatePath('/articles');
 
     return {
-      status: 'success',
+      status: 'SUCCESS',
       message: `Article ${isPublished ? 'published' : 'unpublished'} successfully`,
     };
 
   } catch (error) {
     console.error('Error toggling article status:', error);
     return {
-      status: 'error',
+      status: 'ERROR',
       message: 'Failed to update article status',
     };
   }

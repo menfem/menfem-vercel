@@ -116,7 +116,7 @@ export async function fetchYouTubeMetadata(videoId: string): Promise<YouTubeMeta
     console.error('Error fetching YouTube metadata:', error);
     
     if (error instanceof z.ZodError) {
-      console.error('YouTube API response validation error:', error.errors);
+      console.error('YouTube API response validation error:', error.issues);
       throw new Error('Invalid response from YouTube API');
     }
     

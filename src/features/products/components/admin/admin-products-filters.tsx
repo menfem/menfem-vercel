@@ -60,7 +60,7 @@ export function AdminProductsFilters({ categories, currentFilters }: AdminProduc
   const hasActiveFilters = Boolean(
     currentFilters.search ||
     currentFilters.categoryId ||
-    (currentFilters.type && currentFilters.type !== 'all') ||
+    currentFilters.type ||
     (currentFilters.isActive !== undefined)
   );
 
@@ -109,7 +109,7 @@ export function AdminProductsFilters({ categories, currentFilters }: AdminProduc
         {/* Type Filter */}
         <Select
           value={currentFilters.type || 'all'}
-          onValueChange={(value) => updateFilters({ type: value === 'all' ? undefined : value as 'COURSE' | 'SUBSCRIPTION' | 'DIGITAL_PRODUCT' })}
+          onValueChange={(value) => updateFilters({ type: value === 'all' ? undefined : value as 'COURSE' | 'SUBSCRIPTION' | 'DIGITAL' | 'PHYSICAL' })}
         >
           <SelectTrigger>
             <SelectValue placeholder="All Types" />
@@ -157,7 +157,7 @@ export function AdminProductsFilters({ categories, currentFilters }: AdminProduc
           onValueChange={(value) => {
             const [sortBy, sortOrder] = value.split('_');
             updateFilters({ 
-              sortBy: sortBy as 'name' | 'price' | 'createdAt' | 'type',
+              sortBy: sortBy as 'name' | 'price' | 'createdAt' | 'purchases',
               sortOrder: sortOrder as 'asc' | 'desc'
             });
           }}

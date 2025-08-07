@@ -10,7 +10,7 @@ import type { CourseWithRelations, CourseLessonWithVideo } from '../types';
 interface CourseHeaderProps {
   course: CourseWithRelations;
   currentLesson: CourseLessonWithVideo;
-  progress: number;
+  progress: { totalLessons: number; completedLessons: number; percentage: number };
   isNavigationOpen: boolean;
   onToggleNavigation: () => void;
 }
@@ -66,12 +66,12 @@ export function CourseHeader({
         <div className="flex items-center gap-3">
           <div className="text-right">
             <div className="text-sm font-medium text-gray-900">
-              {progress}% Complete
+              {Math.round(progress.percentage)}% Complete
             </div>
             <div className="w-24 bg-gray-200 rounded-full h-2 mt-1">
               <div
                 className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${progress}%` }}
+                style={{ width: `${progress.percentage}%` }}
               />
             </div>
           </div>

@@ -76,14 +76,14 @@ export async function updateProfile(prevState: ActionState, formData: FormData):
     
     if (error instanceof z.ZodError) {
       return {
-        status: 'error' as const,
+        status: 'ERROR' as const,
         message: 'Invalid input data',
         fieldErrors: error.flatten().fieldErrors,
       };
     }
 
     return {
-      status: 'error' as const,
+      status: 'ERROR' as const,
       message: 'Failed to update profile',
     };
   }

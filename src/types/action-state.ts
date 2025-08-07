@@ -2,7 +2,7 @@
 // ABOUTME: Standardized action state types for form handling and UI feedback
 
 export type ActionState = {
-  status?: 'SUCCESS' | 'ERROR' | 'idle';
+  status?: 'SUCCESS' | 'ERROR' | 'PENDING' | 'idle';
   message?: string;
   fieldErrors?: Record<string, string[] | undefined>;
   formData?: FormData;

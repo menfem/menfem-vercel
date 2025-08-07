@@ -26,7 +26,7 @@ export function AdminArticleActions({ article }: AdminArticleActionsProps) {
     setIsLoading(true);
     try {
       const result = await toggleArticleStatus(article.id, !article.isPublished);
-      if (result.status === 'success') {
+      if (result.status === 'SUCCESS') {
         toast.success(result.message);
         router.refresh();
       } else {
@@ -49,8 +49,8 @@ export function AdminArticleActions({ article }: AdminArticleActionsProps) {
       const formData = new FormData();
       formData.append('id', article.id);
       
-      const result = await deleteArticle({ status: undefined }, formData);
-      if (result.status === 'error') {
+      const result = await deleteArticle({}, formData);
+      if (result.status === 'ERROR') {
         toast.error(result.message);
       }
       // Success case handles redirect automatically

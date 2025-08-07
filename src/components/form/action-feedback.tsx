@@ -1,7 +1,7 @@
 // ABOUTME: Component for displaying form action feedback messages
 // ABOUTME: Shows success/error states and field-specific validation errors
 
-import { ActionState } from './utils/to-action-state';
+import { ActionState } from '@/types/action-state';
 
 type ActionFeedbackProps = {
   actionState: ActionState;
@@ -22,7 +22,7 @@ export function ActionFeedback({ actionState }: ActionFeedbackProps) {
       {actionState.fieldErrors && (
         <ul className="mt-2 text-sm list-disc list-inside">
           {Object.entries(actionState.fieldErrors).map(([field, errors]) =>
-            errors?.map((error, index) => (
+            errors?.map((error: string, index: number) => (
               <li key={`${field}-${index}`}>
                 <strong>{field}:</strong> {error}
               </li>

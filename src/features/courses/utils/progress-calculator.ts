@@ -37,7 +37,7 @@ export function calculateCourseProgress(
       }
 
       const lessonWithCompletion: LessonWithCompletion = {
-        ...lesson,
+        ...(lesson as any), // Cast to handle type compatibility 
         isCompleted,
         completedAt: completion?.completedAt,
         completions: completion ? [completion] : [],
@@ -78,7 +78,7 @@ export function calculateCourseProgress(
     overallProgress,
     modules,
     canContinue: completedLessons < totalLessons,
-    nextLesson,
+    nextLesson: nextLesson || undefined,
     lastAccessedAt: enrollment.enrolledAt,
   };
 }

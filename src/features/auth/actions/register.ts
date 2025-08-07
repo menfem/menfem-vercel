@@ -8,10 +8,10 @@ import { generateId } from 'lucia';
 import { prisma } from '@/lib/prisma';
 import { hashPassword } from '../utils/password';
 import {
-  ActionState,
   fromErrorToActionState,
   toActionState,
 } from '@/components/form/utils/to-action-state';
+import type { ActionState } from '@/types/action-state';
 
 const registerSchema = z.object({
   email: z.string().email('Invalid email address'),

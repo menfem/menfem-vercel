@@ -14,8 +14,15 @@ interface ClientDashboardProps {
 }
 
 export async function ClientDashboard({ project }: ClientDashboardProps) {
+  // Map database milestone fields to expected interface
+  const mappedMilestones = project.milestones.map(m => ({
+    ...m,
+    targetDate: m.dueDate,
+    completedDate: m.completedDate || undefined,
+  }));
+  
   const progress = calculateProjectProgress(project.milestones);
-  const nextMilestone = getNextMilestone(project.milestones);
+  const nextMilestone = getNextMilestone(mappedMilestones);
   const recentActivities = project.activities.slice(0, 10);
   const upcomingDeliverables = project.deliverables.filter(
     d => d.status === DeliverableStatus.PENDING || d.status === DeliverableStatus.IN_PROGRESS
@@ -123,7 +130,7 @@ export async function ClientDashboard({ project }: ClientDashboardProps) {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <MilestonesTimeline milestones={project.milestones} />
+            <MilestonesTimeline milestones={mappedMilestones} />
           </CardContent>
         </Card>
 
@@ -188,9 +195,9 @@ export async function ClientDashboard({ project }: ClientDashboardProps) {
                 <h3 className="font-semibold text-blue-900 mb-2">{nextMilestone.title}</h3>
                 <p className="text-blue-800 mb-4">{nextMilestone.description}</p>
                 <div className="flex items-center gap-4 text-sm text-blue-700">
-                  <span>Due: {formatDate(nextMilestone.dueDate, 'MMM dd, yyyy')}</span>
+                  <span>Due: {formatDate(nextMilestone.targetDate, 'MMM dd, yyyy')}</span>
                   <span>•</span>
-                  <span>{formatDistanceToNow(nextMilestone.dueDate, { addSuffix: true })}</span>
+                  <span>{formatDistanceToNow(nextMilestone.targetDate, { addSuffix: true })}</span>
                 </div>
               </div>
               <Badge variant={getMilestoneStatusVariant(nextMilestone.status)}>
@@ -213,7 +220,7 @@ function MilestonesTimeline({ milestones }: { milestones: Array<{
   completedDate?: Date;
 }> }) {
   const sortedMilestones = milestones.sort((a, b) => 
-    new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+    new Date(a.targetDate).getTime() - new Date(b.targetDate).getTime()
   );
 
   return (
@@ -236,9 +243,9 @@ function MilestonesTimeline({ milestones }: { milestones: Array<{
             <div className="flex items-start justify-between">
               <div>
                 <h4 className="font-medium text-gray-900">{milestone.title}</h4>
-                <p className="text-sm text-gray-600 mt-1">{milestone.description}</p>
+                <p className="text-sm text-gray-600 mt-1">{(milestone as any).description}</p>
                 <p className="text-xs text-gray-500 mt-2">
-                  Due: {formatDate(milestone.dueDate, 'MMM dd, yyyy')}
+                  Due: {formatDate(milestone.targetDate, 'MMM dd, yyyy')}
                 </p>
               </div>
               <Badge variant={getMilestoneStatusVariant(milestone.status)} className="ml-4">
@@ -294,14 +301,10 @@ function calculateProjectProgress(milestones: Array<{ status: MilestoneStatus }>
   return Math.round((completedMilestones / milestones.length) * 100);
 }
 
-function getNextMilestone(milestones: Array<{
-  status: MilestoneStatus;
-  targetDate: Date;
-  title: string;
-}>) {
+function getNextMilestone(milestones: Array<any>) {
   return milestones
     .filter(m => m.status !== MilestoneStatus.COMPLETED)
-    .sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())[0];
+    .sort((a, b) => new Date(a.targetDate).getTime() - new Date(b.targetDate).getTime())[0];
 }
 
 function getStatusVariant(status: ProjectStatus) {

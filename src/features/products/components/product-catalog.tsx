@@ -20,21 +20,19 @@ interface ProductCatalogProps {
     hasPreviousPage: boolean;
   };
   categories: ProductCategory[];
-  searchParams: Record<string, string | string[] | undefined>;
 }
 
 export function ProductCatalog({ 
   products, 
   metadata, 
-  categories, 
-  searchParams 
+  categories
 }: ProductCatalogProps) {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   if (products.length === 0) {
     return (
       <div className="space-y-6">
-        <ProductFilters categories={categories} searchParams={searchParams} />
+        <ProductFilters categories={categories} />
         
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🛒</div>
@@ -52,7 +50,7 @@ export function ProductCatalog({
   return (
     <div className="space-y-6">
       {/* Filters */}
-      <ProductFilters categories={categories} searchParams={searchParams} />
+      <ProductFilters categories={categories} />
 
       {/* View Mode Toggle */}
       <div className="flex items-center justify-between">

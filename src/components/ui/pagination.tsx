@@ -71,7 +71,7 @@ export function Pagination({
       <Button
         variant="outline"
         size="sm"
-        onClick={() => setPage(currentPage - 1)}
+        onClick={() => setPage(String(currentPage - 1))}
         disabled={!hasPreviousPage}
         className="gap-1"
       >
@@ -89,7 +89,7 @@ export function Pagination({
               <Button
                 variant={currentPage === page ? "default" : "outline"}
                 size="sm"
-                onClick={() => setPage(page as number)}
+                onClick={() => setPage(String(page as number))}
                 className={cn(
                   "min-w-[2.5rem]",
                   currentPage === page && "bg-blue-600 text-white"
@@ -106,7 +106,7 @@ export function Pagination({
       <Button
         variant="outline"
         size="sm"
-        onClick={() => setPage(currentPage + 1)}
+        onClick={() => setPage(String(currentPage + 1))}
         disabled={!hasNextPage}
         className="gap-1"
       >

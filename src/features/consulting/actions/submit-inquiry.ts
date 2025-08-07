@@ -12,7 +12,7 @@ import {
 } from '@/components/form/utils/to-action-state';
 import { calculateLeadScore } from '../utils/lead-scoring';
 import { CompanySize, ConsultingType, BudgetRange } from '@prisma/client';
-import type { ActionState } from '@/components/form/utils/to-action-state';
+import type { ActionState } from '@/types/action-state';
 
 // Validation schema
 const consultingInquirySchema = z.object({
@@ -24,11 +24,11 @@ const consultingInquirySchema = z.object({
   phone: z.string().optional(),
   industryVertical: z.string().min(1, 'Industry is required').max(100),
   companySize: z.nativeEnum(CompanySize, {
-    errorMap: () => ({ message: 'Please select a company size' })
+    message: 'Please select a company size'
   }),
   projectType: z.array(z.nativeEnum(ConsultingType)).min(1, 'Please select at least one service'),
   budgetRange: z.nativeEnum(BudgetRange, {
-    errorMap: () => ({ message: 'Please select a budget range' })
+    message: 'Please select a budget range'
   }),
   timeline: z.string().min(1, 'Timeline is required').max(100),
   projectDescription: z.string().min(10, 'Please provide a detailed project description').max(2000),
@@ -186,7 +186,7 @@ export async function updateInquiryStatus(
       await tx.consultingInquiry.update({
         where: { id: inquiryId },
         data: { 
-          status: status as 'new' | 'qualified' | 'proposal_sent' | 'negotiating' | 'won' | 'lost' | 'on_hold',
+          status: status.toUpperCase() as any,
           lastContactDate: new Date()
         }
       });

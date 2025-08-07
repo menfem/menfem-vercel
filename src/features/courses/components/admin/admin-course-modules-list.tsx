@@ -239,11 +239,11 @@ function LessonItem({
           <span className="font-medium">{lesson.title}</span>
         </div>
 
-        {lesson.video && (
+        {lesson.video ? (
           <Badge variant="outline" className="text-xs">
             Video
           </Badge>
-        )}
+        ) : null}
       </div>
 
       <div className="flex items-center gap-1">

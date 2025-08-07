@@ -57,7 +57,7 @@ export async function updateArticle(
 
     if (!existingArticle) {
       return {
-        status: 'error',
+        status: 'ERROR',
         message: 'Article not found',
       };
     }
@@ -140,14 +140,14 @@ export async function updateArticle(
     revalidatePath(`/articles/${slug}`);
 
     return {
-      status: 'success',
+      status: 'SUCCESS',
       message: 'Article updated successfully',
     };
 
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
-        status: 'error',
+        status: 'ERROR',
         message: 'Validation failed',
         fieldErrors: error.flatten().fieldErrors,
       };
@@ -155,7 +155,7 @@ export async function updateArticle(
 
     console.error('Error updating article:', error);
     return {
-      status: 'error',
+      status: 'ERROR',
       message: 'Failed to update article',
     };
   }

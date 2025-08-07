@@ -8,13 +8,20 @@ export const emptyActionState: ActionState = {};
 
 export function toActionState(
   status: 'SUCCESS' | 'ERROR',
-  message: string
+  message: string,
+  payload?: unknown
 ): ActionState {
-  return {
+  const result: ActionState = {
     status,
     message,
     timestamp: Date.now(),
   };
+  
+  if (payload) {
+    result.payload = payload;
+  }
+  
+  return result;
 }
 
 export function fromErrorToActionState(

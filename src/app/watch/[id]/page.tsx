@@ -11,6 +11,7 @@ import { VideoMetadata } from '@/features/videos/components/video-metadata';
 import { RelatedVideos } from '@/features/videos/components/related-videos';
 import { PremiumPaywall } from '@/features/videos/components/premium-paywall';
 import { incrementVideoViews } from '@/features/videos/actions/increment-views';
+import type { VideoWithRelations } from '@/features/videos/types';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -53,7 +54,7 @@ export default async function VideoPage({ params }: PageProps) {
   );
 }
 
-async function VideoPlayerSection({ video }: { video: { isPremium: boolean; embedUrl: string; title: string } }) {
+async function VideoPlayerSection({ video }: { video: VideoWithRelations }) {
   const { hasAccess } = await getPremiumAccess();
 
   if (video.isPremium && !hasAccess) {

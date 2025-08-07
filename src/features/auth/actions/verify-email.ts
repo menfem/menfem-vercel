@@ -7,10 +7,10 @@ import { z } from 'zod';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import {
-  ActionState,
   fromErrorToActionState,
   toActionState,
 } from '@/components/form/utils/to-action-state';
+import type { ActionState } from '@/types/action-state';
 import { PATHS } from '@/paths';
 
 const verifyEmailSchema = z.object({

@@ -11,6 +11,8 @@ import type {
   Course 
 } from '@prisma/client';
 
+export type { ProductCategory };
+
 export type ProductWithRelations = Product & {
   category: ProductCategory;
   tags: Array<ProductTag & {

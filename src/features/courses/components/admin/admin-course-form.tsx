@@ -4,7 +4,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -45,18 +45,21 @@ export function AdminCourseForm({ courseProducts, course }: AdminCourseFormProps
   );
 
   // Handle form submission with toast feedback
-  const handleSubmit = async (formData: FormData) => {
-    const result = await formAction(formData);
-    
-    if (result.status === 'SUCCESS') {
-      toast.success(result.message);
+  const handleSubmit = (formData: FormData) => {
+    formAction(formData);
+  };
+
+  // Handle actionState changes
+  useEffect(() => {
+    if (actionState.status === 'SUCCESS') {
+      toast.success(actionState.message || 'Course saved successfully');
       if (!isEditing) {
         router.push('/admin/courses');
       }
-    } else if (result.status === 'ERROR') {
-      toast.error(result.message);
+    } else if (actionState.status === 'ERROR') {
+      toast.error(actionState.message || 'Failed to save course');
     }
-  };
+  }, [actionState, isEditing, router]);
 
   return (
     <form action={handleSubmit} className="space-y-6">

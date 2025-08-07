@@ -11,9 +11,10 @@ import type {
   Video,
   User 
 } from '@prisma/client';
+import type { ProductWithRelations } from '@/features/products/types';
 
 export type CourseWithRelations = Course & {
-  product: Product;
+  product: ProductWithRelations;
   modules: CourseModuleWithLessons[];
   enrollments: CourseEnrollmentWithUser[];
   _count: {
@@ -200,4 +201,6 @@ export type CourseFilters = {
   enrolledOnly?: boolean;
   completedOnly?: boolean;
   search?: string;
+  isPublished?: boolean;
+  limit?: number;
 };

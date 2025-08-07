@@ -52,7 +52,7 @@ export async function generateProposal(formData: FormData) {
       where: { inquiryId }
     });
 
-    let project;
+    let project: any;
     if (existingProject) {
       // Update existing project
       project = await prisma.clientProject.update({

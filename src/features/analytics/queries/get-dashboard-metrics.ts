@@ -252,11 +252,13 @@ async function getUserMetricsData(startDate: Date, endDate: Date) {
     newUsers,
     activeUsers,
     retentionRate: totalUsers > 0 ? (activeUsers / totalUsers) * 100 : 0,
-    topPages: topPages.map(page => ({
-      path: page.path,
-      views: page._count.path,
-      uniqueViews: page._count.path, // Simplified - could be more sophisticated
-    })),
+    topPages: topPages
+      .filter(page => page.path !== null)
+      .map(page => ({
+        path: page.path!,
+        views: page._count.path,
+        uniqueViews: page._count.path, // Simplified - could be more sophisticated
+      })),
   };
 }
 

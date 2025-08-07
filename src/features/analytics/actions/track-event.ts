@@ -34,7 +34,7 @@ export async function trackEvent(data: TrackEventData) {
     await prisma.analyticsEvent.create({
       data: {
         eventType: data.eventType,
-        eventData: data.eventData,
+        eventData: data.eventData as any,
         sessionId: data.sessionId,
         path: data.path,
         userAgent: data.userAgent,
@@ -72,7 +72,7 @@ export async function trackEvents(events: TrackEventData[]) {
     // Prepare events for batch insert
     const analyticsEvents = events.map(event => ({
       eventType: event.eventType,
-      eventData: event.eventData,
+      eventData: event.eventData as any,
       sessionId: event.sessionId,
       path: event.path,
       userAgent: event.userAgent,
@@ -108,37 +108,37 @@ async function updateContentMetrics(data: TrackEventData) {
     switch (data.eventType) {
       case EVENT_TYPES.ARTICLE_READ:
         if (data.eventData.articleId) {
-          await updateMetric('article', data.eventData.articleId, 'view', 1, today);
+          await updateMetric('article', String(data.eventData.articleId), 'view', 1, today);
         }
         break;
 
       case EVENT_TYPES.VIDEO_PLAY:
         if (data.eventData.videoId) {
-          await updateMetric('video', data.eventData.videoId, 'view', 1, today);
+          await updateMetric('video', String(data.eventData.videoId), 'view', 1, today);
         }
         break;
 
       case EVENT_TYPES.VIDEO_COMPLETE:
         if (data.eventData.videoId) {
-          await updateMetric('video', data.eventData.videoId, 'completion', 1, today);
+          await updateMetric('video', String(data.eventData.videoId), 'completion', 1, today);
         }
         break;
 
       case EVENT_TYPES.COURSE_START:
         if (data.eventData.courseId) {
-          await updateMetric('course', data.eventData.courseId, 'view', 1, today);
+          await updateMetric('course', String(data.eventData.courseId), 'view', 1, today);
         }
         break;
 
       case EVENT_TYPES.COURSE_COMPLETE:
         if (data.eventData.courseId) {
-          await updateMetric('course', data.eventData.courseId, 'completion', 1, today);
+          await updateMetric('course', String(data.eventData.courseId), 'completion', 1, today);
         }
         break;
 
       case EVENT_TYPES.LESSON_COMPLETE:
         if (data.eventData.courseId) {
-          await updateMetric('course', data.eventData.courseId, 'engagement', 1, today);
+          await updateMetric('course', String(data.eventData.courseId), 'engagement', 1, today);
         }
         break;
     }
@@ -183,7 +183,7 @@ async function updateRevenueMetrics(data: TrackEventData) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const amount = Math.round(data.eventData.amount);
+    const amount = Math.round(Number(data.eventData.amount));
     const isSubscription = data.eventData.productType === 'SUBSCRIPTION';
     const isCourse = data.eventData.productType === 'COURSE';
 

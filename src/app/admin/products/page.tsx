@@ -14,16 +14,18 @@ import { productFiltersSchema } from '@/features/products/schema/product';
 import type { SearchParams } from '@/types/search-params';
 
 interface AdminProductsPageProps {
-  searchParams: SearchParams;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export default async function AdminProductsPage({ searchParams }: AdminProductsPageProps) {
+  const resolvedSearchParams = await searchParams;
+  
   // Parse and validate search parameters
   const parsedParams = productFiltersSchema.parse({
-    ...searchParams,
-    page: searchParams.page ? parseInt(searchParams.page as string) : 1,
-    limit: searchParams.limit ? parseInt(searchParams.limit as string) : 12,
-    isActive: searchParams.isActive === 'false' ? false : undefined,
+    ...resolvedSearchParams,
+    page: resolvedSearchParams.page ? parseInt(resolvedSearchParams.page as string) : 1,
+    limit: resolvedSearchParams.limit ? parseInt(resolvedSearchParams.limit as string) : 12,
+    isActive: resolvedSearchParams.isActive === 'false' ? false : undefined,
   });
 
   // Fetch data in parallel

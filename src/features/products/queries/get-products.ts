@@ -53,12 +53,12 @@ export const getProducts = cache(async (filters: ProductFilters = {}): Promise<P
   const finalMaxPrice = maxPrice || priceMax;
   
   if (finalMinPrice !== undefined || finalMaxPrice !== undefined) {
-    where.price = {};
+    where.price = {} as any;
     if (finalMinPrice !== undefined && finalMinPrice > 0) {
-      where.price.gte = finalMinPrice * 100; // Convert dollars to cents
+      (where.price as any).gte = finalMinPrice * 100; // Convert dollars to cents
     }
     if (finalMaxPrice !== undefined && finalMaxPrice > 0) {
-      where.price.lte = finalMaxPrice * 100; // Convert dollars to cents
+      (where.price as any).lte = finalMaxPrice * 100; // Convert dollars to cents
     }
   }
 
@@ -121,7 +121,7 @@ export const getActiveProducts = cache(async (filters: Omit<ProductFilters, 'isA
 });
 
 export const getProductsByType = cache(async (type: string, filters: Omit<ProductFilters, 'type'> = {}) => {
-  return getProducts({ ...filters, type: type as 'COURSE' | 'PRODUCT' });
+  return getProducts({ ...filters, type: type as 'COURSE' | 'PHYSICAL' | 'DIGITAL' | 'SUBSCRIPTION' });
 });
 
 export const getCourseProducts = cache(async (filters: Omit<ProductFilters, 'type'> = {}) => {

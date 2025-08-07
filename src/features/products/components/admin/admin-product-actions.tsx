@@ -39,7 +39,8 @@ export function AdminProductActions({ product }: AdminProductActionsProps) {
       formData.append('productId', product.id);
       
       const result = await deleteProduct(
-        { status: undefined, message: undefined },
+        product.id,
+        {},
         formData
       );
 

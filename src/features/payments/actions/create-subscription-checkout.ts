@@ -12,11 +12,32 @@ import {
 import type { ActionState } from '@/types/action-state';
 
 export async function createSubscriptionCheckout(
-  priceId: string
+  formData: FormData
 ): Promise<ActionState> {
   try {
     // Check authentication
     const { user } = await getAuthOrRedirect();
+
+    // Extract productId from form data
+    const productId = formData.get('productId') as string;
+    if (!productId) {
+      return {
+        status: 'ERROR',
+        message: 'Product ID is required',
+      };
+    }
+
+    // Get product details
+    const product = await prisma.product.findUnique({
+      where: { id: productId },
+    });
+
+    if (!product || !product.isActive) {
+      return {
+        status: 'ERROR',
+        message: 'Product not found or is no longer available',
+      };
+    }
 
     // Check if user already has an active subscription
     const existingSubscription = await prisma.membershipSubscription.findUnique({
@@ -37,15 +58,26 @@ export async function createSubscriptionCheckout(
       payment_method_types: ['card'],
       line_items: [
         {
-          price: priceId, // Use predefined price ID
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: product.name,
+              description: product.shortDesc || undefined,
+            },
+            unit_amount: product.price,
+            recurring: {
+              interval: 'month',
+            },
+          },
           quantity: 1,
         },
       ],
       mode: 'subscription',
-      success_url: `${process.env.BASE_URL}/dashboard?success=subscription`,
-      cancel_url: `${process.env.BASE_URL}/pricing`,
+      success_url: formData.get('successUrl') as string || `${process.env.BASE_URL}/dashboard?success=subscription`,
+      cancel_url: formData.get('cancelUrl') as string || `${process.env.BASE_URL}/pricing`,
       metadata: {
         userId: user.id,
+        productId: product.id,
         subscriptionType: 'premium',
       },
       subscription_data: {
@@ -85,6 +117,8 @@ export async function createSubscriptionCheckout(
 }
 
 export async function createPremiumSubscriptionCheckout(): Promise<ActionState> {
-  // Use the predefined premium monthly price
-  return createSubscriptionCheckout('price_premium_monthly');
+  // Create FormData with the predefined premium product
+  const formData = new FormData();
+  formData.append('productId', 'price_premium_monthly');
+  return createSubscriptionCheckout(formData);
 }

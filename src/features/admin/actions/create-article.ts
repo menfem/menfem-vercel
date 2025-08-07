@@ -61,7 +61,17 @@ export async function createArticle(
     // Create article
     const article = await prisma.article.create({
       data: {
-        ...data,
+        title: data.title,
+        subtitle: data.subtitle,
+        excerpt: data.excerpt,
+        content: data.content,
+        coverImage: data.coverImage,
+        categoryId: data.categoryId,
+        readingTime: data.readingTime,
+        isPremium: data.isPremium,
+        isPublished: data.isPublished,
+        metaTitle: data.metaTitle,
+        metaDescription: data.metaDescription,
         slug,
         authorId: user.id,
         publishedAt: data.isPublished ? new Date() : null,
@@ -105,7 +115,7 @@ export async function createArticle(
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
-        status: 'error',
+        status: 'ERROR',
         message: 'Validation failed',
         fieldErrors: error.flatten().fieldErrors,
       };
@@ -113,7 +123,7 @@ export async function createArticle(
 
     console.error('Error creating article:', error);
     return {
-      status: 'error',
+      status: 'ERROR',
       message: 'Failed to create article',
     };
   }

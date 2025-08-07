@@ -10,10 +10,10 @@ import { prisma } from '@/lib/prisma';
 import { lucia } from '@/lib/lucia';
 import { verifyPassword } from '../utils/password';
 import {
-  ActionState,
   fromErrorToActionState,
   toActionState,
 } from '@/components/form/utils/to-action-state';
+import type { ActionState } from '@/types/action-state';
 import { PATHS } from '@/paths';
 
 const signInSchema = z.object({

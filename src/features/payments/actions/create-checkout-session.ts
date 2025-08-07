@@ -14,7 +14,6 @@ import type { ActionState } from '@/types/action-state';
 import { createCheckoutSessionSchema } from '@/features/products/schema/product';
 
 export async function createCheckoutSession(
-  prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
   try {

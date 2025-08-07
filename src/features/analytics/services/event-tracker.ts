@@ -168,31 +168,31 @@ export class EventTracker {
   }
 
   trackArticleRead(data: ArticleReadEvent) {
-    this.track(EVENT_TYPES.ARTICLE_READ, data);
+    this.track(EVENT_TYPES.ARTICLE_READ, data as unknown as Record<string, unknown>);
   }
 
   trackVideoPlay(data: VideoEvent) {
-    this.track(EVENT_TYPES.VIDEO_PLAY, data);
+    this.track(EVENT_TYPES.VIDEO_PLAY, data as unknown as Record<string, unknown>);
   }
 
   trackVideoComplete(data: VideoEvent) {
-    this.track(EVENT_TYPES.VIDEO_COMPLETE, data);
+    this.track(EVENT_TYPES.VIDEO_COMPLETE, data as unknown as Record<string, unknown>);
   }
 
   trackCourseStart(data: CourseEvent) {
-    this.track(EVENT_TYPES.COURSE_START, data);
+    this.track(EVENT_TYPES.COURSE_START, data as unknown as Record<string, unknown>);
   }
 
   trackCourseComplete(data: CourseEvent) {
-    this.track(EVENT_TYPES.COURSE_COMPLETE, data);
+    this.track(EVENT_TYPES.COURSE_COMPLETE, data as unknown as Record<string, unknown>);
   }
 
   trackLessonComplete(data: CourseEvent) {
-    this.track(EVENT_TYPES.LESSON_COMPLETE, data);
+    this.track(EVENT_TYPES.LESSON_COMPLETE, data as unknown as Record<string, unknown>);
   }
 
   trackPurchase(data: PurchaseEvent) {
-    this.track(EVENT_TYPES.PURCHASE, data);
+    this.track(EVENT_TYPES.PURCHASE, data as unknown as Record<string, unknown>);
   }
 
   trackSubscriptionStart(data: { planType: string; amount: number }) {
@@ -200,7 +200,7 @@ export class EventTracker {
   }
 
   trackSearch(data: SearchEvent) {
-    this.track(EVENT_TYPES.SEARCH, data);
+    this.track(EVENT_TYPES.SEARCH, data as unknown as Record<string, unknown>);
   }
 
   trackNewsletterSignup(data: { source?: string }) {

@@ -172,9 +172,9 @@ export function AdminArticleForm({ categories, article }: AdminArticleFormProps)
                 <div className="w-full min-h-[400px] border border-gray-300 rounded-md p-4 bg-gray-50">
                   <div className="prose max-w-none">
                     {/* Simple markdown-like preview */}
-                    {document.querySelector('textarea[name="content"]')?.value
+                    {(document.querySelector('textarea[name="content"]') as HTMLTextAreaElement)?.value
                       ?.split('\n')
-                      .map((line, i) => (
+                      .map((line: string, i: number) => (
                         <p key={i} className="mb-2">
                           {line}
                         </p>
@@ -350,14 +350,14 @@ export function AdminArticleForm({ categories, article }: AdminArticleFormProps)
         )}
 
         {/* Error Message */}
-        {state.status === 'error' && (
+        {state.status === 'ERROR' && (
           <div className="bg-red-50 border border-red-200 rounded-md p-4">
             <p className="text-sm text-red-800">{state.message}</p>
           </div>
         )}
 
         {/* Success Message */}
-        {state.status === 'success' && (
+        {state.status === 'SUCCESS' && (
           <div className="bg-green-50 border border-green-200 rounded-md p-4">
             <p className="text-sm text-green-800">{state.message}</p>
           </div>

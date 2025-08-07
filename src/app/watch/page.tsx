@@ -3,7 +3,7 @@
 
 import { Suspense } from 'react';
 import { getVideos } from '@/features/videos/queries/get-videos';
-import { getVideoSeries } from '@/features/videos/queries/get-video-series';
+import { getAllVideoSeries } from '@/features/videos/queries/get-video-series';
 import { videoSearchParamsCache } from '@/features/videos/search-params';
 import { VideoLibrary } from '@/features/videos/components/video-library';
 import { VideoLibrarySkeleton } from '@/features/videos/components/video-library-skeleton';
@@ -37,24 +37,21 @@ export default async function WatchPage({ searchParams }: PageProps) {
 async function VideoLibraryContent({ 
   searchParams 
 }: { 
-  searchParams: Record<string, string | string[] | undefined>
+  searchParams: any
 }) {
   const [videosData, videoSeries] = await Promise.all([
     getVideos({
-      page: searchParams.page,
-      search: searchParams.search,
-      seriesId: searchParams.seriesId,
+      ...searchParams,
       isPublished: true, // Only show published videos to public
-      tags: searchParams.tags,
     }),
-    getVideoSeries({ isPublished: true }),
+    getAllVideoSeries(),
   ]);
 
   return (
     <VideoLibrary 
       videos={videosData.list}
       metadata={videosData.metadata}
-      videoSeries={videoSeries.list}
+      videoSeries={videoSeries}
       searchParams={searchParams}
     />
   );

@@ -4,7 +4,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import { ActionState, emptyActionState } from './utils/to-action-state';
+import { ActionState, emptyActionState } from '@/types/action-state';
 import { ActionFeedback } from './action-feedback';
 
 type FormProps = {

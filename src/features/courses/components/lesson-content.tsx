@@ -27,13 +27,13 @@ export function LessonContent({ lesson }: LessonContentProps) {
       {lesson.video && (
         <div className="mb-8">
           <div className="bg-black rounded-lg overflow-hidden aspect-video">
-            {lesson.video.url ? (
+            {lesson.video.embedUrl ? (
               <video
                 controls
                 className="w-full h-full"
                 poster={lesson.video.thumbnailUrl || undefined}
               >
-                <source src={lesson.video.url} type="video/mp4" />
+                <source src={lesson.video.embedUrl} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             ) : (

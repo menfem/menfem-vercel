@@ -44,7 +44,21 @@ export const getCourses = cache(async (filters: CourseFilters = {}): Promise<Cou
   const courses = await prisma.course.findMany({
     where,
     include: {
-      product: true,
+      product: {
+        include: {
+          category: true,
+          tags: {
+            include: {
+              tag: true,
+            },
+          },
+          _count: {
+            select: {
+              purchases: true,
+            },
+          },
+        },
+      },
       modules: {
         where: { isPublished: true },
         include: {
@@ -95,7 +109,7 @@ export const getCourses = cache(async (filters: CourseFilters = {}): Promise<Cou
     ],
   });
 
-  return courses as CourseWithRelations[];
+  return courses as unknown as CourseWithRelations[];
 });
 
 export const getPublishedCourses = cache(async (filters: CourseFilters = {}) => {
@@ -115,7 +129,21 @@ export const getFeaturedCourses = cache(async (limit: number = 6): Promise<Cours
       },
     },
     include: {
-      product: true,
+      product: {
+        include: {
+          category: true,
+          tags: {
+            include: {
+              tag: true,
+            },
+          },
+          _count: {
+            select: {
+              purchases: true,
+            },
+          },
+        },
+      },
       modules: {
         where: { isPublished: true },
         include: {
@@ -161,13 +189,27 @@ export const getFeaturedCourses = cache(async (limit: number = 6): Promise<Cours
     take: limit,
   });
 
-  return courses as CourseWithRelations[];
+  return courses as unknown as CourseWithRelations[];
 });
 
 export const getCoursesForAdmin = cache(async (): Promise<CourseWithRelations[]> => {
   const courses = await prisma.course.findMany({
     include: {
-      product: true,
+      product: {
+        include: {
+          category: true,
+          tags: {
+            include: {
+              tag: true,
+            },
+          },
+          _count: {
+            select: {
+              purchases: true,
+            },
+          },
+        },
+      },
       modules: {
         include: {
           lessons: {
@@ -209,5 +251,5 @@ export const getCoursesForAdmin = cache(async (): Promise<CourseWithRelations[]>
     orderBy: { product: { createdAt: 'desc' } },
   });
 
-  return courses as CourseWithRelations[];
+  return courses as unknown as CourseWithRelations[];
 });

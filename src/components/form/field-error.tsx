@@ -1,7 +1,7 @@
 // ABOUTME: Component for displaying field-specific validation errors
 // ABOUTME: Shows error messages for individual form fields
 
-import { ActionState } from './utils/to-action-state';
+import { ActionState } from '@/types/action-state';
 
 type FieldErrorProps = {
   actionState: ActionState;

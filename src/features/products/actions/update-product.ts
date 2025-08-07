@@ -73,7 +73,7 @@ export async function updateProduct(
 
     // Generate new slug if name changed
     let newSlug = existingProduct.slug;
-    if (validatedData.name !== existingProduct.name) {
+    if (validatedData.name && validatedData.name !== existingProduct.name) {
       newSlug = await generateSlug(validatedData.name);
 
       // Check if new slug conflicts with other products

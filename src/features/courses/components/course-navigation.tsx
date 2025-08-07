@@ -5,11 +5,12 @@
 
 import { X, Play, CheckCircle, Circle, ChevronDown, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
-import type { CourseWithRelations, CourseProgress } from '../types';
+import type { CourseWithRelations } from '../types';
+import type { getUserCourseProgress } from '../queries/get-user-course-progress';
 
 interface CourseNavigationProps {
   course: CourseWithRelations;
-  userProgress: CourseProgress;
+  userProgress: NonNullable<Awaited<ReturnType<typeof getUserCourseProgress>>>;
   currentLessonId: string;
   onLessonSelect: (lessonId: string) => void;
   onClose: () => void;
@@ -41,7 +42,7 @@ export function CourseNavigation({
     const lesson = course.modules
       .flatMap(m => m.lessons)
       .find(l => l.id === lessonId);
-    return lesson?.completions?.length > 0;
+    return (lesson?.completions?.length ?? 0) > 0;
   };
 
   const getModuleProgress = (moduleId: string) => {
@@ -67,7 +68,7 @@ export function CourseNavigation({
             {course.product.name}
           </h3>
           <p className="text-sm text-gray-500">
-            {userProgress.progress}% Complete
+            {Math.round(userProgress.progress.percentage)}% Complete
           </p>
         </div>
         <button

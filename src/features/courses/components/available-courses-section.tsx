@@ -133,7 +133,7 @@ function AvailableCourseCard({
           </div>
           <div className="flex items-center gap-1">
             <Users className="w-3 h-3" />
-            <span>{product._count?.purchases || 0} enrolled</span>
+            <span>{course._count?.enrollments || 0} enrolled</span>
           </div>
         </div>
 

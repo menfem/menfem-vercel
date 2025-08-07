@@ -61,7 +61,7 @@ async function CoursesContent({ user }: { user: { id: string } | null }) {
         )}
         
         <AvailableCoursesSection 
-          courses={availableCourses.list}
+          courses={availableCourses}
           enrolledCourseIds={userCourses.map(uc => uc.course.id)}
           showHeader={userCourses.length > 0}
         />
@@ -76,7 +76,7 @@ async function CoursesContent({ user }: { user: { id: string } | null }) {
 
     return (
       <AvailableCoursesSection 
-        courses={availableCourses.list}
+        courses={availableCourses}
         enrolledCourseIds={[]}
         showHeader={false}
       />

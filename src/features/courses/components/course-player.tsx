@@ -9,11 +9,12 @@ import { CourseNavigation } from './course-navigation';
 import { LessonContent } from './lesson-content';
 import { CourseHeader } from './course-header';
 import { LessonCompleteButton } from './lesson-complete-button';
-import type { CourseWithRelations, UserCourseProgress } from '../types';
+import type { CourseWithRelations } from '../types';
+import type { getUserCourseProgress } from '../queries/get-user-course-progress';
 
 interface CoursePlayerProps {
   course: CourseWithRelations;
-  userProgress: UserCourseProgress;
+  userProgress: NonNullable<Awaited<ReturnType<typeof getUserCourseProgress>>>;
   selectedLessonId?: string;
 }
 

@@ -5,11 +5,11 @@
 
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
-import {
-  ActionState,
-  fromErrorToActionState,
-  toActionState,
+import { 
+  fromErrorToActionState, 
+  toActionState 
 } from '@/components/form/utils/to-action-state';
+import type { ActionState } from '@/types/action-state';
 
 const unsubscribeSchema = z.object({
   email: z.string().email('Invalid email address'),

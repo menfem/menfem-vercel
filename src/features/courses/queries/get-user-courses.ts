@@ -36,10 +36,21 @@ export const getUserCourses = cache(async (userId: string) => {
   });
 
   // Calculate progress for each course
-  const coursesWithProgress = enrollments.map(enrollment => ({
-    ...enrollment,
-    progress: calculateCourseProgress(enrollment.course.modules, userId),
-  }));
+  const coursesWithProgress = enrollments.map(enrollment => {
+    const allLessons = enrollment.course.modules.flatMap(m => m.lessons);
+    const totalLessons = allLessons.length;
+    const completedLessons = allLessons.filter(l => l.completions.length > 0).length;
+    const percentage = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+
+    return {
+      ...enrollment,
+      progress: {
+        totalLessons,
+        completedLessons,
+        percentage,
+      },
+    };
+  });
 
   return coursesWithProgress;
 });

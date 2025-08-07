@@ -107,7 +107,10 @@ export type TrackableEventType =
   | 'newsletter_signup'
   | 'event_rsvp'
   | 'download'
-  | 'share';
+  | 'share'
+  | 'error'
+  | 'performance'
+  | 'form_submit';
 
 export interface PageViewEvent {
   path: string;
