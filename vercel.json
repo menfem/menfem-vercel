@@ -1,28 +1,7 @@
 {
-  "crons": [
-    {
-      "path": "/api/cron/recommendations?job=daily",
-      "schedule": "0 6 * * *"
-    },
-    {
-      "path": "/api/cron/recommendations?job=trending", 
-      "schedule": "0 */6 * * *"
-    },
-    {
-      "path": "/api/cron/recommendations?job=cleanup",
-      "schedule": "0 2 * * 0"
-    },
-    {
-      "path": "/api/cron/recommendations?job=analytics",
-      "schedule": "0 8 1 * *"
-    }
-  ],
   "functions": {
-    "src/app/api/cron/recommendations/route.ts": {
+    "src/app/api/webhooks/stripe/route.ts": {
       "maxDuration": 300
     }
-  },
-  "env": {
-    "CRON_SECRET": "@cron-secret"
   }
 }
